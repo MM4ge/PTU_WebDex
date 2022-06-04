@@ -34,4 +34,9 @@ public class Pokemon {
         stats[nature.getRaiseIndex()].incrementNature(nature.getRaiseValue());
         stats[nature.getLowerIndex()].incrementNature(nature.getLowerValue());
     }
+
+    public Pokemon(PokemonSpecies species)
+    {
+        this(species, Nature.getRandomNature());
+    }
 }

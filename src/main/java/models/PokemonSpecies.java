@@ -1,12 +1,10 @@
 package models;
 
+import controllers.JsonRead;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Comparator;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -25,8 +23,9 @@ public class PokemonSpecies {
     Map<Move, Integer> baseLevelUpMoves;
     /** Move is the move that can be tutored, Boolean is if it's natural or not. */
     Map<Move, Boolean> baseTutorMoves;
-    /** Move is the move that can be tutored, Boolean is if it's natural or not.*/
-    Map<Move, Boolean> baseEggMoves;
+    Set<Move> baseEggMoves;
+
+    public static final Map<String, PokemonSpecies> allSpecies = Collections.unmodifiableMap(JsonRead.deserializePokemonSpecies());
 
     /**
      * Returns the map of abilities as a sorted set, sorted based on ability type (base, adv, high)

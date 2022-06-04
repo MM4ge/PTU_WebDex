@@ -4,7 +4,9 @@ import com.google.gson.*;
 
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class PokemonSpeciesDeserializer implements JsonDeserializer<PokemonSpecies> {
     @Override
@@ -14,11 +16,8 @@ public class PokemonSpeciesDeserializer implements JsonDeserializer<PokemonSpeci
         String speciesName = pokeJson.get("Species").getAsString();
         String form = pokeJson.get("Form").getAsString();
 
-        int[] stats = new int[6];
-        JsonArray statAry = pokeJson.get("BaseStats").getAsJsonArray();
-        for(int i = 0; i < 6; i++) {
-            stats[i] = statAry.get(i).getAsInt();
-        }
+        JsonObject statObj = pokeJson.get("BaseStats").getAsJsonObject();
+        int[] stats = statObj.entrySet().stream().map(e -> e.getValue().getAsInt()).mapToInt(Integer::intValue).toArray();
 
         Map<Ability, Ability.AbilityType> baseAbilities = new LinkedHashMap<>();
         JsonArray abilityAry = pokeJson.get("Abilities").getAsJsonArray();
@@ -42,11 +41,11 @@ public class PokemonSpeciesDeserializer implements JsonDeserializer<PokemonSpeci
             tutorMoves.put(Move.allMoves.get(obj.get("Name").getAsString()), obj.get("Natural").getAsBoolean());
         });
 
-        Map<Move, Boolean> eggMoves = new LinkedHashMap<>();
+        Set<Move> eggMoves = new LinkedHashSet<>();
         JsonArray eggAry = pokeJson.get("EggMoves").getAsJsonArray();
         eggAry.forEach(je -> {
             JsonObject obj = je.getAsJsonObject();
-            eggMoves.put(Move.allMoves.get(obj.get("Name").getAsString()), obj.get("Natural").getAsBoolean());
+            eggMoves.add(Move.allMoves.get(obj.get("Name").getAsString()));
         });
 
         return new PokemonSpecies(speciesName, form, stats, baseAbilities, levelMoves, tutorMoves, eggMoves);

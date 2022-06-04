@@ -1,6 +1,7 @@
 package controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
@@ -9,6 +10,7 @@ import lombok.extern.java.Log;
 import models.Ability;
 import models.Move;
 import models.PokemonSpecies;
+import models.PokemonSpeciesDeserializer;
 
 import java.io.FileReader;
 import java.lang.reflect.Type;
@@ -21,30 +23,23 @@ public class JsonRead {
     private static final String ABILITIES_FILEPATH = "src/main/resources/abilities.json";
 
     public static Map<String, PokemonSpecies> deserializePokemonSpecies() {
-        try {
-            // create Gson instance
-            Gson gson = new Gson();
-
-            // create a reader
-            JsonReader reader = new JsonReader(new FileReader(POKEDEX_FILEPATH));
-            JsonElement e = JsonParser.parseReader(reader);
-
-            // convert JSON file to map
-            Map<?, ?> map = gson.fromJson(reader, Map.class);
-
-            // print map entries
-            for (Map.Entry<?, ?> entry : map.entrySet()) {
-                System.out.println(entry.getKey() + "=" + entry.getValue());
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(PokemonSpecies.class, new PokemonSpeciesDeserializer())
+                .create();
+        Type moveMapType = new TypeToken<Map<String, PokemonSpecies>>() {
+        }.getType();
+        try (JsonReader reader = new JsonReader(new FileReader(POKEDEX_FILEPATH))){
+            Map<String, PokemonSpecies> pokeMap = gson.fromJson(reader, moveMapType);
+            for (Map.Entry<?, ?> entry : pokeMap.entrySet()) {
+                log.info(entry.getKey() + "=" + entry.getValue());
             }
-            e.getAsJsonObject().get("");
-
-            // close reader
-            reader.close();
-
-        } catch (Exception ex) {
+            return pokeMap;
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
-        return null;
+        throw new RuntimeException("Json hit an error; program cannot continue.");
     }
 
 
@@ -58,7 +53,6 @@ public class JsonRead {
             for (Map.Entry<?, ?> entry : movesMap.entrySet()) {
                 log.info(entry.getKey() + "=" + entry.getValue());
             }
-            log.info("" + movesMap.getClass());
             return movesMap;
         }
         catch (Exception ex)
@@ -77,7 +71,7 @@ public class JsonRead {
             Map<String, Ability> abilityMap = gson.fromJson(reader, abilityMapType);
             for (Map.Entry<?, ?> entry : abilityMap.entrySet()) {
                 log.info(entry.getKey() + "=" + entry.getValue());
-            };
+            }
             return abilityMap;
         }
         catch (Exception ex)
