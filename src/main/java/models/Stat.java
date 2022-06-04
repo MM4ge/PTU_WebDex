@@ -4,8 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class Stat
     @ToString.Exclude
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
-    private static Map<String, Integer> statNames = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private static Map<String, Integer> statNames = Collections.unmodifiableMap(initStatNameMap());
 
     @NonNull
     int base;
@@ -48,16 +48,20 @@ public class Stat
 
     public static Map<String, Integer> getStatNames()
     {
-        if(statNames.isEmpty())
-        {
-            statNames.put("HP", 0);
-            statNames.put("Attack", 1);
-            statNames.put("Defense", 2);
-            statNames.put("SpecialAttack", 3);
-            statNames.put("SpecialDefense", 4);
-            statNames.put("Speed", 5);
-        }
-        return Collections.unmodifiableMap(statNames);
+        return statNames;
+    }
+
+    private static Map<String, Integer> initStatNameMap()
+    {
+        Map<String, Integer> stats = new HashMap<>();
+        stats.put("HP", 0);
+        stats.put("Attack", 1);
+        stats.put("Defense", 2);
+        stats.put("SpecialAttack", 3);
+        stats.put("SpecialDefense", 4);
+        stats.put("Speed", 5);
+
+        return stats;
     }
 
     public static int getStatIndex(String statName)

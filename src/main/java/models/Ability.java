@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -48,4 +49,5 @@ public class Ability {
     String target = "";
     @NonNull
     String effect;
+    Move connection =  null;
 }

@@ -7,10 +7,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import lombok.extern.java.Log;
-import models.Ability;
-import models.Move;
-import models.PokemonSpecies;
-import models.PokemonSpeciesDeserializer;
+import models.*;
 
 import java.io.FileReader;
 import java.lang.reflect.Type;
@@ -30,9 +27,9 @@ public class JsonRead {
         }.getType();
         try (JsonReader reader = new JsonReader(new FileReader(POKEDEX_FILEPATH))){
             Map<String, PokemonSpecies> pokeMap = gson.fromJson(reader, moveMapType);
-            for (Map.Entry<?, ?> entry : pokeMap.entrySet()) {
-                log.info(entry.getKey() + "=" + entry.getValue());
-            }
+//            for (Map.Entry<?, ?> entry : pokeMap.entrySet()) {
+//                log.info(entry.getKey() + "=" + entry.getValue());
+//            }
             return pokeMap;
         }
         catch (Exception ex)
@@ -50,9 +47,9 @@ public class JsonRead {
         }.getType();
         try (JsonReader reader = new JsonReader(new FileReader(MOVES_FILEPATH))){
             Map<String, Move> movesMap = gson.fromJson(reader, moveMapType);
-            for (Map.Entry<?, ?> entry : movesMap.entrySet()) {
-                log.info(entry.getKey() + "=" + entry.getValue());
-            }
+//            for (Map.Entry<?, ?> entry : movesMap.entrySet()) {
+//                log.info(entry.getKey() + "=" + entry.getValue());
+//            }
             return movesMap;
         }
         catch (Exception ex)
@@ -64,14 +61,16 @@ public class JsonRead {
 
     public static Map<String, Ability> deserializeAbilities()
     {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Ability.class, new AbilityDeserializer())
+                .create();
         Type abilityMapType = new TypeToken<Map<String, Ability>>() {
         }.getType();
         try (JsonReader reader = new JsonReader(new FileReader(ABILITIES_FILEPATH))){
             Map<String, Ability> abilityMap = gson.fromJson(reader, abilityMapType);
-            for (Map.Entry<?, ?> entry : abilityMap.entrySet()) {
-                log.info(entry.getKey() + "=" + entry.getValue());
-            }
+            //for (Map.Entry<?, ?> entry : abilityMap.entrySet()) {
+            //    log.info(entry.getKey() + "=" + entry.getValue());
+            //}
             return abilityMap;
         }
         catch (Exception ex)

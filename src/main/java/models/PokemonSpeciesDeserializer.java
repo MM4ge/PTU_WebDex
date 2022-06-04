@@ -19,14 +19,6 @@ public class PokemonSpeciesDeserializer implements JsonDeserializer<PokemonSpeci
         JsonObject statObj = pokeJson.get("BaseStats").getAsJsonObject();
         int[] stats = statObj.entrySet().stream().map(e -> e.getValue().getAsInt()).mapToInt(Integer::intValue).toArray();
 
-        Map<Ability, Ability.AbilityType> baseAbilities = new LinkedHashMap<>();
-        JsonArray abilityAry = pokeJson.get("Abilities").getAsJsonArray();
-        abilityAry.forEach(je -> {
-            JsonObject obj = je.getAsJsonObject();
-            baseAbilities.put(Ability.allAbilities.get(obj.get("Name").getAsString()),
-                    Ability.AbilityType.getAbilityType(obj.get("Type").getAsString()));
-        });
-
         Map<Move, Integer> levelMoves = new LinkedHashMap<>();
         JsonArray levelAry = pokeJson.get("LevelUpMoves").getAsJsonArray();
         levelAry.forEach(je -> {
@@ -46,6 +38,15 @@ public class PokemonSpeciesDeserializer implements JsonDeserializer<PokemonSpeci
         eggAry.forEach(je -> {
             JsonObject obj = je.getAsJsonObject();
             eggMoves.add(Move.allMoves.get(obj.get("Name").getAsString()));
+        });
+
+        /* Abilities after moves- Ability's Connection requires them */
+        Map<Ability, Ability.AbilityType> baseAbilities = new LinkedHashMap<>();
+        JsonArray abilityAry = pokeJson.get("Abilities").getAsJsonArray();
+        abilityAry.forEach(je -> {
+            JsonObject obj = je.getAsJsonObject();
+            baseAbilities.put(Ability.allAbilities.get(obj.get("Name").getAsString()),
+                    Ability.AbilityType.getAbilityType(obj.get("Type").getAsString()));
         });
 
         return new PokemonSpecies(speciesName, form, stats, baseAbilities, levelMoves, tutorMoves, eggMoves);
