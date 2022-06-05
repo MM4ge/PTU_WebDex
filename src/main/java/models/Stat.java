@@ -3,9 +3,7 @@ package models;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -41,10 +39,14 @@ public class Stat
         return base;
     }
 
+    public int getTotal() { return base + nature + allocated + bonus; }
+
     public void incrementNature(int inc)
     {
         nature += inc;
     }
+
+    public void increment(int inc) { allocated += inc;}
 
     public static Map<String, Integer> getStatNames()
     {
@@ -53,7 +55,7 @@ public class Stat
 
     private static Map<String, Integer> initStatNameMap()
     {
-        Map<String, Integer> stats = new HashMap<>();
+        Map<String, Integer> stats = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         stats.put("HP", 0);
         stats.put("Attack", 1);
         stats.put("Defense", 2);
@@ -67,5 +69,14 @@ public class Stat
     public static int getStatIndex(String statName)
     {
         return getStatNames().get(statName);
+    }
+
+    public static List<Stat> constructStatBlock(int[] baseStats)
+    {
+        List<Stat> statsRet = new ArrayList<>();
+        for(int i = 0; i < 6; i++) {
+            statsRet.add(new Stat(baseStats[i]));
+        }
+        return statsRet;
     }
 }

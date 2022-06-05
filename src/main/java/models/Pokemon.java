@@ -3,6 +3,7 @@ package models;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class Pokemon {
     PokemonSpecies species;
     String name;
     int level = 1;
-    Stat[] stats = new Stat[6];
+    List<Stat> stats;
     Nature nature;
     List<Ability> abilities = new LinkedList<>();
     List<Move> moves = new LinkedList<>();
@@ -26,13 +27,10 @@ public class Pokemon {
     {
         this.species = species;
         this.name = species.getSpeciesName();
-        int[] baseStats = species.getBaseStats();
-        for(int i = 0; i < 6; i++) {
-            stats[i] = new Stat(baseStats[i]);
-        }
+        stats = Stat.constructStatBlock(species.getBaseStats());
         this.nature = nature;
-        stats[nature.getRaiseIndex()].incrementNature(nature.getRaiseValue());
-        stats[nature.getLowerIndex()].incrementNature(nature.getLowerValue());
+        stats.get(nature.getRaiseIndex()).incrementNature(nature.getRaiseValue());
+        stats.get(nature.getLowerIndex()).incrementNature(nature.getLowerValue());
     }
 
     public Pokemon(PokemonSpecies species)
