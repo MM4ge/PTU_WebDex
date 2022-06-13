@@ -16,6 +16,12 @@ public class PokemonSpeciesDeserializer implements JsonDeserializer<PokemonSpeci
         String speciesName = pokeJson.get("Species").getAsString();
         String form = pokeJson.get("Form").getAsString();
 
+        JsonArray types = pokeJson.get("Types").getAsJsonArray();
+//        models.Type primaryType = models.Type.getType(types.get(0).getAsString());
+//        models.Type secondaryType = null;
+//        if(types.size() > 1)
+//                secondaryType = models.Type.getType(types.get(0).getAsString());
+
         JsonObject statObj = pokeJson.get("BaseStats").getAsJsonObject();
         int[] stats = statObj.entrySet().stream().map(e -> e.getValue().getAsInt()).mapToInt(Integer::intValue).toArray();
 
@@ -49,7 +55,7 @@ public class PokemonSpeciesDeserializer implements JsonDeserializer<PokemonSpeci
                     Ability.AbilityType.getAbilityType(obj.get("Type").getAsString()));
         });
 
-        return new PokemonSpecies(speciesName, form, stats, baseAbilities, levelMoves, tutorMoves, eggMoves);
+        return null; //new PokemonSpecies(speciesName, form, primaryType, secondaryType, stats, baseAbilities, levelMoves, tutorMoves, eggMoves);
     }
 }
 

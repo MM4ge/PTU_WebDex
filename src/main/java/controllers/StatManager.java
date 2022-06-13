@@ -2,7 +2,9 @@ package controllers;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import models.Pokemon;
 import models.Stat;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,7 +31,7 @@ public class StatManager {
     @Getter
     @Setter
     @FieldDefaults(level = AccessLevel.PRIVATE)
-    private class ManagedStat{
+    private static class ManagedStat implements Comparable<ManagedStat>{
         @NonNull
         Stat stat;
         boolean canIncrease;
@@ -67,6 +69,23 @@ public class StatManager {
             }
             lowerBaseStats.forEach(ManagedStat::cascadeCheckCanIncrease);
         }
+
+        public int getBase()
+        {
+            return getStat().getBase();
+        }
+
+        public void initRatio(double total)
+        {
+            double ratio = getStat().getTotal() / total;
+            setOrigRatio(ratio);
+            setCurrRatio(ratio);
+        }
+
+        @Override
+        public int compareTo(@NotNull StatManager.ManagedStat o) {
+            return Integer.compare(this.getBase(), o.getBase());
+        }
     }
 
     List<ManagedStat> stats = new ArrayList<>();
@@ -75,20 +94,16 @@ public class StatManager {
     public StatManager(List<Stat> pokeStats)
     {
         // Initial Stats
-        for(int i = 0; i < 6; i++)
-            stats.add(new ManagedStat(pokeStats.get(i)));
+//        for(int i = 0; i < 6; i++)
+//            stats.add(new ManagedStat(pokeStats.get(i)));
+        stats = pokeStats.stream().map(ManagedStat::new).collect(Collectors.toList());
 
         // Filling out other MS vars - this will probably be very bootleg and require refactoring later
         float total = getAllTotal();
-        stats.forEach(ms -> {
-            float ratio = ms.stat.getTotal() / total;
-            ms.setOrigRatio(ratio);
-            ms.setCurrRatio(ratio);
-        });
+        stats.forEach(ms -> ms.initRatio(total));
 
         // Make the higherBaseStats lists of the managed stats- start from lowest, continue till none left
-        List<ManagedStat> copiedStats = new ArrayList<>(stats);
-        copiedStats.sort(Comparator.comparingInt(ms -> ms.getStat().getBase()));
+        List<ManagedStat> copiedStats = stats.stream().sorted().collect(Collectors.toList());
         List<ManagedStat> prevLowest = new ArrayList<>();
         while(!copiedStats.isEmpty())
         {
@@ -111,6 +126,11 @@ public class StatManager {
 
         // Cascade check from the highest stat to see which stats can be incremented
         prevLowest.forEach(ManagedStat::cascadeCheckCanIncrease);
+    }
+
+    public StatManager(Pokemon poke)
+    {
+        this(poke.getStats());
     }
 
     /**

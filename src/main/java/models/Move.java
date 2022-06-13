@@ -19,7 +19,7 @@ public class Move {
     // TODO: Periods can't be allowed in move names, have a check for that somewhere
     public static final Map<String, Move> allMoves = Collections.unmodifiableMap(JsonRead.deserializeMoves());
     @NonNull
-    String type;
+    Type type;
     @NonNull
     String freq;
     String ac;

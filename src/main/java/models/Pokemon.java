@@ -27,7 +27,8 @@ public class Pokemon {
     {
         this.species = species;
         this.name = species.getSpeciesName();
-        stats = Stat.constructStatBlock(species.getBaseStats());
+        // TODO: fix
+        stats = null; //Stat.constructStatBlock(species.getBaseStats());
         this.nature = nature;
         stats.get(nature.getRaiseIndex()).incrementNature(nature.getRaiseValue());
         stats.get(nature.getLowerIndex()).incrementNature(nature.getLowerValue());

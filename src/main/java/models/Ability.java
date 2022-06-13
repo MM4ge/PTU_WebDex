@@ -1,5 +1,6 @@
 package models;
 
+import com.google.gson.annotations.SerializedName;
 import controllers.JsonRead;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,9 +17,20 @@ import java.util.Map;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Ability {
     public static final Map<String, Ability> allAbilities = Collections.unmodifiableMap(JsonRead.deserializeAbilities());
+
+    public static Ability getAbility(String name)
+    {
+        return allAbilities.get(name);
+    }
+
     public enum AbilityType
     {
-        BASE(0), ADVANCED(20), HIGH(40);
+        @SerializedName("Basic")
+        BASE(0),
+        @SerializedName("Advanced")
+        ADVANCED(20),
+        @SerializedName("High")
+        HIGH(40);
         public final int level;
 
         AbilityType(int level)
@@ -49,5 +61,6 @@ public class Ability {
     String target = "";
     @NonNull
     String effect;
+    // TODO: correlation step for reading effect for connection data n linking moves from it
     Move connection =  null;
 }
