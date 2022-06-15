@@ -83,7 +83,7 @@ public class PokemonSpecies {
      * Hp, Atk, Def, SpAtk, SpDef, Speed
      */
     @SerializedName("BaseStats")
-    Map<StatName, Integer> baseStats;
+    EnumMap<StatName, Integer> baseStats;
     @SerializedName("Abilities")
     List<SpeciesAbility> baseAbilities;
     /**

@@ -15,7 +15,7 @@ public class TypeAdapter implements JsonSerializer<Type>, JsonDeserializer<Type>
             //System.err.println(json.getAsString() + " not a valid Type. Assigned to Typeless.");
             return Type.TYPELESS;
         }
-        }
+    }
 
     @Override
     public JsonElement serialize(Type src, java.lang.reflect.Type typeOfSrc, JsonSerializationContext context) {

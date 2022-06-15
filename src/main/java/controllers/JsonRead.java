@@ -28,23 +28,6 @@ public class JsonRead {
 
     public static Map<String, PokemonSpecies> deserializePokemonSpecies() {
         return gson.fromJson(readFromFile(POKEDEX_FILEPATH), new TypeToken<Map<String, PokemonSpecies>>() {}.getType());
-//        Gson gson = new GsonBuilder()
-//                .registerTypeAdapter(PokemonSpecies.class, new PokemonSpeciesDeserializer())
-//                .create();
-//        Type moveMapType = new TypeToken<Map<String, PokemonSpecies>>() {
-//        }.getType();
-//        try (JsonReader reader = new JsonReader(new FileReader(POKEDEX_FILEPATH))){
-//            Map<String, PokemonSpecies> pokeMap = gson.fromJson(reader, moveMapType);
-////            for (Map.Entry<?, ?> entry : pokeMap.entrySet()) {
-////                log.info(entry.getKey() + "=" + entry.getValue());
-////            }
-//            return pokeMap;
-//        }
-//        catch (Exception ex)
-//        {
-//            ex.printStackTrace();
-//        }
-//        throw new RuntimeException("Json hit an error; program cannot continue.");
     }
 
     public static Map<models.Type, Map<models.Type, Double>> deserializeTypes()

@@ -55,12 +55,15 @@ public class Ability {
         }
     }
 
+    String name;
     @NonNull
-    String freq;
+    Frequency frequency;
+    int uses = 0;
+    ActionType actionType;
+    ActionType.Priority priority = null;
     String trigger = "";
     String target = "";
     @NonNull
     String effect;
-    // TODO: correlation step for reading effect for connection data n linking moves from it
     Move connection =  null;
 }

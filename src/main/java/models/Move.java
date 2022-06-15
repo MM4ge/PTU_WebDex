@@ -16,24 +16,38 @@ import java.util.Map;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Move {
+    public enum MoveClass {
+        PHYSICAL, SPECIAL, STATUS, STATIC;
+    }
+    public enum ContestType {
+        BEAUTY, COOL, CUTE, SMART, TOUGH;
+    }
+    public enum ContestEffect {
+        ATTENTION_GRABBER, BIG_SHOW, CATCHING_UP, DESPERATION, DOUBLE_TIME, EXCITEMENT, EXHAUSTING_ACT, GAMBLE,
+        GET_READY, GOOD_SHOW, INCENTIVES, INVERSED_APPEAL, REFLECTIVE_APPEAL, RELIABLE, SABOTAGE, SAFE_OPTION,
+        SAVING_GRACE, SEEN_NOTHING_YET, SPECIAL_ATTENTION, STEADY_PERFORMANCE, TEASE, UNSETTLING;
+    }
     // TODO: Periods can't be allowed in move names, have a check for that somewhere
     public static final Map<String, Move> allMoves = Collections.unmodifiableMap(JsonRead.deserializeMoves());
     @NonNull
-    Type type;
+    String name;
     @NonNull
-    String freq;
+    Type type;
+    Frequency frequency;
+    int uses = 0;
     String ac;
     String db;
     @NonNull
-    String damageClass;
+    MoveClass moveClass;
     @NonNull
     String range;
-    @NonNull
     String effect;
-    @NonNull
-    String contestType;
-    @NonNull
-    String contestEffect;
+    ContestType contestType;
+    ContestEffect contestEffect;
     String critsOn;
-    transient Map<String, String> triggers;
+
+    public static Move getMove(String move)
+    {
+        return allMoves.get(move);
+    }
 }

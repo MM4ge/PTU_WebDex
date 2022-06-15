@@ -67,7 +67,7 @@ public class MoveManager {
     public void registerConnection(List<Ability> connectionAbilities)
     {
         reductionStrategies.add(moveList -> moveList.stream()
-                .filter(m -> connectionAbilities.stream().map(Ability::getConnection).toList().contains(m)).toList());
+                .filter(m -> connectionAbilities.stream().map(Ability::getConnection).collect(Collectors.toList()).contains(m)).collect(Collectors.toList()));
     }
 
     public void registerSTAB()
