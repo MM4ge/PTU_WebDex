@@ -3,10 +3,10 @@ package jsonLoading;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 import jsonLoading.db.ability.AbilityPojo;
 import jsonLoading.db.move.MovePojo;
-import jsonLoading.db.pokemon.PokemonSpeciesPojo;
+import jsonLoading.db.pokemon.*;
 import models.Move;
 import models.TypeAdapter;
 
@@ -32,12 +32,17 @@ public class PokedexLoader
 	{
 		Map<String, PokemonSpeciesPojo> pokes = parsePojoPokemon();
 		pokes.forEach((key, val) -> System.out.println(key + ": " + val));
+
+//		Set<String> skills = pokes.values().stream().flatMap(p -> p.getSkills().stream().map(Skill::getSkillName)).collect(Collectors.toSet());
+//		skills.forEach(System.out::println);
+
 		Map<String, MovePojo> moves = parsePojoMoves();
-		moves.forEach((key, val) -> System.out.println(key + ": " + val));
+//		moves.forEach((key, val) -> System.out.println(key + ": " + val));
 		Map<String, AbilityPojo> abilities = parsePojoAbilities();
 		abilities.forEach((key, val) -> System.out.println(key + ": " + val));
+		Set<String> freqs = new TreeSet<>(abilities.values().stream().map(AbilityPojo::getFreq).distinct().collect(Collectors.toSet()));
+		freqs.forEach(System.out::println);
 
-		abilities.values().stream().map(AbilityPojo::getFreq).distinct().forEach(System.out::println);
 //		System.out.println("---------------");
 
 //		moves.values().stream().map(MovePojo::getFreq).distinct().forEach(System.out::println);

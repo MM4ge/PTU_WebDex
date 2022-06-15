@@ -14,6 +14,20 @@ import java.util.*;
 @EqualsAndHashCode
 public class Stat
 {
+    public enum StatName {
+        HP("hp"),
+        ATTACK("atk"),
+        DEFENSE("def"),
+        SPECIAL_ATTACK("spatk"),
+        SPECIAL_DEFENSE("spdef"),
+        SPEED("spd");
+        protected final String shortName;
+        StatName(String shortName)
+        {
+            this.shortName = shortName;
+        }
+    }
+
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @Getter(AccessLevel.NONE)

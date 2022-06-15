@@ -18,104 +18,114 @@ import java.util.stream.Stream;
 @ToString
 @EqualsAndHashCode
 public class PokemonSpecies {
-    private static class SpeciesAbility implements Comparable<SpeciesAbility>{
-        @SerializedName("Name")
-        String name;
-        @SerializedName("Type")
-        Ability.AbilityType type;
-        transient Ability ability;
-
-        public Ability getAbility()
-        {
-            return Ability.getAbility(name);
-        }
-
-        public Ability.AbilityType getType() {
-            return type;
-        }
-
-        @Override
-        public int compareTo(@NotNull PokemonSpecies.SpeciesAbility o) {
-            return getType().compareTo(o.getType());
-        }
-    }
-
-    private static class BaseMove{
-        @SerializedName("Name")
-        String name;
-    }
-    private static class LevelUpMove extends BaseMove implements Comparable<LevelUpMove>
-    {
-        @SerializedName("LevelLearned")
-        int levelLearned;
-
-        public int getLevelLearned()
-        {
-            return levelLearned;
-        }
-
-        @Override
-        public int compareTo(@NotNull PokemonSpecies.LevelUpMove o) {
-            return getLevelLearned() - o.getLevelLearned();
-        }
-    }
-    private static class TmHmMove extends BaseMove
-    {
-        @SerializedName("TechnicalMachineId")
-        String tmID;
-    }
-    private static class TutorMove extends BaseMove
-    {
-        @SerializedName("Natural")
-        boolean natural;
-    }
-    private static class EggMove extends BaseMove
-    {
-    }
-
-    @SerializedName("Species")
+    /**
+     * Contains a Move and the level it's learned. Sorts via level and then name.
+     */
+//    @Getter
+//    @AllArgsConstructor
+//    @FieldDefaults(level = AccessLevel.PRIVATE)
+//    private static class LevelUpMove implements Comparable<LevelUpMove>
+//    {
+//        Move move;
+//        int levelLearned;
+//
+//        @Override
+//        public boolean equals(Object o) {
+//            if (this == o) return true;
+//            if (o == null || getClass() != o.getClass()) return false;
+//            LevelUpMove that = (LevelUpMove) o;
+//            return getLevelLearned() == that.getLevelLearned() && getMove().equals(that.getMove());
+//        }
+//
+//        @Override
+//        public int hashCode() {
+//            return Objects.hash(getMove(), getLevelLearned());
+//        }
+//
+//        @Override
+//        public int compareTo(@NotNull PokemonSpecies.LevelUpMove o) {
+//            int ret = Integer.compare(getLevelLearned(), o.getLevelLearned());
+//            if(ret == 0)
+//                return getMove().getName().compareTo(o.getMove().getName());
+//            return ret;
+//        }
+//    }
+    /*
+        Informational-Only Variables (Form, Weight, etc.)
+     */
     String speciesName;
-    @SerializedName("Form")
     String form;
-    @SerializedName("Types")
+    // Height
+    // Weight
+    // Breeding Data
+    // Environment
+    // Evolution Stages
+    // Mega Evolutions
+    /**
+     * Key: The Skill the Pokemon has (e.x. Athletics, Stealth).<br>
+     * Value: The dice rank and bonus of the skill (e.x. 2d6, 4d6+4)
+     */
+    EnumMap<Skill, String> skills;
+    /**
+     * Key: The Capability the Pokemon Species has (e.x. Jump, Darkvision).<br>
+     * Value: The value of that Capability, if there is one (e.x. 3/3, null)
+     */
+    // Capabilities could be made globally in a map in a capabilities class that is only static
+    //  then retrieved by name and used here to maybe enforce an extra table
+    Map<String, String> capabilities;
+
+    /*
+        Mechnical Variables (Stats, Moves, etc.)
+     */
     List<Type> types;
     /**
-     * Hp, Atk, Def, SpAtk, SpDef, Speed
+     * Hp, Attack, Defense, Special_Attack, Special_Defense, Speed
      */
-    @SerializedName("BaseStats")
-    EnumMap<StatName, Integer> baseStats;
-    @SerializedName("Abilities")
-    List<SpeciesAbility> baseAbilities;
+    EnumMap<Stat.StatName, Integer> baseStats;
     /**
-     * Move is the move that can be tutored, Integer is the level at which it is learned.
+     * Key: The Ability the Pokemon Species can learn (e.x. Blue, Stall).<br>
+     * Value: The Ability Type of the Ability, or effectively when it can be taken (Basic, Advanced, High).
      */
-    @SerializedName("LevelUpMoves")
-    List<LevelUpMove> baseLevelUpMoves;
-    @SerializedName("TmHmMoves")
-    List<TmHmMove> tmHmMoves;
+    Map<Ability, Ability.AbilityType> baseAbilities;
     /**
-     * Move is the move that can be tutored, Boolean is if it's natural or not.
+     * Key: The Integer level the move(s) are learned at (e.x. 1, 5, 19).<br>
+     * Value: A List containing each of the Moves learned at that level (e.x. Tackle, Water Pulse).
      */
-    @SerializedName("TutorMoves")
-    List<TutorMove> baseTutorMoves;
-    @SerializedName("EggMoves")
-    List<EggMove> baseEggMoves;
+    TreeMap<Integer, List<Move>> levelUpMoves;
+    /**
+     * Key: The Move that can be taught (e.x. Cut, Rest).<br>
+     * Value: The String name of TM / HM that teaches it (e.x. A1, 44).
+     */
+    Map<Move, String> tmHmMoves;
+    /**
+     * Key: The Move that can be tutored (e.x. Covet, Trick). <br>
+     * Value: A Boolean showing if it's natural or not. <br> <br>
+     *
+     * Note: Certain pokemon like Meowstic may have a Move multiple times on their tutor list with potentially
+     *  different flags for natural or not. This program should logically OR results with existing ones upon seeing
+     *  duplicates.
+     */
+    Map<Move, Boolean> tutorMoves;
+    /**
+     * A List of every Move the pokemon may learn as an Egg Move.
+     */
+    List<Move> eggMoves;
 
     public static final Map<String, PokemonSpecies> allSpecies = Collections.unmodifiableMap(JsonRead.deserializePokemonSpecies());
 
-    /**
-     * Returns the map of abilities as a sorted set, sorted based on ability type (base, adv, high)
-     */
-    public Stream<Ability> getSortedAbilities() {
-        return baseAbilities.stream().sorted().map(SpeciesAbility::getAbility);
-    }
-
-    /**
-     * Returns the map of level up moves as a sorted set, sorted based on level learned
-     */
-    public SortedSet<Map.Entry<Move, Integer>> getSortedMoves() {
-        SortedSet<Map.Entry<Move, Integer>> ret = new TreeSet<>(Comparator.comparingInt(Map.Entry::getValue));
-        //ret.addAll(baseLevelUpMoves.entrySet());
-        return ret;
-    }
+//    /**
+//     * Returns the map of abilities as a sorted set, sorted based on ability type (base, adv, high)
+//     */
+//    public Stream<Ability> getSortedAbilities() {
+//        return baseAbilities.stream().sorted().map(SpeciesAbility::getAbility);
+//    }
+//
+//    /**
+//     * Returns the map of level up moves as a sorted set, sorted based on level learned
+//     */
+//    public SortedSet<Map.Entry<Move, Integer>> getSortedMoves() {
+//        SortedSet<Map.Entry<Move, Integer>> ret = new TreeSet<>(Comparator.comparingInt(Map.Entry::getValue));
+//        //ret.addAll(baseLevelUpMoves.entrySet());
+//        return ret;
+//    }
 }
