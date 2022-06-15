@@ -8,16 +8,16 @@ import com.google.gson.annotations.SerializedName;
 @Generated("jsonschema2pojo")
 public class AbilityPojo {
 
-    @SerializedName("freq")
+    @SerializedName("Freq")
     @Expose
     private String freq;
-    @SerializedName("target")
+    @SerializedName("Target")
     @Expose
     private String target;
-    @SerializedName("trigger")
+    @SerializedName("Trigger")
     @Expose
     private String trigger;
-    @SerializedName("effect")
+    @SerializedName("Effect")
     @Expose
     private String effect;
 
