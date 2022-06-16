@@ -1,6 +1,7 @@
-package models;
+package generator.models;
 
 import lombok.Getter;
+import models.Stat;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;

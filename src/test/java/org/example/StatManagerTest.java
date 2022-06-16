@@ -1,6 +1,6 @@
 package org.example;
 
-import controllers.StatManager;
+import generator.controllers.StatManager;
 import models.Stat;
 import org.junit.Before;
 import org.junit.Test;

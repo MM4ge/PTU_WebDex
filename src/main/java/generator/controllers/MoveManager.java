@@ -1,4 +1,4 @@
-package controllers;
+package generator.controllers;
 
 /*
 Ideas for final move choice algorithms:

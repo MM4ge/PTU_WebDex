@@ -21,42 +21,29 @@ public class PokemonSpecies {
     /**
      * Contains a Move and the level it's learned. Sorts via level and then name.
      */
-//    @Getter
-//    @AllArgsConstructor
-//    @FieldDefaults(level = AccessLevel.PRIVATE)
-//    private static class LevelUpMove implements Comparable<LevelUpMove>
-//    {
-//        Move move;
-//        int levelLearned;
-//
-//        @Override
-//        public boolean equals(Object o) {
-//            if (this == o) return true;
-//            if (o == null || getClass() != o.getClass()) return false;
-//            LevelUpMove that = (LevelUpMove) o;
-//            return getLevelLearned() == that.getLevelLearned() && getMove().equals(that.getMove());
-//        }
-//
-//        @Override
-//        public int hashCode() {
-//            return Objects.hash(getMove(), getLevelLearned());
-//        }
-//
-//        @Override
-//        public int compareTo(@NotNull PokemonSpecies.LevelUpMove o) {
-//            int ret = Integer.compare(getLevelLearned(), o.getLevelLearned());
-//            if(ret == 0)
-//                return getMove().getName().compareTo(o.getMove().getName());
-//            return ret;
-//        }
-//    }
     /*
         Informational-Only Variables (Form, Weight, etc.)
      */
+    String pokedexID;
     String speciesName;
     String form;
+
     // Height
+//    double metersHeightMin;
+//    double metersHeightMax;
+//    int inchesHeightMin;
+//    int inchesHeightMax;
+//    String heightCategoryMin;
+//    String heightCategoryMax;
+
     // Weight
+//    double kgWeightMin;
+//    double kgWeightMax;
+//    double poundsWeightMin;
+//    double poundsWeightMax;
+//    int weightClassMin;
+//    int weightClassMax;
+
     // Breeding Data
     // Environment
     // Evolution Stages
@@ -83,10 +70,11 @@ public class PokemonSpecies {
      */
     EnumMap<Stat.StatName, Integer> baseStats;
     /**
-     * Key: The Ability the Pokemon Species can learn (e.x. Blue, Stall).<br>
-     * Value: The Ability Type of the Ability, or effectively when it can be taken (Basic, Advanced, High).
+     * Key: The Ability Type of the Abilities, or effectively when it can be taken (Basic, Advanced, High).
+     * Key: The List containing each Ability for the Pokemon Species of that Ability Type (e.x. Blur, Stall).<br>
+     * Value:
      */
-    Map<Ability, Ability.AbilityType> baseAbilities;
+    Map<Ability.AbilityType, List<Ability>> baseAbilities;
     /**
      * Key: The Integer level the move(s) are learned at (e.x. 1, 5, 19).<br>
      * Value: A List containing each of the Moves learned at that level (e.x. Tackle, Water Pulse).
@@ -110,22 +98,4 @@ public class PokemonSpecies {
      * A List of every Move the pokemon may learn as an Egg Move.
      */
     List<Move> eggMoves;
-
-    public static final Map<String, PokemonSpecies> allSpecies = Collections.unmodifiableMap(JsonRead.deserializePokemonSpecies());
-
-//    /**
-//     * Returns the map of abilities as a sorted set, sorted based on ability type (base, adv, high)
-//     */
-//    public Stream<Ability> getSortedAbilities() {
-//        return baseAbilities.stream().sorted().map(SpeciesAbility::getAbility);
-//    }
-//
-//    /**
-//     * Returns the map of level up moves as a sorted set, sorted based on level learned
-//     */
-//    public SortedSet<Map.Entry<Move, Integer>> getSortedMoves() {
-//        SortedSet<Map.Entry<Move, Integer>> ret = new TreeSet<>(Comparator.comparingInt(Map.Entry::getValue));
-//        //ret.addAll(baseLevelUpMoves.entrySet());
-//        return ret;
-//    }
 }

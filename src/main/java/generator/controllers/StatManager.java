@@ -1,13 +1,12 @@
-package controllers;
+package generator.controllers;
 
+import generator.models.Pokemon;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import models.Pokemon;
 import models.Stat;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;

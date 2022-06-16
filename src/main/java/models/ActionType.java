@@ -10,7 +10,7 @@ public enum ActionType {
     STANDARD_ACTION("Standard Action"), FULL_ACTION("Full Action"),
     EXTENDED_ACTION("Extended Action"), SPECIAL("Special");
     public enum Priority {
-        INTERRUPT, REACTION;
+        PRIORITY, INTERRUPT, REACTION;
     }
 
     String name;

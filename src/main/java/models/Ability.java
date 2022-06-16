@@ -16,21 +16,10 @@ import java.util.Map;
 @EqualsAndHashCode
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Ability {
-    public static final Map<String, Ability> allAbilities = Collections.unmodifiableMap(JsonRead.deserializeAbilities());
-
-    public static Ability getAbility(String name)
-    {
-        return allAbilities.get(name);
-    }
-
     public enum AbilityType
     {
-        @SerializedName("Basic")
-        BASE(0),
-        @SerializedName("Advanced")
-        ADVANCED(20),
-        @SerializedName("High")
-        HIGH(40);
+        BASIC(0), ADVANCED(20), HIGH(40);
+
         public final int level;
 
         AbilityType(int level)
@@ -46,12 +35,13 @@ public class Ability {
         public static AbilityType getAbilityType(String str)
         {
             if(str.equalsIgnoreCase("Base"))
-                return AbilityType.BASE;
+                return AbilityType.BASIC;
             else if(str.equalsIgnoreCase("Advanced"))
                 return AbilityType.ADVANCED;
             else if(str.equalsIgnoreCase("High"))
                 return AbilityType.HIGH;
-            else return null;
+            else
+                return null;
         }
     }
 

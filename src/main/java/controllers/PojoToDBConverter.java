@@ -5,13 +5,16 @@ import jdk.nashorn.internal.objects.annotations.Setter;
 import jsonLoading.PokedexLoader;
 import jsonLoading.db.ability.AbilityPojo;
 import jsonLoading.db.move.MovePojo;
+import jsonLoading.db.pokemon.Capability;
+import jsonLoading.db.pokemon.LevelUpmove;
+import jsonLoading.db.pokemon.PokemonSpeciesPojo;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import models.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PojoToDBConverter {
     @AllArgsConstructor
@@ -51,6 +54,28 @@ public class PojoToDBConverter {
         public ActionType.Priority getPriority() {
             return priority;
         }
+    }
+
+    private static Map<String, Ability> convertedAbilities = null;
+    private static Map<String, Move> convertedMoves = null;
+    private static Map<String, PokemonSpecies> convertedPokemonSpecies = null;
+
+    public static Ability getAbility(String name) {
+        if(convertedAbilities == null)
+            convertedAbilities = abilityMapBuilder(PokedexLoader.parsePojoAbilities());
+        return convertedAbilities.get(name);
+    }
+
+    public static Move getMove(String name) {
+        if(convertedMoves == null)
+            convertedMoves = moveMapBuilder(PokedexLoader.parsePojoMoves());
+        return convertedMoves.get(name);
+    }
+
+    public static PokemonSpecies getPokemonSpecies(String id) {
+        if(convertedPokemonSpecies == null)
+            convertedPokemonSpecies = pokemonMapBuilder(PokedexLoader.parsePojoPokemon());
+        return convertedPokemonSpecies.get(id);
     }
 
     private static PojoFrequency convertFrequency(String freqText)
@@ -118,7 +143,7 @@ public class PojoToDBConverter {
             Move connection = null;
             String effect = a.getEffect();
             if(effect.startsWith(CONNECTION_HEADER)) {
-                connection = Move.getMove(effect.substring(CONNECTION_HEADER.length(), effect.indexOf(". ")));
+                connection = getMove(effect.substring(CONNECTION_HEADER.length(), effect.indexOf(". ")));
             }
             abilities.put(name, new Ability(name, pojoFreq.getFreq(), pojoFreq.getUses(), pojoActionType.getActionType(),
                     pojoActionType.getPriority(), a.getTrigger(), a.getTarget(), a.getEffect(), connection));
@@ -128,41 +153,76 @@ public class PojoToDBConverter {
 
     public static Map<String, Move> moveMapBuilder(Map<String, MovePojo> pojoMap)
     {
-        Map<String, Move> moves = new HashMap<>(pojoMap.size());
-//        Map<String, Move> moves = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+//        Map<String, Move> moves = new HashMap<>(pojoMap.size());
+        Map<String, Move> moves = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         pojoMap.forEach((name, m) -> {
             Type type = convertType(m.getType());
             PojoFrequency pojoFreq = convertFrequency(m.getFreq());
 
-            Move.MoveClass moveClass = null;
-            for(Move.MoveClass currMoveClass : Move.MoveClass.values())
-                if(currMoveClass.name().equalsIgnoreCase(m.getDamageClass())) {
-                    moveClass = currMoveClass;
-                    break;
-                }
-            // All moves have a Move Class, throw if there wasn't one
-            if(moveClass == null)
-                throw new IllegalArgumentException("Move named " + name + " is missing a move class. " +
-                        "Conversion aborted.");
+            // All moves have a Move Class, so we don't catch the exception and let it throw if we're missing it
+            Move.MoveClass moveClass = Move.MoveClass.valueOf(m.getDamageClass().toUpperCase());
 
             Move.ContestType contestType = null;
-            for(Move.ContestType currContestType : Move.ContestType.values())
-                if(currContestType.name().equalsIgnoreCase(m.getContestType())) {
-                    contestType = currContestType;
-                    break;
-                }
+            try {
+                contestType = Move.ContestType.valueOf(m.getContestType().toUpperCase());
+            }
+            catch (IllegalArgumentException | NullPointerException ignored) {}
 
-            Move.ContestEffect contestEffect = null;
-            for(Move.ContestEffect currContestEffect : Move.ContestEffect.values())
-                if(currContestEffect.name().equalsIgnoreCase(m.getContestEffect())) {
-                    contestEffect = currContestEffect;
-                    break;
-                }
+            Move.ContestEffect contestEffect = Move.ContestEffect.getContestEffect(m.getContestEffect());
 
             moves.put(name, new Move(name, type, pojoFreq.getFreq(), pojoFreq.getUses(), m.getAc(), m.getDb(),
                     moveClass, m.getRange(), m.getEffect(), contestType, contestEffect, m.getCritsOn()));
         });
         return moves;
+    }
+
+    public static Map<String, PokemonSpecies> pokemonMapBuilder(Map<String, PokemonSpeciesPojo> pojoMap)
+    {
+        Map<String, PokemonSpecies> pokemon = new HashMap<>(pojoMap.size());
+//        Map<String, PokemonSpecies> pokemon = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        pojoMap.forEach((id, p) -> {
+            PokemonSpecies newPoke = new PokemonSpecies();
+
+            newPoke.setPokedexID(id);
+            newPoke.setSpeciesName(p.getSpecies());
+            newPoke.setForm(p.getForm());
+            // Base Stats
+            // Height, Weight, Breeding, Environment
+            newPoke.setTypes(p.getTypes().stream().map(PojoToDBConverter::convertType).collect(Collectors.toList()));
+            // Abilities - Map<Ability.AbilityType, Ability>
+            newPoke.setBaseAbilities(p.getAbilities().stream().collect(Collectors.toMap(
+                    a1 -> Ability.AbilityType.valueOf(a1.getType().toUpperCase()),
+                    a2 -> Stream.of(a2.getName()).map(PojoToDBConverter::getAbility).collect(Collectors.toList()), (l1, l2) -> {
+                            l1.addAll(l2);
+                            return l1;
+            })));
+            // Evo Stages, Mega Evo
+            // Skills - Map<Skill, String>
+            newPoke.setSkills(new EnumMap<Skill, String>(p.getSkills().stream().collect(Collectors.toMap(
+                    s -> Skill.getWithName(s.getSkillName()),
+                    jsonLoading.db.pokemon.Skill::getDiceRank))));
+            // Capabilities - Map<String, String>
+            newPoke.setCapabilities(p.getCapabilities().stream().collect(Collectors.toMap(
+                    Capability::getCapabilityName, Capability::getValue)));
+            // LevelUPMoves TreeMap<Integer, List<Move>>
+            newPoke.setLevelUpMoves(new TreeMap<>(p.getLevelUpMoves().stream().collect(Collectors.toMap(
+                    LevelUpmove::getLevelLearned,
+                    m -> Stream.of(m.getName()).map(PojoToDBConverter::getMove).collect(Collectors.toList()), (l1, l2) -> {
+                            l1.addAll(l2);
+                            return l1;
+            }))));
+            // TM/TM Moves - Map<Move, String>
+//            newPoke.setTmHmMoves(p.getTmHmMoves().stream().collect(Collectors.toMap(
+//                    m -> getMove(m.getName()), m -> m.getTechnicalMachineId())));
+            // Tutor Moves Map<Move, Boolean>
+//            newPoke.setTutorMoves(p.getTutorMoves().stream().collect(Collectors.toMap(
+//                    m -> getMove(m.getName()), m -> m.isNatural())));
+            // Egg Moves - List<Move>
+            newPoke.setEggMoves(p.getEggMoves().stream().map(m -> getMove(m.getName())).collect(Collectors.toList()));
+
+            pokemon.put(id, newPoke);
+        });
+        return pokemon;
     }
 
     public static void main(String[] args)
@@ -174,30 +234,9 @@ public class PojoToDBConverter {
         Map<String, AbilityPojo> pojoAbility = PokedexLoader.parsePojoAbilities();
         Map<String, Ability> abilities = abilityMapBuilder(pojoAbility);
         abilities.values().forEach(System.out::println);
+
+        Map<String, PokemonSpeciesPojo> pojoPokes = PokedexLoader.parsePojoPokemon();
+        Map<String, PokemonSpecies> pokes = pokemonMapBuilder(pojoPokes);
+        pokes.values().forEach(System.out::println);
     }
-
-    /*
-    public class AbilityDeserializer implements JsonDeserializer<Ability> {
-    private static final String CONNECTION_HEADER = "Connection - ";
-    @Override
-    public Ability deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        JsonObject pokeJson = json.getAsJsonObject();
-
-        String freq = pokeJson.get("freq").getAsString();
-        JsonElement trig = pokeJson.get("trigger");
-        String trigger = Objects.isNull(trig) ? null : trig.getAsString();
-        JsonElement trgt = pokeJson.get("target");
-        String target = Objects.isNull(trgt) ? null : trgt.getAsString();
-        String effect = pokeJson.get("effect").getAsString();
-
-        Move connection = null;
-        if(effect.startsWith(CONNECTION_HEADER)) {
-            String move = effect.substring(CONNECTION_HEADER.length(), effect.indexOf(". "));
-            connection = Move.allMoves.get(move);
-        }
-
-        return new Ability(freq, trigger, target, effect, connection);
-    }
-}
-     */
 }

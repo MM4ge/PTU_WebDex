@@ -1,9 +1,12 @@
-package models;
+package generator.models;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import models.Ability;
+import models.Move;
+import models.PokemonSpecies;
+import models.Stat;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

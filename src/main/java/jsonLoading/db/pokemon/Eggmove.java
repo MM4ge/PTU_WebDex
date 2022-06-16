@@ -4,15 +4,14 @@ package jsonLoading.db.pokemon;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class LevelUpmove
+public class Eggmove
 {
-
 	@SerializedName("Name")
 	@Expose
 	private String	name;
 	@SerializedName("LevelLearned")
 	@Expose
-	private int	levelLearned;
+	private String	levelLearned;
 	@SerializedName("TechnicalMachineId")
 	@Expose
 	private String	technicalMachineId;
@@ -22,7 +21,12 @@ public class LevelUpmove
 		return name;
 	}
 
-	public int getLevelLearned()
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+
+	public String getLevelLearned()
 	{
 		return levelLearned;
 	}
@@ -36,14 +40,14 @@ public class LevelUpmove
 	public String toString()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append(LevelUpmove.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+		sb.append(Eggmove.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
 		sb.append("name");
 		sb.append('=');
 		sb.append(((this.name == null) ? "<null>" : this.name));
 		sb.append(',');
 		sb.append("levelLearned");
 		sb.append('=');
-		sb.append(this.levelLearned);
+		sb.append(((this.levelLearned == null) ? "<null>" : this.levelLearned));
 		sb.append(',');
 		sb.append("technicalMachineId");
 		sb.append('=');

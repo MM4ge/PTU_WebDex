@@ -59,7 +59,7 @@ public class PokemonSpeciesPojo
 	private List<Tutormove>			tutorMoves		= null;
 	@SerializedName("EggMoves")
 	@Expose
-	private List<Object>			eggMoves		= null;
+	private List<Eggmove>			eggMoves		= null;
 
 	public String getSpecies()
 	{
@@ -141,7 +141,7 @@ public class PokemonSpeciesPojo
 		return tutorMoves;
 	}
 
-	public List<Object> getEggMoves()
+	public List<Eggmove> getEggMoves()
 	{
 		return eggMoves;
 	}
