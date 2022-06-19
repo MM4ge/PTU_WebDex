@@ -13,7 +13,7 @@ public enum Skill {
         PERCEPTION("Percep"),
     CHARM("Charm"), COMMAND("Command"), FOCUS("Focus"), INTUITION("Intuition");
 
-    String name;
+    private final String name;
 
     Skill(String name)
     {
@@ -31,7 +31,7 @@ public enum Skill {
     {
         Skill ret;
         try{
-            ret = Skill.valueOf(name);
+            ret = Skill.valueOf(name.toUpperCase());
         }
         catch (IllegalArgumentException e) {
             if (nameMap == null) {

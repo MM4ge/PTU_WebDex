@@ -8,7 +8,7 @@ import java.util.Map;
 public enum Frequency {
     AT_WILL("At-Will"), EOT("EOT"), SCENE("Scene"), DAILY("Daily"), STATIC("Static"),
         SPECIAL("Special"), SEE_TEXT("See Text");
-    String name;
+    private final String name;
     private Frequency(String name)
     {
         this.name = name;
@@ -23,12 +23,18 @@ public enum Frequency {
 
     public static Frequency getWithName(String name)
     {
-        if(nameMap == null)
-        {
-            Map<String, Frequency> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-            Arrays.stream(Frequency.values()).forEach(f -> map.put(f.getName(), f));
-            nameMap = Collections.unmodifiableMap(map);
+        Frequency ret;
+        try{
+            ret = Frequency.valueOf(name.toUpperCase());
         }
-        return nameMap.get(name);
+        catch (IllegalArgumentException e) {
+            if (nameMap == null) {
+                Map<String, Frequency> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+                Arrays.stream(Frequency.values()).forEach(f -> map.put(f.getName(), f));
+                nameMap = Collections.unmodifiableMap(map);
+            }
+            ret = nameMap.get(name);
+        }
+        return ret;
     }
 }

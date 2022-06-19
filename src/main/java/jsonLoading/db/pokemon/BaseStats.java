@@ -9,49 +9,49 @@ public class BaseStats
 
 	@SerializedName("HP")
 	@Expose
-	private long	hp;
+	private int	hp;
 	@SerializedName("Attack")
 	@Expose
-	private long	attack;
+	private int	attack;
 	@SerializedName("Defense")
 	@Expose
-	private long	defense;
+	private int	defense;
 	@SerializedName("SpecialAttack")
 	@Expose
-	private long	specialAttack;
+	private int	specialAttack;
 	@SerializedName("SpecialDefense")
 	@Expose
-	private long	specialDefense;
+	private int	specialDefense;
 	@SerializedName("Speed")
 	@Expose
-	private long	speed;
+	private int	speed;
 
-	public long getHp()
+	public int getHp()
 	{
 		return hp;
 	}
 
-	public long getAttack()
+	public int getAttack()
 	{
 		return attack;
 	}
 
-	public long getDefense()
+	public int getDefense()
 	{
 		return defense;
 	}
 
-	public long getSpecialAttack()
+	public int getSpecialAttack()
 	{
 		return specialAttack;
 	}
 
-	public long getSpecialDefense()
+	public int getSpecialDefense()
 	{
 		return specialDefense;
 	}
 
-	public long getSpeed()
+	public int getSpeed()
 	{
 		return speed;
 	}

@@ -5,6 +5,7 @@ import jdk.nashorn.internal.objects.annotations.Setter;
 import jsonLoading.PokedexLoader;
 import jsonLoading.db.ability.AbilityPojo;
 import jsonLoading.db.move.MovePojo;
+import jsonLoading.db.pokemon.BaseStats;
 import jsonLoading.db.pokemon.Capability;
 import jsonLoading.db.pokemon.LevelUpmove;
 import jsonLoading.db.pokemon.PokemonSpeciesPojo;
@@ -101,7 +102,7 @@ public class PojoToDBConverter {
         {
             String[] split = actionText.split(", ");
             actionType = ActionType.getWithName(split[0]);
-            priority = ActionType.Priority.valueOf(split[1].toUpperCase());
+            priority = ActionType.Priority.getWithName(split[1]);
         }
         return new PojoActionType(actionType, priority);
     }
@@ -115,6 +116,18 @@ public class PojoToDBConverter {
         {
             return Type.TYPELESS;
         }
+    }
+
+    private static EnumMap<Stat.StatName, Integer> convertBaseStats(BaseStats baseStats)
+    {
+        EnumMap<Stat.StatName, Integer> stats = new EnumMap<>(Stat.StatName.class);
+        stats.put(Stat.StatName.HP, baseStats.getHp());
+        stats.put(Stat.StatName.ATTACK, baseStats.getAttack());
+        stats.put(Stat.StatName.DEFENSE, baseStats.getDefense());
+        stats.put(Stat.StatName.SPECIAL_ATTACK, baseStats.getSpecialAttack());
+        stats.put(Stat.StatName.SPECIAL_DEFENSE, baseStats.getSpecialDefense());
+        stats.put(Stat.StatName.SPEED, baseStats.getSpeed());
+        return stats;
     }
 
     private static final String ABILITY_DIVIDER = " - ";
@@ -186,7 +199,8 @@ public class PojoToDBConverter {
             newPoke.setPokedexID(id);
             newPoke.setSpeciesName(p.getSpecies());
             newPoke.setForm(p.getForm());
-            // Base Stats
+            // Base Stats - EnumMap<Stat.StatName, Integer>
+            newPoke.setBaseStats(convertBaseStats(p.getBaseStats()));
             // Height, Weight, Breeding, Environment
             newPoke.setTypes(p.getTypes().stream().map(PojoToDBConverter::convertType).collect(Collectors.toList()));
             // Abilities - Map<Ability.AbilityType, Ability>

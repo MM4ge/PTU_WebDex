@@ -11,9 +11,19 @@ public enum ActionType {
     EXTENDED_ACTION("Extended Action"), SPECIAL("Special");
     public enum Priority {
         PRIORITY, INTERRUPT, REACTION;
+
+        public static Priority getWithName(String name) {
+            Priority ret;
+            try {
+                ret = Priority.valueOf(name.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                ret = null;
+            }
+            return ret;
+        }
     }
 
-    String name;
+    private final String name;
 
     ActionType(String name)
     {
@@ -29,12 +39,18 @@ public enum ActionType {
 
     public static ActionType getWithName(String name)
     {
-        if(nameMap == null)
-        {
-            Map<String, ActionType> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-            Arrays.stream(ActionType.values()).forEach(f -> map.put(f.getName(), f));
-            nameMap = Collections.unmodifiableMap(map);
+        ActionType ret;
+        try{
+            ret = ActionType.valueOf(name.toUpperCase());
         }
-        return nameMap.get(name);
+        catch (IllegalArgumentException e) {
+            if (nameMap == null) {
+                Map<String, ActionType> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+                Arrays.stream(ActionType.values()).forEach(a -> map.put(a.getName(), a));
+                nameMap = Collections.unmodifiableMap(map);
+            }
+            ret = nameMap.get(name);
+        }
+        return ret;
     }
 }
