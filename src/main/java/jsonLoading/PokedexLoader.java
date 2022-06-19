@@ -33,15 +33,22 @@ public class PokedexLoader
 		Map<String, PokemonSpeciesPojo> pokes = parsePojoPokemon();
 		pokes.forEach((key, val) -> System.out.println(key + ": " + val));
 
+		Set<String> eggGroups = pokes.values().stream().filter(p -> {
+			ImperialHeight min = p.getHeight().getImperial().getMinimum();
+			ImperialHeight max = p.getHeight().getImperial().getMaximum();
+			return !(min.getFeet() == max.getFeet() && min.getInches() == max.getInches());
+		}).map(p -> p.getSpecies()).collect(Collectors.toCollection(TreeSet<String>::new));
+		eggGroups.forEach(System.out::println);
+
 //		Set<String> skills = pokes.values().stream().flatMap(p -> p.getSkills().stream().map(Skill::getSkillName)).collect(Collectors.toSet());
 //		skills.forEach(System.out::println);
 
-		Map<String, MovePojo> moves = parsePojoMoves();
-//		moves.forEach((key, val) -> System.out.println(key + ": " + val));
-		Map<String, AbilityPojo> abilities = parsePojoAbilities();
-		abilities.forEach((key, val) -> System.out.println(key + ": " + val));
-		Set<String> freqs = new TreeSet<>(abilities.values().stream().map(AbilityPojo::getFreq).distinct().collect(Collectors.toSet()));
-		freqs.forEach(System.out::println);
+//		Map<String, MovePojo> moves = parsePojoMoves();
+////		moves.forEach((key, val) -> System.out.println(key + ": " + val));
+//		Map<String, AbilityPojo> abilities = parsePojoAbilities();
+//		abilities.forEach((key, val) -> System.out.println(key + ": " + val));
+//		Set<String> freqs = new TreeSet<>(abilities.values().stream().map(AbilityPojo::getFreq).distinct().collect(Collectors.toSet()));
+//		freqs.forEach(System.out::println);
 
 //		System.out.println("---------------");
 
@@ -56,6 +63,7 @@ public class PokedexLoader
 //		moves.values().stream().map(MovePojo::getContestType).distinct().forEach(System.out::println);
 //		System.out.println("---------------");
 //		moves.values().stream().map(MovePojo::getContestEffect).distinct().forEach(System.out::println);
+		System.out.println();
 	}
 
 	public static Map<String, PokemonSpeciesPojo> parsePojoPokemon()

@@ -18,36 +18,68 @@ import java.util.stream.Stream;
 @ToString
 @EqualsAndHashCode
 public class PokemonSpecies {
-    /**
-     * Contains a Move and the level it's learned. Sorts via level and then name.
-     */
+    @Setter
+    @Getter
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    @ToString
+    @EqualsAndHashCode
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class EvolutionStage{
+        int stage;
+        String speciesName;
+        String criteria;
+    }
+    @Setter
+    @Getter
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    @ToString
+    @EqualsAndHashCode
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MegaEvolution{
+        String name;
+        /**
+         * Empty / Null means the types are unchanged?
+         */
+        List<Type> types;
+        Ability ability;
+        EnumMap<Stat.StatName, Integer> statBonuses;
+    }
     /*
+
         Informational-Only Variables (Form, Weight, etc.)
+        (For the purpose of the generator, skills / capabilities are informational)
+
      */
     String pokedexID;
     String speciesName;
     String form;
 
     // Height
-//    double metersHeightMin;
-//    double metersHeightMax;
-//    int inchesHeightMin;
-//    int inchesHeightMax;
-//    String heightCategoryMin;
-//    String heightCategoryMax;
+    int inchesHeightMin;
+    int inchesHeightMax;
+    String heightCategoryMin;
+    String heightCategoryMax;
 
     // Weight
-//    double kgWeightMin;
-//    double kgWeightMax;
-//    double poundsWeightMin;
-//    double poundsWeightMax;
-//    int weightClassMin;
-//    int weightClassMax;
+    double poundsWeightMin;
+    double poundsWeightMax;
+    int weightClassMin;
+    int weightClassMax;
 
     // Breeding Data
+    List<String> eggGroups;
+    Double maleOffspringChance;
+    String hatchRate;
+
     // Environment
+    List<String> diets;
+    List<String> habitats;
     // Evolution Stages
-    // Mega Evolutions
+    List<EvolutionStage> evolutionStages;
+    // Mega Evolutions - List<MegaEvolution>
+    List<MegaEvolution> megaEvolutions;
     /**
      * Key: The Skill the Pokemon has (e.x. Athletics, Stealth).<br>
      * Value: The dice rank and bonus of the skill (e.x. 2d6, 4d6+4)
@@ -62,7 +94,12 @@ public class PokemonSpecies {
     Map<String, String> capabilities;
 
     /*
-        Mechnical Variables (Stats, Moves, etc.)
+
+        Mechanical Variables (Stats, Moves, etc.)
+
+     */
+    /**
+     * List of the Pokemon's types. List as opposed to Set to maintain which is the primary type.
      */
     List<Type> types;
     /**

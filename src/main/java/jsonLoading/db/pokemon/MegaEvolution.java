@@ -20,7 +20,7 @@ public class MegaEvolution
 	private Ability			ability;
 	@SerializedName("StatBonuses")
 	@Expose
-	private StatBonuses		statBonuses;
+	private BaseStats statBonuses;
 
 	public String getName()
 	{
@@ -37,7 +37,7 @@ public class MegaEvolution
 		return ability;
 	}
 
-	public StatBonuses getStatBonuses()
+	public BaseStats getStatBonuses()
 	{
 		return statBonuses;
 	}
