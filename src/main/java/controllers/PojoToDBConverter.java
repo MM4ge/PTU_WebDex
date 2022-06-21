@@ -1,7 +1,5 @@
 package controllers;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 import jsonLoading.PokedexLoader;
 import jsonLoading.db.ability.AbilityPojo;
 import jsonLoading.db.move.MovePojo;
