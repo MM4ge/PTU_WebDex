@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 
+import javax.persistence.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Stream;
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
 @Setter
 @ToString
 @EqualsAndHashCode
+//@Entity
 public class PokemonSpecies {
     @Setter
     @Getter
@@ -52,6 +54,7 @@ public class PokemonSpecies {
         (For the purpose of the generator, skills / capabilities are informational)
 
      */
+//    @Id
     String pokedexID;
     String speciesName;
     String form;
@@ -111,6 +114,11 @@ public class PokemonSpecies {
      * Key: The List containing each Ability for the Pokemon Species of that Ability Type (e.x. Blur, Stall).<br>
      * Value:
      */
+//    @ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinTable(name = "PokemonAbilities",
+//            joinColumns = {@JoinColumn(name = "pokemon_id", referencedColumnName = "pokedexID")},
+//            inverseJoinColumns = {@JoinColumn(name = "ability_name", referencedColumnName = "name")})
+//    @MapKey(name = "name")
     Map<Ability.AbilityType, List<Ability>> baseAbilities;
     /**
      * Key: The Integer level the move(s) are learned at (e.x. 1, 5, 19).<br>

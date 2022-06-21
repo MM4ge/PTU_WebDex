@@ -4,6 +4,7 @@ import controllers.JsonRead;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "pokeMoves")
 public class Move {
     public enum MoveClass {
         PHYSICAL, SPECIAL, STATUS, STATIC;
@@ -65,20 +68,40 @@ public class Move {
             return contestEffectMap.get(name);
         }
     }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
     // TODO: Periods can't be allowed in move names, have a check for that somewhere
     @NonNull
     String name;
     @NonNull
+    @Column(name = "moveType")
     Type type;
     Frequency frequency;
     int uses = 0;
     String ac;
     String db;
     MoveClass moveClass;
+    @Column(name = "moveRange")
     String range;
+    @Column(length = 1023)
     String effect;
     ContestType contestType;
     ContestEffect contestEffect;
     String critsOn;
+
+    public Move(@NonNull String name, @NonNull Type type, Frequency frequency, int uses, String ac, String db, MoveClass moveClass, String range, String effect, ContestType contestType, ContestEffect contestEffect, String critsOn) {
+        this.name = name;
+        this.type = type;
+        this.frequency = frequency;
+        this.uses = uses;
+        this.ac = ac;
+        this.db = db;
+        this.moveClass = moveClass;
+        this.range = range;
+        this.effect = effect;
+        this.contestType = contestType;
+        this.contestEffect = contestEffect;
+        this.critsOn = critsOn;
+    }
 }

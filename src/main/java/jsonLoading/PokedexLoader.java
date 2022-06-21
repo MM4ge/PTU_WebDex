@@ -21,32 +21,34 @@ import models.TypeAdapter;
 
 public class PokedexLoader
 {
-	private static final String POKEDEX_FILEPATH = "src/main/resources/pokedex.json";
-	private static final String MOVES_FILEPATH = "src/main/resources/moves.json";
-	private static final String TYPES_FILEPATH = "src/main/resources/types.json";
-	private static final String ABILITIES_FILEPATH = "src/main/resources/abilities.json";
+	private static final String POKEDEX_FILEPATH = "src/main/resources/static/json/pokedex.json";
+	private static final String MOVES_FILEPATH = "src/main/resources/static/json/moves.json";
+	private static final String TYPES_FILEPATH = "src/main/resources/static/json/types.json";
+	private static final String ABILITIES_FILEPATH = "src/main/resources/static/json/abilities.json";
 
 	private static Gson gson = new GsonBuilder().setLenient().create();
 
 	public static void main(String[] args)
 	{
-		Map<String, PokemonSpeciesPojo> pokes = parsePojoPokemon();
-		pokes.forEach((key, val) -> System.out.println(key + ": " + val));
-
-		Set<String> eggGroups = pokes.values().stream().filter(p -> {
-			ImperialHeight min = p.getHeight().getImperial().getMinimum();
-			ImperialHeight max = p.getHeight().getImperial().getMaximum();
-			return !(min.getFeet() == max.getFeet() && min.getInches() == max.getInches());
-		}).map(p -> p.getSpecies()).collect(Collectors.toCollection(TreeSet<String>::new));
-		eggGroups.forEach(System.out::println);
+//		Map<String, PokemonSpeciesPojo> pokes = parsePojoPokemon();
+//		pokes.forEach((key, val) -> System.out.println(key + ": " + val));
+//
+//		Set<String> eggGroups = pokes.values().stream().filter(p -> {
+//			ImperialHeight min = p.getHeight().getImperial().getMinimum();
+//			ImperialHeight max = p.getHeight().getImperial().getMaximum();
+//			return !(min.getFeet() == max.getFeet() && min.getInches() == max.getInches());
+//		}).map(p -> p.getSpecies()).collect(Collectors.toCollection(TreeSet<String>::new));
+//		eggGroups.forEach(System.out::println);
 
 //		Set<String> skills = pokes.values().stream().flatMap(p -> p.getSkills().stream().map(Skill::getSkillName)).collect(Collectors.toSet());
 //		skills.forEach(System.out::println);
 
 //		Map<String, MovePojo> moves = parsePojoMoves();
-////		moves.forEach((key, val) -> System.out.println(key + ": " + val));
-//		Map<String, AbilityPojo> abilities = parsePojoAbilities();
-//		abilities.forEach((key, val) -> System.out.println(key + ": " + val));
+//		moves.values().stream().map(m -> m.getEffect()).filter(Objects::nonNull).sorted((s1, s2) -> Integer.compare(s1.length(), s2.length()))
+//				.forEach(e -> System.out.println(e.length() + " - " + e));
+		Map<String, AbilityPojo> abilities = parsePojoAbilities();
+		abilities.values().stream().map(m -> m.getEffect()).filter(Objects::nonNull).sorted((s1, s2) -> Integer.compare(s1.length(), s2.length()))
+				.forEach(e -> System.out.println(e.length() + " - " + e));
 //		Set<String> freqs = new TreeSet<>(abilities.values().stream().map(AbilityPojo::getFreq).distinct().collect(Collectors.toSet()));
 //		freqs.forEach(System.out::println);
 
@@ -64,6 +66,7 @@ public class PokedexLoader
 //		System.out.println("---------------");
 //		moves.values().stream().map(MovePojo::getContestEffect).distinct().forEach(System.out::println);
 		System.out.println();
+
 	}
 
 	public static Map<String, PokemonSpeciesPojo> parsePojoPokemon()

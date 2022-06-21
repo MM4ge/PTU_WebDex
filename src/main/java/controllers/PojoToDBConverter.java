@@ -171,6 +171,8 @@ public class PojoToDBConverter {
             abilities.put(name, new Ability(name, pojoFreq.getFreq(), pojoFreq.getUses(), pojoActionType.getActionType(),
                     pojoActionType.getPriority(), a.getTrigger(), a.getTarget(), a.getEffect(), connection));
         });
+        if(convertedAbilities == null)
+            convertedAbilities = abilities;
         return abilities;
     }
 
@@ -196,6 +198,8 @@ public class PojoToDBConverter {
             moves.put(name, new Move(name, type, pojoFreq.getFreq(), pojoFreq.getUses(), m.getAc(), m.getDb(),
                     moveClass, m.getRange(), m.getEffect(), contestType, contestEffect, m.getCritsOn()));
         });
+        if(convertedMoves == null)
+            convertedMoves = moves;
         return moves;
     }
 
@@ -288,6 +292,8 @@ public class PojoToDBConverter {
 
             pokemon.put(id, newPoke);
         });
+        if(convertedPokemonSpecies == null)
+            convertedPokemonSpecies = pokemon;
         return pokemon;
     }
 

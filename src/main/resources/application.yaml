@@ -1,0 +1,47 @@
+
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
+    password: TacoTime
+    url: jdbc:mariadb://localhost:3306/ptu_viewer?createDatabaseIfNotExist=true
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDB103Dialect
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+
+
+
+server:
+  port: 8080
+  error:
+    include-stacktrace: always
+    include-message: always
+    include-exception: true
+
+logging:
+  level:
+    root: INFO
+    com.instructor.springbootdemoproject: INFO
+    org:
+      hibernate:
+        SQL: TRACE
+        type:
+          descriptor:
+            sql: TRACE
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+---
+server:
+  port: 9000
+spring:
+  config:
+    activate:
+      on-profile: test
