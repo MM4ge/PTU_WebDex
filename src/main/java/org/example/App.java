@@ -8,6 +8,7 @@ import jsonLoading.db.pokemon.PokemonSpeciesPojo;
 import models.Ability;
 import models.Move;
 import models.PokemonSpecies;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,6 +19,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import repositories.AbilityRepository;
 import repositories.MoveRepository;
 import repositories.PokemonSpeciesRepository;
+import services.AbilityService;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,15 @@ import java.util.Map;
 @EntityScan("models")
 @EnableJpaRepositories("repositories")
 public class App {
+    AbilityRepository abilityRepo;
+    MoveRepository moveRepo;
+    PokemonSpeciesRepository pokemonRepo;
+    @Autowired
+    public App(AbilityRepository abilityRepo, MoveRepository moveRepo, PokemonSpeciesRepository pokemonRepo){
+        this.abilityRepo = abilityRepo;
+        this.moveRepo = moveRepo;
+        this.pokemonRepo = pokemonRepo;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
@@ -41,10 +52,13 @@ public class App {
 //    }
 
     @Bean
-    public CommandLineRunner run(AbilityRepository repo)
+    public CommandLineRunner run()
     {
         return (args -> {
-            insertAbilities(repo);
+            insertMoves();
+            insertAbilities();
+            insertPokemon();
+            System.out.println("---Done with Run---");
         });
     }
 
@@ -56,33 +70,34 @@ public class App {
 //        });
 //    }
 
-    private void insertPokemon(PokemonSpeciesRepository repo)
+    private void insertPokemon()
     {
         Map<String, PokemonSpeciesPojo> pojoPokes = PokedexLoader.parsePojoPokemon();
         Map<String, PokemonSpecies> pokes = PojoToDBConverter.pokemonMapBuilder(pojoPokes);
-        //moves.values().forEach(m -> System.out.println(m));
-//        repo.saveAll(pokes.values());
-//        repo.findAll().forEach(m -> System.out.println(m));
-        System.out.println("Done");
+        pokemonRepo.saveAll(pokes.values());
+        pokemonRepo.findAll().forEach(m -> System.out.println(m));
+        System.out.println("Done With Pokemon");
     }
 
-    private void insertAbilities(AbilityRepository repo)
+    private void insertAbilities()
     {
         Map<String, AbilityPojo> pojoAbility = PokedexLoader.parsePojoAbilities();
         Map<String, Ability> abilities = PojoToDBConverter.abilityMapBuilder(pojoAbility);
         //moves.values().forEach(m -> System.out.println(m));
-        repo.saveAll(abilities.values());
-        repo.findAll().forEach(a -> System.out.println(a));
-        System.out.println("Done");
+        abilityRepo.saveAll(abilities.values());
+        abilityRepo.findAll().forEach(a -> System.out.println(a));
+        System.out.println("Done With Abilities");
     }
 
-    private void insertMoves(MoveRepository repo)
+    private void insertMoves()
     {
         Map<String, MovePojo> pojoMoves = PokedexLoader.parsePojoMoves();
         Map<String, Move> moves = PojoToDBConverter.moveMapBuilder(pojoMoves);
         //moves.values().forEach(m -> System.out.println(m));
-        repo.saveAll(moves.values());
-        repo.findAll().forEach(m -> System.out.println(m));
-        System.out.println("Done");
+        moves.values().forEach(m -> {
+            System.out.println(m.getName());
+            moveRepo.save(m);});
+        moveRepo.findAll().forEach(m -> {System.out.println(m.getName());});
+        System.out.println("Done with Moves");
     }
 }

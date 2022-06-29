@@ -5,6 +5,8 @@ import controllers.JsonRead;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.*;
 import java.util.*;
@@ -17,52 +19,26 @@ import java.util.stream.Stream;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
-//@Entity
+@Entity
 public class PokemonSpecies {
-    @Setter
-    @Getter
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    @ToString
-    @EqualsAndHashCode
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class EvolutionStage{
-        int stage;
-        String speciesName;
-        String criteria;
-    }
-    @Setter
-    @Getter
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    @ToString
-    @EqualsAndHashCode
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class MegaEvolution{
-        String name;
-        /**
-         * Empty / Null means the types are unchanged?
-         */
-        List<Type> types;
-        Ability ability;
-        EnumMap<Stat.StatName, Integer> statBonuses;
-    }
     /*
 
         Informational-Only Variables (Form, Weight, etc.)
-        (For the purpose of the generator, skills / capabilities are informational)
 
      */
-//    @Id
+    @Id
+    @Column(length = 15)
     String pokedexID;
     String speciesName;
     String form;
+    String evolutions;
 
     // Height
     int inchesHeightMin;
     int inchesHeightMax;
+    @Column(length = 15)
     String heightCategoryMin;
+    @Column(length = 15)
     String heightCategoryMax;
 
     // Weight
@@ -71,22 +47,11 @@ public class PokemonSpecies {
     int weightClassMin;
     int weightClassMax;
 
-    // Breeding Data
-    List<String> eggGroups;
-    Double maleOffspringChance;
-    String hatchRate;
-
-    // Environment
-    List<String> diets;
-    List<String> habitats;
-    // Evolution Stages
-    List<EvolutionStage> evolutionStages;
-    // Mega Evolutions - List<MegaEvolution>
-    List<MegaEvolution> megaEvolutions;
     /**
      * Key: The Skill the Pokemon has (e.x. Athletics, Stealth).<br>
      * Value: The dice rank and bonus of the skill (e.x. 2d6, 4d6+4)
      */
+    @Transient
     EnumMap<Skill, String> skills;
     /**
      * Key: The Capability the Pokemon Species has (e.x. Jump, Darkvision).<br>
@@ -94,7 +59,13 @@ public class PokemonSpecies {
      */
     // Capabilities could be made globally in a map in a capabilities class that is only static
     //  then retrieved by name and used here to maybe enforce an extra table
+    @Transient
     Map<String, String> capabilities;
+
+//    @ElementCollection
+//    @CollectionTable(name="Capabilities", joinColumns=@JoinColumn(name="pokedexID"))
+//    @Column(name="Capability")
+//    List<String> capabilities;
 
     /*
 
@@ -104,32 +75,35 @@ public class PokemonSpecies {
     /**
      * List of the Pokemon's types. List as opposed to Set to maintain which is the primary type.
      */
+    @Transient
     List<Type> types;
+    Type primaryType;
+    Type secondaryType;
     /**
      * Hp, Attack, Defense, Special_Attack, Special_Defense, Speed
      */
+    @Transient
     EnumMap<Stat.StatName, Integer> baseStats;
+    int hp;
+    int atk;
+    int def;
+    int spAtk;
+    int spDef;
+    int speed;
     /**
      * Key: The Ability Type of the Abilities, or effectively when it can be taken (Basic, Advanced, High).
      * Key: The List containing each Ability for the Pokemon Species of that Ability Type (e.x. Blur, Stall).<br>
      * Value:
      */
-//    @ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinTable(name = "PokemonAbilities",
-//            joinColumns = {@JoinColumn(name = "pokemon_id", referencedColumnName = "pokedexID")},
-//            inverseJoinColumns = {@JoinColumn(name = "ability_name", referencedColumnName = "name")})
-//    @MapKey(name = "name")
-    Map<Ability.AbilityType, List<Ability>> baseAbilities;
-    /**
-     * Key: The Integer level the move(s) are learned at (e.x. 1, 5, 19).<br>
-     * Value: A List containing each of the Moves learned at that level (e.x. Tackle, Water Pulse).
-     */
-    TreeMap<Integer, List<Move>> levelUpMoves;
-    /**
-     * Key: The Move that can be taught (e.x. Cut, Rest).<br>
-     * Value: The String name of TM / HM that teaches it (e.x. A1, 44).
-     */
-    Map<Move, String> tmHmMoves;
+//    Map<Ability.AbilityType, List<Ability>> baseAbilities;
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    List<BaseAbility> baseAbilities;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pokemon")
+    Set<LevelMove> levelUpMoves;
+
+    @ManyToMany(fetch = FetchType.EAGER)//, mappedBy = "tmHmMoves")
+    Set<Move> tmHmMoves;
     /**
      * Key: The Move that can be tutored (e.x. Covet, Trick). <br>
      * Value: A Boolean showing if it's natural or not. <br> <br>
@@ -138,9 +112,54 @@ public class PokemonSpecies {
      *  different flags for natural or not. This program should logically OR results with existing ones upon seeing
      *  duplicates.
      */
-    Map<Move, Boolean> tutorMoves;
+//    Map<Move, Boolean> tutorMoves;
+    @ManyToMany(fetch = FetchType.EAGER)
+    Set<Move> tutorMoves;
     /**
      * A List of every Move the pokemon may learn as an Egg Move.
      */
-    List<Move> eggMoves;
+    @ManyToMany(fetch = FetchType.EAGER)
+    Set<Move> eggMoves;
+
+    public void setBaseStatsFromMap(EnumMap<Stat.StatName, Integer> stats)
+    {
+        this.baseStats = stats;
+        this.hp = stats.get(Stat.StatName.HP);
+        this.atk = stats.get(Stat.StatName.ATTACK);
+        this.def = stats.get(Stat.StatName.DEFENSE);
+        this.spAtk = stats.get(Stat.StatName.SPECIAL_ATTACK);
+        this.spDef = stats.get(Stat.StatName.SPECIAL_DEFENSE);
+        this.speed = stats.get(Stat.StatName.SPEED);
+    }
+
+    public void setTypesFromList(List<Type> types)
+    {
+        this.types = types;
+        if(types != null && types.size() > 0)
+        {
+            this.primaryType = types.get(0);
+            if(types.size() > 1)
+                this.secondaryType = types.get(1);
+        }
+    }
+
+    public void addLevelMove(int level, Move move)
+    {
+        if(levelUpMoves == null)
+            levelUpMoves = new TreeSet<>();
+        levelUpMoves.add(new LevelMove(level, move, this));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PokemonSpecies that = (PokemonSpecies) o;
+        return getPokedexID().equals(that.getPokedexID()) && getSpeciesName().equals(that.getSpeciesName()) && Objects.equals(getForm(), that.getForm());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPokedexID(), getSpeciesName(), getForm());
+    }
 }

@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -15,7 +16,6 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Ability {
@@ -48,6 +48,7 @@ public class Ability {
         }
     }
     @Id
+    @NonNull
     String name;
     @NonNull
     Frequency frequency;
@@ -60,7 +61,20 @@ public class Ability {
     @NonNull
     @Column(length = 1023)
     String effect;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "connection_id")
+    @ManyToOne//(cascade = CascadeType.ALL)
+    @JoinColumn(name = "connection_move_id")
     Move connection =  null;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ability ability = (Ability) o;
+        return getName().equals(ability.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName());
+    }
 }

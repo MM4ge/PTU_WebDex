@@ -128,17 +128,17 @@ public class PojoToDBConverter {
         return stats;
     }
 
-    private static List<PokemonSpecies.MegaEvolution> convertMegaEvolutions(List<MegaEvolution> l)
-    {
-        return l.stream().map(me -> {
-            PokemonSpecies.MegaEvolution newMega = new PokemonSpecies.MegaEvolution();
-            newMega.setName(me.getName());
-            newMega.setTypes(me.getTypes().stream().map(PojoToDBConverter::convertType).collect(Collectors.toList()));
-            newMega.setAbility(getAbility(me.getAbility().getName()));
-            newMega.setStatBonuses(convertBaseStats(me.getStatBonuses()));
-            return newMega;
-        }).collect(Collectors.toList());
-    }
+//    private static List<PokemonSpecies.MegaEvolution> convertMegaEvolutions(List<MegaEvolution> l)
+//    {
+//        return l.stream().map(me -> {
+//            PokemonSpecies.MegaEvolution newMega = new PokemonSpecies.MegaEvolution();
+//            newMega.setName(me.getName());
+//            newMega.setTypes(me.getTypes().stream().map(PojoToDBConverter::convertType).collect(Collectors.toList()));
+//            newMega.setAbility(getAbility(me.getAbility().getName()));
+//            newMega.setStatBonuses(convertBaseStats(me.getStatBonuses()));
+//            return newMega;
+//        }).collect(Collectors.toList());
+//    }
 
     private static final String ABILITY_DIVIDER = " - ";
     private static final String CONNECTION_HEADER = "Connection - ";
@@ -216,7 +216,7 @@ public class PojoToDBConverter {
             newPoke.setForm(p.getForm());
 
             // Base Stats - EnumMap<Stat.StatName, Integer>
-            newPoke.setBaseStats(convertBaseStats(p.getBaseStats()));
+            newPoke.setBaseStatsFromMap(convertBaseStats(p.getBaseStats()));
 
             // Height
             ImperialHeightRange inchRange = p.getHeight().getImperial();
@@ -234,33 +234,36 @@ public class PojoToDBConverter {
             newPoke.setWeightClassMax((int) p.getWeight().getWeightClass().getMaximum());
 
             // Breeding
-            newPoke.setEggGroups(p.getBreedingData().getEggGroups());
-            newPoke.setMaleOffspringChance(p.getBreedingData().isHasGender() ?
-                    p.getBreedingData().getMaleChance() : null);
-            newPoke.setHatchRate(p.getBreedingData().getHatchRate());
-
-            // Environment
-            newPoke.setDiets(p.getEnvironment().getDiet());
-            newPoke.setHabitats(p.getEnvironment().getHabitats());
+//            newPoke.setEggGroups(p.getBreedingData().getEggGroups());
+//            newPoke.setMaleOffspringChance(p.getBreedingData().isHasGender() ?
+//                    p.getBreedingData().getMaleChance() : null);
+//            newPoke.setHatchRate(p.getBreedingData().getHatchRate());
+//
+//            // Environment
+//            newPoke.setDiets(p.getEnvironment().getDiet());
+//            newPoke.setHabitats(p.getEnvironment().getHabitats());
 
             // Types - List<Type>
-            newPoke.setTypes(p.getTypes().stream().map(PojoToDBConverter::convertType).collect(Collectors.toList()));
+            newPoke.setTypesFromList(p.getTypes().stream().map(PojoToDBConverter::convertType).collect(Collectors.toList()));
 
             // Abilities - Map<Ability.AbilityType, Ability>
-            newPoke.setBaseAbilities(p.getAbilities().stream().collect(Collectors.toMap(
-                    a1 -> Ability.AbilityType.valueOf(a1.getType().toUpperCase()),
-                    a2 -> Stream.of(a2.getName()).map(PojoToDBConverter::getAbility).collect(Collectors.toList()), (l1, l2) -> {
-                            l1.addAll(l2);
-                            return l1;
-            })));
+//            newPoke.setBaseAbilities(p.getAbilities().stream().collect(Collectors.toMap(
+//                    a1 -> Ability.AbilityType.valueOf(a1.getType().toUpperCase()),
+//                    a2 -> Stream.of(a2.getName()).map(PojoToDBConverter::getAbility).collect(Collectors.toList()), (l1, l2) -> {
+//                            l1.addAll(l2);
+//                            return l1;
+//            })));
+//            newPoke.setBaseAbilities(p.getAbilities().stream().map(a -> new PokemonSpecies.BaseAbility(
+//                    Ability.AbilityType.valueOf(a.getType().toUpperCase()),
+//                    PojoToDBConverter.getAbility(a.getName()))).collect(Collectors.toList()));
 
             // Evolution Stagess
-            newPoke.setEvolutionStages(p.getEvolutionStages().stream().map(e ->
-                new PokemonSpecies.EvolutionStage((int) e.getStage(), e.getSpecies(), e.getCriteria())
-            ).collect(Collectors.toList()));
-
-            // Mega Evolution
-            newPoke.setMegaEvolutions(convertMegaEvolutions(p.getMegaEvolutions()));
+//            newPoke.setEvolutionStages(p.getEvolutionStages().stream().map(e ->
+//                new PokemonSpecies.EvolutionStage((int) e.getStage(), e.getSpecies(), e.getCriteria())
+//            ).collect(Collectors.toList()));
+//
+//            // Mega Evolution
+//            newPoke.setMegaEvolutions(convertMegaEvolutions(p.getMegaEvolutions()));
 
             // Skills - Map<Skill, String>
             newPoke.setSkills(new EnumMap<Skill, String>(p.getSkills().stream().collect(Collectors.toMap(
@@ -268,27 +271,43 @@ public class PojoToDBConverter {
                     jsonLoading.db.pokemon.Skill::getDiceRank))));
 
             // Capabilities - Map<String, String>
-            newPoke.setCapabilities(p.getCapabilities().stream().collect(Collectors.toMap(
-                    Capability::getCapabilityName, Capability::getValue)));
+//            newPoke.setCapabilities(p.getCapabilities().stream().collect(Collectors.toMap(
+//                    Capability::getCapabilityName, Capability::getValue)));
+//            newPoke.setCapabilities(p.getCapabilities().stream().map(c -> {
+//                String ret = c.getCapabilityName();
+//                if(c.getValue() != null)
+//                    ret += ": " + c.getValue();
+//                return ret;
+//            }).collect(Collectors.toList()));
 
             // LevelUPMoves TreeMap<Integer, List<Move>>
-            newPoke.setLevelUpMoves(new TreeMap<>(p.getLevelUpMoves().stream().collect(Collectors.toMap(
-                    LevelUpmove::getLevelLearned,
-                    m -> Stream.of(m.getName()).map(PojoToDBConverter::getMove).collect(Collectors.toList()), (l1, l2) -> {
-                            l1.addAll(l2);
-                            return l1;
-            }))));
+//            newPoke.setLevelUpMoves(new TreeMap<>(p.getLevelUpMoves().stream().collect(Collectors.toMap(
+//                    LevelUpmove::getLevelLearned,
+//                    m -> Stream.of(m.getName()).map(PojoToDBConverter::getMove).collect(Collectors.toList()), (l1, l2) -> {
+//                            l1.addAll(l2);
+//                            return l1;
+//            }))));
+            // LevelUpMoves - List<LevelUpMove>
+//            newPoke.setLevelUpMoves(p.getLevelUpMoves().stream().map(m -> new LevelMove(m.getLevelLearned(),
+//                    PojoToDBConverter.getMove(m.getName()))).collect(Collectors.toList()));
+            p.getLevelUpMoves().stream().forEach(m ->
+                newPoke.addLevelMove(m.getLevelLearned(), PojoToDBConverter.getMove(m.getName()))
+            );
 
-            // TM/TM Moves - Map<Move, String>
-            newPoke.setTmHmMoves(p.getTmHmMoves().stream().collect(Collectors.toMap(
-                    m -> getMove(m.getName()), TmHmmove::getTechnicalMachineId, (id1, id2) -> id2)));
+//            // TM/TM Moves - Map<Move, String>
+//            newPoke.setTmHmMoves(p.getTmHmMoves().stream().collect(Collectors.toMap(
+//                    m -> getMove(m.getName()), TmHmmove::getTechnicalMachineId, (id1, id2) -> id2)));
+            // TM/HM Moves - List<Move>
+            newPoke.setTmHmMoves(p.getTmHmMoves().stream().map(m -> PojoToDBConverter.getMove(m.getName()))
+                    .collect(Collectors.toSet()));
 
             // Tutor Moves Map<Move, Boolean>
-            newPoke.setTutorMoves(p.getTutorMoves().stream().collect(Collectors.toMap(
-                    m -> getMove(m.getName()), Tutormove::isNatural, (n1, n2) -> n1 || n2)));
+//            newPoke.setTutorMoves(p.getTutorMoves().stream().collect(Collectors.toMap(
+//                    m -> getMove(m.getName()), Tutormove::isNatural, (n1, n2) -> n1 || n2)));
+            newPoke.setTutorMoves(p.getTutorMoves().stream().map(m -> getMove(m.getName())).collect(Collectors.toSet()));
 
             // Egg Moves - List<Move>
-            newPoke.setEggMoves(p.getEggMoves().stream().map(m -> getMove(m.getName())).collect(Collectors.toList()));
+            newPoke.setEggMoves(p.getEggMoves().stream().map(m -> getMove(m.getName())).collect(Collectors.toSet()));
 
             pokemon.put(id, newPoke);
         });
@@ -303,10 +322,10 @@ public class PojoToDBConverter {
         Map<String, Move> moves = moveMapBuilder(pojoMoves);
         // moves.values().forEach(System.out::println);
 
-        Map<String, AbilityPojo> pojoAbility = PokedexLoader.parsePojoAbilities();
-        Map<String, Ability> abilities = abilityMapBuilder(pojoAbility);
-        // abilities.values().forEach(System.out::println);
-
+//        Map<String, AbilityPojo> pojoAbility = PokedexLoader.parsePojoAbilities();
+//        Map<String, Ability> abilities = abilityMapBuilder(pojoAbility);
+//        // abilities.values().forEach(System.out::println);
+//
         Map<String, PokemonSpeciesPojo> pojoPokes = PokedexLoader.parsePojoPokemon();
         Map<String, PokemonSpecies> pokes = pokemonMapBuilder(pojoPokes);
         //pokes.values().forEach(System.out::println);

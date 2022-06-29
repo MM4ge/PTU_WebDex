@@ -5,22 +5,19 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "pokeMoves")
+@Table(name = "moves")
 public class Move {
     public enum MoveClass {
         PHYSICAL, SPECIAL, STATUS, STATIC;
@@ -68,19 +65,19 @@ public class Move {
             return contestEffectMap.get(name);
         }
     }
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
     // TODO: Periods can't be allowed in move names, have a check for that somewhere
+    @Id
     @NonNull
     String name;
     @NonNull
     @Column(name = "moveType")
     Type type;
+    @NonNull
     Frequency frequency;
     int uses = 0;
     String ac;
     String db;
+    @NonNull
     MoveClass moveClass;
     @Column(name = "moveRange")
     String range;
@@ -90,7 +87,24 @@ public class Move {
     ContestEffect contestEffect;
     String critsOn;
 
-    public Move(@NonNull String name, @NonNull Type type, Frequency frequency, int uses, String ac, String db, MoveClass moveClass, String range, String effect, ContestType contestType, ContestEffect contestEffect, String critsOn) {
+    @ToString.Exclude
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "move")
+    Set<LevelMove> levelMoves;
+    @ToString.Exclude
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "connection")
+    //TODO: figure out cascades
+    Set<Ability> connections;
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "tmHmMoves")
+    Set<PokemonSpecies> tmHmMoves;
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "tutorMoves")
+    Set<PokemonSpecies> tutorMoves;
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "eggMoves")
+    Set<PokemonSpecies> eggMoves;
+
+    public Move(@NonNull String name, @NonNull Type type, @NonNull Frequency frequency, int uses, String ac, String db, @NonNull MoveClass moveClass, String range, String effect, ContestType contestType, ContestEffect contestEffect, String critsOn) {
         this.name = name;
         this.type = type;
         this.frequency = frequency;
@@ -103,5 +117,18 @@ public class Move {
         this.contestType = contestType;
         this.contestEffect = contestEffect;
         this.critsOn = critsOn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Move move = (Move) o;
+        return getName().equals(move.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName());
     }
 }
