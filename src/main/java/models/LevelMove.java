@@ -25,14 +25,14 @@ public class LevelMove implements Comparable<LevelMove>{
     Move move;
     @ManyToOne(fetch = FetchType.EAGER)
     @NonNull
-    PokemonSpecies pokemon;
+    PokemonSpecies pokemonSpecies;
 
     public LevelMove(int level, Move move, PokemonSpecies pokemon) {
         this.level = level;
         this.move = move;
         if(move != null)
             move.getLevelMoves().add(this);
-        this.pokemon = pokemon;
+        this.pokemonSpecies = pokemon;
     }
 
     @Override
@@ -44,10 +44,11 @@ public class LevelMove implements Comparable<LevelMove>{
     @Override
     public String toString() {
         StringBuilder strBuilder = new StringBuilder("LevelMove{" + "level=" + level);
-        if(move != null)
-            strBuilder.append(", move=" + move.getName());
-        if(pokemon != null)
-            strBuilder.append(", pokemon=" + pokemon.getSpeciesName() + ": " + pokemon.getPokedexID());
+        if(getMove() != null)
+            strBuilder.append(", move=" + getMove().getName());
+        if(getPokemonSpecies() != null)
+            strBuilder.append(", pokemon=" + getPokemonSpecies().getSpeciesName()
+                    + ": " + getPokemonSpecies().getPokedexID());
         strBuilder.append("}");
         return strBuilder.toString();
     }
@@ -57,11 +58,12 @@ public class LevelMove implements Comparable<LevelMove>{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LevelMove levelMove = (LevelMove) o;
-        return getLevel() == levelMove.getLevel() && getMove().equals(levelMove.getMove()) && getPokemon().equals(levelMove.getPokemon());
+        return getLevel() == levelMove.getLevel() && getMove().equals(levelMove.getMove()) &&
+                getPokemonSpecies().equals(levelMove.getPokemonSpecies());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getLevel(), getMove(), getPokemon());
+        return Objects.hash(getLevel(), getMove(), getPokemonSpecies());
     }
 }

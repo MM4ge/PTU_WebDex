@@ -98,8 +98,10 @@ public class PokemonSpecies {
 //    Map<Ability.AbilityType, List<Ability>> baseAbilities;
 //    @ManyToMany(cascade = CascadeType.ALL)
 //    List<BaseAbility> baseAbilities;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="pokemonSpecies")
+    Set<BaseAbility> baseAbilities;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pokemon")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pokemonSpecies")
     Set<LevelMove> levelUpMoves;
 
     @ManyToMany(fetch = FetchType.EAGER)//, mappedBy = "tmHmMoves")
@@ -148,6 +150,13 @@ public class PokemonSpecies {
         if(levelUpMoves == null)
             levelUpMoves = new TreeSet<>();
         levelUpMoves.add(new LevelMove(level, move, this));
+    }
+
+    public void addBaseAbility(Ability.AbilityType type, Ability ability)
+    {
+        if(baseAbilities == null)
+            baseAbilities = new TreeSet<>();
+        baseAbilities.add(new BaseAbility(type, ability, this));
     }
 
     @Override

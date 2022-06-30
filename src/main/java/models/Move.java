@@ -89,20 +89,20 @@ public class Move {
 
     @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "move")
-    Set<LevelMove> levelMoves;
+    Set<LevelMove> levelMoves = new HashSet<>();
     @ToString.Exclude
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "connection")
+    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER, mappedBy = "connection")
     //TODO: figure out cascades
-    Set<Ability> connections;
+    Set<Ability> connections = new HashSet<>();
     @ToString.Exclude
     @ManyToMany(mappedBy = "tmHmMoves")
-    Set<PokemonSpecies> tmHmMoves;
+    Set<PokemonSpecies> tmHmMoves = new HashSet<>();
     @ToString.Exclude
     @ManyToMany(mappedBy = "tutorMoves")
-    Set<PokemonSpecies> tutorMoves;
+    Set<PokemonSpecies> tutorMoves = new HashSet<>();
     @ToString.Exclude
     @ManyToMany(mappedBy = "eggMoves")
-    Set<PokemonSpecies> eggMoves;
+    Set<PokemonSpecies> eggMoves = new HashSet<>();
 
     public Move(@NonNull String name, @NonNull Type type, @NonNull Frequency frequency, int uses, String ac, String db, @NonNull MoveClass moveClass, String range, String effect, ContestType contestType, ContestEffect contestEffect, String critsOn) {
         this.name = name;
