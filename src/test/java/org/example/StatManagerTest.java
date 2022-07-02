@@ -1,7 +1,7 @@
 package org.example;
 
-import generator.controllers.StatManager;
-import models.Stat;
+import org.example.generator.controllers.StatManager;
+import org.example.models.Stat;
 import org.junit.Before;
 import org.junit.Test;
 
