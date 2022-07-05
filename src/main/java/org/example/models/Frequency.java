@@ -6,17 +6,18 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public enum Frequency {
-    AT_WILL("At-Will"), EOT("EOT"), SCENE("Scene"), DAILY("Daily"), STATIC("Static"),
-        SPECIAL("Special"), SEE_TEXT("See Text");
-    private final String name;
-    private Frequency(String name)
+    FREQUENCIES("Frequency"),
+    AT_WILL("At-Will"), EOT("EOT"), SCENE("Scene"), DAILY("Daily"),
+    STATIC("Static"), SPECIAL("Special"), SEE_TEXT("See Text");
+    private final String displayName;
+    private Frequency(String displayName)
     {
-        this.name = name;
+        this.displayName = displayName;
     }
 
-    public String getName()
+    public String getDisplayName()
     {
-        return name;
+        return displayName;
     }
 
     private static Map<String, Frequency> nameMap;
@@ -30,7 +31,7 @@ public enum Frequency {
         catch (IllegalArgumentException e) {
             if (nameMap == null) {
                 Map<String, Frequency> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-                Arrays.stream(Frequency.values()).forEach(f -> map.put(f.getName(), f));
+                Arrays.stream(Frequency.values()).forEach(f -> map.put(f.getDisplayName(), f));
                 nameMap = Collections.unmodifiableMap(map);
             }
             ret = nameMap.get(name);

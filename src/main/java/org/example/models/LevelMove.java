@@ -13,8 +13,8 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
 @Slf4j
+@Entity
 public class LevelMove implements Comparable<LevelMove>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,10 +47,10 @@ public class LevelMove implements Comparable<LevelMove>{
     public String toString() {
         StringBuilder strBuilder = new StringBuilder("LevelMove{" + "level=" + level);
         if(getMove() != null)
-            strBuilder.append(", move=" + getMove().getName());
+            strBuilder.append(", move=").append(getMove().getName());
         if(getPokemonSpecies() != null)
-            strBuilder.append(", pokemon=" + getPokemonSpecies().getSpeciesName()
-                    + ": " + getPokemonSpecies().getPokedexID());
+            strBuilder.append(", pokemon=").append(getPokemonSpecies().getSpeciesName())
+                    .append(": ").append(getPokemonSpecies().getPokedexID());
         strBuilder.append("}");
         return strBuilder.toString();
     }
@@ -60,13 +60,9 @@ public class LevelMove implements Comparable<LevelMove>{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LevelMove levelMove = (LevelMove) o;
-        boolean ret = getLevel() == levelMove.getLevel();
-        ret = ret && getMove().equals(levelMove.getMove());
-        ret = ret && getPokemonSpecies().equals(levelMove.getPokemonSpecies());
-        return ret;
+        return getLevel() == levelMove.getLevel() && Objects.equals(getMove(), levelMove.getMove()) &&
+                Objects.equals(getPokemonSpecies(), levelMove.getPokemonSpecies());
     }
-
-
 
     @Override
     public int hashCode() {

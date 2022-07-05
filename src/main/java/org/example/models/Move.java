@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -19,7 +18,21 @@ import java.util.stream.Collectors;
 @Table(name = "moves")
 public class Move {
     public enum MoveClass {
-        PHYSICAL, SPECIAL, STATUS, STATIC;
+        MOVE_CLASSES("Move Class"),
+        PHYSICAL("Physical"), SPECIAL("Special"),
+        STATUS("Status"), STATIC("Static");
+
+        private final String displayName;
+
+        private MoveClass(String displayName)
+        {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName()
+        {
+            return this.displayName;
+        }
     }
     public enum ContestType {
         BEAUTY, COOL, CUTE, SMART, TOUGH;
@@ -68,25 +81,28 @@ public class Move {
     @Id
     @NonNull
     String name;
-    @NonNull
+    //@NonNull
     @Column(name = "moveType")
     Type type;
-    @NonNull
+    //@NonNull
     Frequency frequency;
+    @Transient
     int uses = 0;
     @Column(length = 63)
     String ac;
     @Column(length = 63)
     String db;
-    @NonNull
+    //@NonNull
     MoveClass moveClass;
     @Column(name = "moveRange", length = 63)
     String range;
     @Column(length = 1023)
     String effect;
+    @Transient
     ContestType contestType;
+    @Transient
     ContestEffect contestEffect;
-    @Column(length = 63)
+    @Transient
     String critsOn;
 
     @ToString.Exclude
@@ -121,6 +137,24 @@ public class Move {
         this.critsOn = critsOn;
     }
 
+    public Move(@NonNull String name, @NonNull Type type, @NonNull Frequency frequency, String ac, String db, @NonNull MoveClass moveClass, String range, String effect) {
+        this.name = name;
+        this.type = type;
+        this.frequency = frequency;
+        this.ac = ac;
+        this.db = db;
+        this.moveClass = moveClass;
+        this.range = range;
+        this.effect = effect;
+    }
+
+    public Move(@NonNull String name, Type type, Frequency frequency, MoveClass moveClass) {
+        this.name = name;
+        this.type = type;
+        this.frequency = frequency;
+        this.moveClass = moveClass;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -132,5 +166,23 @@ public class Move {
     @Override
     public int hashCode() {
         return Objects.hash(getName());
+    }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "name='" + name + '\'' +
+                ", type=" + type +
+                ", frequency=" + frequency +
+                ", uses=" + uses +
+                ", ac='" + ac + '\'' +
+                ", db='" + db + '\'' +
+                ", moveClass=" + moveClass +
+                ", range='" + range + '\'' +
+                ", effect='" + effect + '\'' +
+                ", contestType=" + contestType +
+                ", contestEffect=" + contestEffect +
+                ", critsOn='" + critsOn + '\'' +
+                '}';
     }
 }

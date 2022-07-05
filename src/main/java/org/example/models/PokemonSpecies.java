@@ -11,7 +11,6 @@ import java.util.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 public class PokemonSpecies {
     /*
@@ -27,38 +26,26 @@ public class PokemonSpecies {
     String evolutions;
 
     // Height
+    @Transient
     int inchesHeightMin;
+    @Transient
     int inchesHeightMax;
     @Column(length = 15)
+    @Transient
     String heightCategoryMin;
     @Column(length = 15)
+    @Transient
     String heightCategoryMax;
 
     // Weight
+    @Transient
     double poundsWeightMin;
+    @Transient
     double poundsWeightMax;
+    @Transient
     int weightClassMin;
+    @Transient
     int weightClassMax;
-
-    /**
-     * Key: The Skill the Pokemon has (e.x. Athletics, Stealth).<br>
-     * Value: The dice rank and bonus of the skill (e.x. 2d6, 4d6+4)
-     */
-    @Transient
-    EnumMap<Skill, String> skills;
-    /**
-     * Key: The Capability the Pokemon Species has (e.x. Jump, Darkvision).<br>
-     * Value: The value of that Capability, if there is one (e.x. 3/3, null)
-     */
-    // Capabilities could be made globally in a map in a capabilities class that is only static
-    //  then retrieved by name and used here to maybe enforce an extra table
-    @Transient
-    Map<String, String> capabilities;
-
-//    @ElementCollection
-//    @CollectionTable(name="Capabilities", joinColumns=@JoinColumn(name="pokedexID"))
-//    @Column(name="Capability")
-//    List<String> capabilities;
 
     /*
 
@@ -83,38 +70,28 @@ public class PokemonSpecies {
     int spAtk;
     int spDef;
     int speed;
-    /**
-     * Key: The Ability Type of the Abilities, or effectively when it can be taken (Basic, Advanced, High).
-     * Key: The List containing each Ability for the Pokemon Species of that Ability Type (e.x. Blur, Stall).<br>
-     * Value:
-     */
-//    Map<Ability.AbilityType, List<Ability>> baseAbilities;
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    List<BaseAbility> baseAbilities;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="pokemonSpecies")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="pokemonSpecies")//, fetch = FetchType.EAGER)
     Set<BaseAbility> baseAbilities = new TreeSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pokemonSpecies")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemonSpecies")//, fetch = FetchType.EAGER)
     Set<LevelMove> levelUpMoves = new TreeSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)//, mappedBy = "tmHmMoves")
+    @ManyToMany//(fetch = FetchType.EAGER)//, mappedBy = "tmHmMoves")
     Set<Move> tmHmMoves;
-    /**
-     * Key: The Move that can be tutored (e.x. Covet, Trick). <br>
-     * Value: A Boolean showing if it's natural or not. <br> <br>
-     *
-     * Note: Certain pokemon like Meowstic may have a Move multiple times on their tutor list with potentially
-     *  different flags for natural or not. This program should logically OR results with existing ones upon seeing
-     *  duplicates.
-     */
-//    Map<Move, Boolean> tutorMoves;
-    @ManyToMany(fetch = FetchType.EAGER)
+
+    @ManyToMany//(fetch = FetchType.EAGER)
     Set<Move> tutorMoves;
     /**
-     * A List of every Move the pokemon may learn as an Egg Move.
+     * A Set of every Move the pokemon may learn as an Egg Move.
      */
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany//(fetch = FetchType.EAGER)
     Set<Move> eggMoves;
+
+    public PokemonSpecies(String pokedexID, String speciesName, String form) {
+        this.pokedexID = pokedexID;
+        this.speciesName = speciesName;
+        this.form = form;
+    }
 
     public void setBaseStatsFromMap(EnumMap<Stat.StatName, Integer> stats)
     {
@@ -125,6 +102,16 @@ public class PokemonSpecies {
         this.spAtk = stats.get(Stat.StatName.SPECIAL_ATTACK);
         this.spDef = stats.get(Stat.StatName.SPECIAL_DEFENSE);
         this.speed = stats.get(Stat.StatName.SPEED);
+    }
+
+    public void setBaseStatsFromInts(int hp, int atk, int def, int spAtk, int spDef, int speed)
+    {
+        this.hp = hp;
+        this.atk = atk;
+        this.def = def;
+        this.spAtk = spAtk;
+        this.spDef = spDef;
+        this.speed = speed;
     }
 
     public void setTypesFromList(List<Type> types)
@@ -153,11 +140,30 @@ public class PokemonSpecies {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PokemonSpecies that = (PokemonSpecies) o;
-        return getPokedexID().equals(that.getPokedexID()) && getSpeciesName().equals(that.getSpeciesName()) && Objects.equals(getForm(), that.getForm());
+        return getPokedexID().equals(that.getPokedexID()) && Objects.equals(getSpeciesName(),
+                that.getSpeciesName()) && Objects.equals(getForm(), that.getForm());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getPokedexID(), getSpeciesName(), getForm());
+    }
+
+    @Override
+    public String toString() {
+        return "PokemonSpecies{" +
+                "pokedexID='" + pokedexID + '\'' +
+                ", speciesName='" + speciesName + '\'' +
+                ", form='" + form + '\'' +
+                ", evolutions='" + evolutions + '\'' +
+                ", primaryType=" + primaryType +
+                ", secondaryType=" + secondaryType +
+                ", hp=" + hp +
+                ", atk=" + atk +
+                ", def=" + def +
+                ", spAtk=" + spAtk +
+                ", spDef=" + spDef +
+                ", speed=" + speed +
+                '}';
     }
 }

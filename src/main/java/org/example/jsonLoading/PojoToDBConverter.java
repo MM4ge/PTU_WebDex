@@ -1,13 +1,11 @@
-package org.example.controllers;
+package org.example.jsonLoading;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.example.jsonLoading.PokedexLoader;
 import org.example.jsonLoading.db.ability.AbilityPojo;
 import org.example.jsonLoading.db.move.MovePojo;
 import org.example.jsonLoading.db.pokemon.BaseStats;
 import org.example.jsonLoading.db.pokemon.ImperialHeightRange;
-import org.example.jsonLoading.db.pokemon.LevelUpmove;
 import org.example.jsonLoading.db.pokemon.PokemonSpeciesPojo;
 import org.example.models.*;
 
@@ -225,40 +223,15 @@ public class PojoToDBConverter {
             // Types - List<Type>
             newPoke.setTypesFromList(p.getTypes().stream().map(PojoToDBConverter::convertType).collect(Collectors.toList()));
 
-            // Abilities - Map<Ability.AbilityType, Ability>
-//            newPoke.setBaseAbilities(p.getAbilities().stream().collect(Collectors.toMap(
-//                    a1 -> Ability.AbilityType.valueOf(a1.getType().toUpperCase()),
-//                    a2 -> Stream.of(a2.getName()).map(PojoToDBConverter::getAbility).collect(Collectors.toList()), (l1, l2) -> {
-//                            l1.addAll(l2);
-//                            return l1;
-//            })));
+            // BaseAbilities - List<BaseAbility>
             p.getAbilities().stream().forEach(a ->
                     newPoke.addBaseAbility(BaseAbility.AbilityType.valueOf(a.getType().toUpperCase()),
                             PojoToDBConverter.getAbility(a.getName()))
             );
 
-            // Evolution Stagess
-//            newPoke.setEvolutionStages(p.getEvolutionStages().stream().map(e ->
-//                new PokemonSpecies.EvolutionStage((int) e.getStage(), e.getSpecies(), e.getCriteria())
-//            ).collect(Collectors.toList()));
-//
-//            // Mega Evolution
-//            newPoke.setMegaEvolutions(convertMegaEvolutions(p.getMegaEvolutions()));
-
-            // Skills - Map<Skill, String>
-            newPoke.setSkills(new EnumMap<Skill, String>(p.getSkills().stream().collect(Collectors.toMap(
-                    s -> Skill.getWithName(s.getSkillName()),
-                    org.example.jsonLoading.db.pokemon.Skill::getDiceRank))));
-
-            // Capabilities - Map<String, String>
-//            newPoke.setCapabilities(p.getCapabilities().stream().collect(Collectors.toMap(
-//                    Capability::getCapabilityName, Capability::getValue)));
-//            newPoke.setCapabilities(p.getCapabilities().stream().map(c -> {
-//                String ret = c.getCapabilityName();
-//                if(c.getValue() != null)
-//                    ret += ": " + c.getValue();
-//                return ret;
-//            }).collect(Collectors.toList()));
+            // Evolution Stages - String
+            newPoke.setEvolutions(p.getEvolutionStages().stream().map(e ->
+                e.getStage() + " - " + e.getSpecies() + " " + e.getCriteria()).collect(Collectors.joining("\n")));
 
             // LevelUpMoves - List<LevelUpMove>
             p.getLevelUpMoves().stream().forEach(m ->

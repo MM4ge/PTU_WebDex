@@ -13,7 +13,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Ability {
@@ -31,11 +30,11 @@ public class Ability {
     @NonNull
     @Column(length = 1023)
     String effect;
-    @ManyToOne//(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)//(cascade = CascadeType.ALL)
     @JoinColumn(name = "connection_move")
     Move connection =  null;
 
-    @OneToMany(mappedBy = "ability", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "ability")//, fetch = FetchType.EAGER)
     Set<BaseAbility> baseAbilities = new HashSet<>();
 
     public Ability(@NonNull String name, @NonNull Frequency frequency, int uses, ActionType actionType, ActionType.Priority priority, String trigger, String target, @NonNull String effect, Move connection) {
@@ -61,5 +60,19 @@ public class Ability {
     @Override
     public int hashCode() {
         return Objects.hash(getName());
+    }
+
+    @Override
+    public String toString() {
+        return "Ability{" +
+                "name='" + name + '\'' +
+                ", frequency=" + frequency +
+                ", uses=" + uses +
+                ", actionType=" + actionType +
+                ", priority=" + priority +
+                ", trigger='" + trigger + '\'' +
+                ", target='" + target + '\'' +
+                ", effect='" + effect + '\'' +
+                '}';
     }
 }

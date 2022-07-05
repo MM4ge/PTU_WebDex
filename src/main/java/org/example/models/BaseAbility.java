@@ -63,26 +63,35 @@ public class BaseAbility implements Comparable<BaseAbility>{
         return (ret != 0) ? ret : getAbility().getName().compareTo(o.getAbility().getName());
     }
 
+//    @Override
+//    public String toString() {
+//        StringBuilder strBuilder = new StringBuilder("BaseAbility{" + "abilityType=" + getAbilityType());
+//        if(getAbility() != null)
+//            strBuilder.append(", ability=").append(getAbility().getName());
+//        if(getPokemonSpecies() != null)
+//            strBuilder.append(", pokemon=").append(getPokemonSpecies().getSpeciesName())
+//                    .append(": ").append(getPokemonSpecies().getPokedexID());
+//        return strBuilder.toString();
+//    }
+
+    @Override
+    public String toString() {
+        return "BaseAbility{" + "abilityType=" + getAbilityType() + ", ability=" + getAbility().getName() +
+                ", pokemon=" + getPokemonSpecies().getSpeciesName() +
+                ": " + getPokemonSpecies().getPokedexID();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BaseAbility that = (BaseAbility) o;
-        return getAbilityType() == that.getAbilityType() && getAbility().equals(that.getAbility()) && getPokemonSpecies().equals(that.getPokemonSpecies());
+        return getAbilityType() == that.getAbilityType() && Objects.equals(getAbility(),
+                that.getAbility()) && Objects.equals(getPokemonSpecies(), that.getPokemonSpecies());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getAbilityType(), getAbility(), getPokemonSpecies());
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder strBuilder = new StringBuilder("BaseAbility{" + "abilityType=" + getAbilityType());
-        if(getAbility() != null)
-            strBuilder.append(", ability=" + getAbility().getName());
-        if(getPokemonSpecies() != null)
-            strBuilder.append(", pokemon=" + getPokemonSpecies().getSpeciesName() + ": " + getPokemonSpecies().getPokedexID());
-        return strBuilder.toString();
     }
 }

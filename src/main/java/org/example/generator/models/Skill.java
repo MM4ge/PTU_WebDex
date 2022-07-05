@@ -1,4 +1,4 @@
-package org.example.models;
+package org.example.generator.models;
 
 import java.util.Arrays;
 import java.util.Collections;
