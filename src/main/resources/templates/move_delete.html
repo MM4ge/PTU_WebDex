@@ -19,7 +19,7 @@
             <h6>This action is permanent. Moves cannot be restored, only re-created.</h6>
             <p th:if="${error != null}" th:text="${error}" class="text-danger"/>
         </div>
-        <form action="#" th:action="@{/move_delete}" th:object="${move}" method="post" class="m-3 p-3 border border-dark">
+        <form action="#" th:action="@{/move_delete}" th:object="${moveDTO}" method="post" class="m-3 p-3 border border-dark">
             <p>Full Name: <input type="text" th:field="*{name}" placeholder="Tackle"/></p>
             <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
         </form>

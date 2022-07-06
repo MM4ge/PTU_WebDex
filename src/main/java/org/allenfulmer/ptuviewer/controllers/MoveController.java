@@ -42,7 +42,7 @@ public class MoveController {
 
     @GetMapping("/move_form")
     public String getCreateorUpdateForm(Model model) {
-        model.addAttribute("move", new Move());
+        model.addAttribute("moveDTO", new MoveDTO());
         return FORM;
     }
 
@@ -100,7 +100,7 @@ public class MoveController {
     @GetMapping("/move_search")
     public String moveSearchForm(Model model)
     {
-        model.addAttribute("move", new Move());
+        model.addAttribute("moveDTO", new MoveDTO());
         return SEARCH;
     }
 
@@ -152,7 +152,7 @@ public class MoveController {
     @GetMapping("/move_delete")
     public String getDeleteMovePage(Model model)
     {
-        model.addAttribute("move", new Move());
+        model.addAttribute("moveDTO", new MoveDTO());
         return DELETE;
     }
 

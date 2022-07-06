@@ -20,7 +20,7 @@
             <p th:if="${error != null}" th:text="${error}" class="text-danger"/>
             <p th:if="${error2 != null}" th:text="${error2}" class="text-danger"/>
         </div>
-        <form action="#" th:action="@{/move_form}" th:object="${move}" method="post" class="m-3 p-3 border border-dark">
+        <form action="#" th:action="@{/move_form}" th:object="${moveDTO}" method="post" class="m-3 p-3 border border-dark">
             <p>Full Name: <input type="text" th:field="*{name}" placeholder="Bubble"/></p>
             <p>
                 <select name="type">

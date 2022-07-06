@@ -19,7 +19,7 @@
             <h6>Input any other number of fields to search for moves that fit all of them.</h6>
             <span th:if="${error != null}" th:text="${error}" color="text-danger"/>
         </div>
-        <form action="#" th:action="@{/move_search}" th:object="${move}" method="post"
+        <form action="#" th:action="@{/move_search}" th:object="${moveDTO}" method="post"
               class="m-3 p-3 border border-dark">
             <p>Full Name: <input type="text" th:field="*{name}" placeholder="Ember"/></p>
             <p>
