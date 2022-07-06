@@ -3,8 +3,11 @@ package org.allenfulmer.ptuviewer.services;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.allenfulmer.ptuviewer.models.Ability;
 import org.allenfulmer.ptuviewer.models.Frequency;
 import org.allenfulmer.ptuviewer.models.Move;
+import org.allenfulmer.ptuviewer.repositories.AbilityRepository;
+import org.allenfulmer.ptuviewer.repositories.LevelMoveRepository;
 import org.allenfulmer.ptuviewer.repositories.MoveRepository;
 import org.allenfulmer.ptuviewer.models.Type;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -24,11 +28,15 @@ import java.util.NoSuchElementException;
 public class MoveService {
 
     MoveRepository moveRepo;
+    LevelMoveRepository levelRepo;
+    AbilityRepository abilityRepo;
 
     @Autowired
-    public MoveService(MoveRepository moveRepo)
+    public MoveService(MoveRepository moveRepo, LevelMoveRepository levelRepo, AbilityRepository abilityRepo)
     {
         this.moveRepo = moveRepo;
+        this.levelRepo = levelRepo;
+        this.abilityRepo = abilityRepo;
     }
 
     public List<Move> findAll()
@@ -48,13 +56,17 @@ public class MoveService {
         moveRepo.save(m);
     }
 
-    public void delete(Move m)
-    {
-        moveRepo.delete(m);
-    }
-
     public void deleteByName(String name)
     {
+        Move target = moveRepo.getReferenceById(name);
+        levelRepo.deleteAll(target.getLevelMoves());
+        Optional<Ability> optAbility = abilityRepo.findByConnection(target);
+        if(optAbility.isPresent())
+        {
+            Ability connector = optAbility.get();
+            connector.setConnection(null);
+            abilityRepo.save(connector);
+        }
         moveRepo.deleteById(name);
     }
 
@@ -84,12 +96,9 @@ public class MoveService {
     public List<Move> findMoveByExample(Move move)
     {
         // The Move we're receiving potentially has default values in it from the enums
-        if(move.getType() == Type.TYPES)
-            move.setType(null);
-        if(move.getFrequency() == Frequency.FREQUENCIES)
-            move.setFrequency(null);
-        if(move.getMoveClass() == Move.MoveClass.MOVE_CLASSES)
-            move.setMoveClass(null);
+        move.setType(move.getType() == Type.TYPES ? null : move.getType());
+        move.setFrequency(move.getFrequency() == Frequency.FREQUENCIES ? null : move.getFrequency());
+        move.setMoveClass(move.getMoveClass() == Move.MoveClass.MOVE_CLASSES ? null : move.getMoveClass());
 
         move.setAc(move.getAc().isEmpty() ? null : move.getAc());
         move.setDb(move.getDb().isEmpty() ? null : move.getDb());
@@ -122,10 +131,4 @@ public class MoveService {
 
         return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), moveRepo.count());
     }
-
-    /*
-    public List<Course> getStudentCourses(String email){
-        return courseRepository.findStudentCourses(email);
-    }
-     */
 }

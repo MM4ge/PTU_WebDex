@@ -32,7 +32,7 @@ public class AppCommandLineRunner implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args){
         insertTestData();
 //        insertMoves();
 //        insertAbilities();
@@ -78,13 +78,11 @@ public class AppCommandLineRunner implements CommandLineRunner {
         moveRepo.save(m4);
         moveRepo.save(m5);
 
+        a2.setConnection(m2);
+
         abilityRepo.save(a1);
         abilityRepo.save(a2);
         abilityRepo.save(a3);
-
-        pokemonRepo.save(p1);
-        pokemonRepo.save(p2);
-        pokemonRepo.save(p3);
 
         p1.addLevelMove(1, m1);
         p1.addLevelMove(12, m2);
@@ -102,8 +100,6 @@ public class AppCommandLineRunner implements CommandLineRunner {
         p3.addLevelMove(1,m5);
         p3.addLevelMove(16,m4);
 
-        a2.setConnection(m2);
-
         p1.addBaseAbility(BaseAbility.AbilityType.BASIC, a1);
         p1.addBaseAbility(BaseAbility.AbilityType.ADVANCED, a2);
         p1.addBaseAbility(BaseAbility.AbilityType.HIGH, a3);
@@ -114,6 +110,10 @@ public class AppCommandLineRunner implements CommandLineRunner {
         p2.addBaseAbility(BaseAbility.AbilityType.HIGH, a2);
 
         p3.addBaseAbility(BaseAbility.AbilityType.BASIC, a3);
+
+        pokemonRepo.save(p1);
+        pokemonRepo.save(p2);
+        pokemonRepo.save(p3);
     }
 
     private void insertPokemon()
