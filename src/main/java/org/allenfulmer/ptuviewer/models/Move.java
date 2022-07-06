@@ -2,6 +2,7 @@ package org.allenfulmer.ptuviewer.models;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.allenfulmer.ptuviewer.dto.MoveDTO;
 
 import javax.persistence.*;
 import java.util.*;
@@ -66,7 +67,8 @@ public class Move {
             try {
                 return ContestEffect.valueOf(name.toUpperCase());
             }
-            catch (IllegalArgumentException ignored) {}
+            catch (IllegalArgumentException ignored) { // Ignored
+            }
             catch (NullPointerException e) {return null;}
 
             if(contestEffectMap == null)
@@ -77,7 +79,6 @@ public class Move {
             return contestEffectMap.get(name);
         }
     }
-    // TODO: Periods can't be allowed in move names, have a check for that somewhere
     @Id
     @NonNull
     String name;
@@ -110,7 +111,6 @@ public class Move {
     Set<LevelMove> levelMoves = new HashSet<>();
     @ToString.Exclude
     @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER, mappedBy = "connection")
-    //TODO: figure out cascades
     Set<Ability> connections = new HashSet<>();
     @ToString.Exclude
     @ManyToMany(mappedBy = "tmHmMoves")
@@ -153,6 +153,18 @@ public class Move {
         this.type = type;
         this.frequency = frequency;
         this.moveClass = moveClass;
+    }
+
+    public Move(MoveDTO moveDTO)
+    {
+        this.name = moveDTO.getName();
+        this.type = moveDTO.getType();
+        this.frequency = moveDTO.getFrequency();
+        this.ac = moveDTO.getAc();
+        this.db = moveDTO.getDb();
+        this.moveClass = moveDTO.getMoveClass();
+        this.range = moveDTO.getRange();
+        this.effect = moveDTO.getEffect();
     }
 
     @Override

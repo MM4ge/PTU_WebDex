@@ -3,6 +3,7 @@ package org.allenfulmer.ptuviewer.controllers;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.allenfulmer.ptuviewer.dto.MoveDTO;
 import org.allenfulmer.ptuviewer.models.Frequency;
 import org.allenfulmer.ptuviewer.models.Move;
 import org.allenfulmer.ptuviewer.services.MoveService;
@@ -46,17 +47,17 @@ public class MoveController {
     }
 
     @PostMapping("/move_form")
-    public String createOrUpdateMove(@ModelAttribute Move move, Model model) {
+    public String createOrUpdateMove(@ModelAttribute MoveDTO moveDTO, Model model) {
         boolean err = false;
         // Validate the move - it must have a name (unique id) and have selected something from each dropdown
         //  (each Move has those as requirements)
-        if(move.getName().isEmpty())
+        if(moveDTO.getName().isEmpty())
         {
             model.addAttribute(ERR, "Please add a name.");
             log.info("Create/Update Move was supplied an empty name.");
             err = true;
         }
-        if(!didChangeDropdowns(move))
+        if(!didChangeDropdowns(moveDTO))
         {
             model.addAttribute("error2", "Please choose a selection from each dropdown menu.");
             log.info("Create/Update Move was supplied a default dropdown menu choice.");
@@ -67,12 +68,12 @@ public class MoveController {
 
         // Check if we're creating or updating - boolean now in case an error occurs while saving
         boolean update;
-        if(moveServ.doesMoveExist(move.getName())){ update = true;}
+        if(moveServ.doesMoveExist(moveDTO.getName())){ update = true;}
         else {update = false;}
 
-        model.addAttribute(MOVES, Arrays.asList(move));
+        model.addAttribute(MOVES, Arrays.asList(moveDTO));
         try {
-            moveServ.saveOrUpdate(move);
+            moveServ.saveOrUpdate(new Move(moveDTO));
         }
         catch(Exception e)
         {
@@ -87,7 +88,7 @@ public class MoveController {
         return RESULTS;
     }
 
-    private boolean didChangeDropdowns(Move move)
+    private boolean didChangeDropdowns(MoveDTO move)
     {
         // These are all the defaults for the enum dropdown menus (placed there for reading convenience)
         //  They aren't used by the JSON, so they should be filtered out
@@ -104,13 +105,13 @@ public class MoveController {
     }
 
     @PostMapping("/move_search")
-    public String searchMoves(@ModelAttribute Move move, Model model)
+    public String searchMoves(@ModelAttribute MoveDTO moveDTO, Model model)
     {
         // If the name isn't empty (was supplied by the user), it's guaranteed to be unique so only search by it exactly
-        if(!move.getName().isEmpty())
+        if(!moveDTO.getName().isEmpty())
         {
             try {
-                model.addAttribute(MOVES, Arrays.asList(moveServ.findByName(move.getName())));
+                model.addAttribute(MOVES, Arrays.asList(moveServ.findByName(moveDTO.getName())));
             }
             catch(NoSuchElementException e){
                 model.addAttribute(ERR, "No move with the given name was found.");
@@ -119,7 +120,7 @@ public class MoveController {
             return RESULTS;
         }
 
-        model.addAttribute(MOVES, moveServ.findMoveByExample(move));
+        model.addAttribute(MOVES, moveServ.findMoveByExample(new Move(moveDTO)));
         return RESULTS;
     }
 
@@ -156,19 +157,19 @@ public class MoveController {
     }
 
     @PostMapping("/move_delete")
-    public String getDeleteMovePage(@ModelAttribute Move move, Model model)
+    public String getDeleteMovePage(@ModelAttribute MoveDTO moveDTO, Model model)
     {
         // Ensure the move exists in the database
-        if(!moveServ.doesMoveExist(move.getName()))
+        if(!moveServ.doesMoveExist(moveDTO.getName()))
         {
             model.addAttribute(ERR, "The move name didn't match anything in the database.");
             return DELETE;
         }
         // Otherwise, it must exist; delete it after grabbing it to show the user what was removed
-        Move del = moveServ.findByName(move.getName());
+        Move del = moveServ.findByName(moveDTO.getName());
         model.addAttribute(MOVES, Arrays.asList(del));
         log.info("Move being deleted from database: " + del.getName());
-        moveServ.deleteByName(move.getName());
+        moveServ.deleteByName(moveDTO.getName());
 
         // Small JS alert flag to drive home the deletion
         model.addAttribute(ALERT, "delete");
