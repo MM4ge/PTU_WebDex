@@ -14,7 +14,7 @@
 <span th:if="${error != null}" th:text="${error}"/>
 <h1>Form</h1>
 <form action="#" th:action="@{/moveform}" th:object="${move}" method="post">
-  <p>Name: <input type="text" th:field="*{name}" placeholder="Ember"/></p>
+  <p>Full Name: <input type="text" th:field="*{name}" placeholder="Ember"/></p>
   <p>
     <select name="type">
       <option th:each="typeOpt : ${T(org.example.models.Type).values()}"

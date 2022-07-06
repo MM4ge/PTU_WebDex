@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<nav th:fragment="nav" class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav th:fragment="nav" class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
     <div class="container">
         <a class="navbar-brand" href="#">Start Bootstrap</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -25,13 +25,17 @@
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Moves</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="allmoves">See All Moves</a></li>
+                        <li><a class="dropdown-item" href="movesearch">Search for Moves</a></li>
+                        <li><a class="dropdown-item" href="moveform">Something else here</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="js/scripts.js"></script>
 </body>
 </html>

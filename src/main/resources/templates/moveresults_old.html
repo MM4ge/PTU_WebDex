@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Handling Form Submission</title>
+    <title>Move Search Results</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
@@ -11,9 +11,10 @@
 <body>
 <!-- Responsive navbar-->
 <div th:replace="fragments/nav :: nav" />
+<div class="h-100 d-flex align-items-center justify-content-center">
 <div class="col-lg-10">
-    <h1 class="text-white">Courses List</h1>
-    <table class="table table-dark">
+    <h1 class="text-black text-center">Move Search Results</h1>
+    <table class="table table-light table-striped">
         <thead>
         <tr>
             <th scope="col">Name</th>
@@ -40,8 +41,8 @@
         </tbody>
     </table>
 </div>
-<div>
-    <a href="/moveform">Submit another message</a>
 </div>
+<!-- Footer-->
+<div th:replace="fragments/footer :: footer"/>
 </body>
 </html>
