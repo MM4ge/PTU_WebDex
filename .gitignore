@@ -139,3 +139,6 @@ buildNumber.properties
 
 !**/src/main/**/target/
 !**/src/test/**/target/
+/logs/*
+/lib/*
+/.idea/jpa-buddy.xml
