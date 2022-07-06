@@ -41,7 +41,7 @@ public class MoveController {
     }
 
     @GetMapping("/move_form")
-    public String getCreateorUpdateForm(Model model) {
+    public String getCreateOrUpdateForm(Model model) {
         model.addAttribute("moveDTO", new MoveDTO());
         return FORM;
     }
@@ -66,12 +66,13 @@ public class MoveController {
         if(err)
             return FORM;
 
-        // Check if we're creating or updating - boolean now in case an error occurs while saving
+        // Check if we're creating or updating - save it to aboolean now instead of directly using it
+        //  in case an error occurs while saving
         boolean update;
         if(moveServ.doesMoveExist(moveDTO.getName())){ update = true;}
         else {update = false;}
 
-        model.addAttribute(MOVES, Arrays.asList(moveDTO));
+        // Save the move and add it to the model
         try {
             moveServ.saveOrUpdate(new Move(moveDTO));
         }
@@ -80,7 +81,9 @@ public class MoveController {
             model.addAttribute(ERR, "An unknown error has occurred. Please try again.");
             return FORM;
         }
+        model.addAttribute(MOVES, Arrays.asList(moveDTO));
 
+        // Update the model with the alert flag
         if(update)
             model.addAttribute(ALERT, "update");
         else

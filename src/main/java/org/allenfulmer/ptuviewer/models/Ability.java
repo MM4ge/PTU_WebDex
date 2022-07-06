@@ -2,6 +2,7 @@ package org.allenfulmer.ptuviewer.models;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.allenfulmer.ptuviewer.dto.AbilityDTO;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -52,6 +53,16 @@ public class Ability {
         this.name = name;
         this.frequency = frequency;
         this.effect = effect;
+    }
+
+    public Ability(AbilityDTO abilityDTO) {
+        this.name = abilityDTO.getName();
+        this.frequency = abilityDTO.getFrequency();
+        this.actionType = abilityDTO.getActionType();
+        this.trigger = abilityDTO.getTrigger();
+        this.target = abilityDTO.getTarget();
+        this.effect = abilityDTO.getEffect();
+        this.connection = abilityDTO.getConnection();
     }
 
     @Override

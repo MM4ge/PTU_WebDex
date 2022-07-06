@@ -1,17 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content=""/>
-    <meta name="author" content=""/>
-    <title>Bare - Start Bootstrap Template</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet"/>
-    <script type="text/javascript" src="js/scripts.js"></script>
-</head>
+<div th:replace="fragments/head :: head"/>
 <body>
 <!-- Responsive navbar-->
 <div th:replace="fragments/nav :: nav"/>
@@ -19,9 +8,10 @@
 <!-- Page content-->
 <div class="container">
     <div class="text-center mt-5">
-        <h1>A Bootstrap 5 Starter Template</h1>
-        <p class="lead">A complete project boilerplate built with Bootstrap</p>
-        <p>Bootstrap v5.1.3</p>
+        <h1>PTU Viewer</h1>
+        <p class="lead">A simple website to view Pokemon Tabletop United data.</p>
+        <p>CSS Template: Bare - Bootstrap v5.1.3</p>
+        <p th:if="${error != null}" th:text="${error}" color="text-danger"/>
     </div>
 </div>
 <!-- Footer-->

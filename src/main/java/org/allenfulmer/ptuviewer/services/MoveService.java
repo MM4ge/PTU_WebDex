@@ -80,7 +80,7 @@ public class MoveService {
     }
 
     /*
-    ExampleMatcher (and base version of other Example code) sourced from Patrik Hörlin
+    ExampleMatcher sourced from Patrik Hörlin
     https://medium.com/predictly-on-tech/jpa-search-using-spring-data-example-3bb1d5c46e3b
      */
     private static final ExampleMatcher SEARCH_CONDITIONS_MATCH_ALL = ExampleMatcher

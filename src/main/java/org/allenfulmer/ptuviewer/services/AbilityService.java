@@ -3,7 +3,7 @@ package org.allenfulmer.ptuviewer.services;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.allenfulmer.ptuviewer.models.Ability;
+import org.allenfulmer.ptuviewer.models.*;
 import org.allenfulmer.ptuviewer.repositories.AbilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -33,6 +33,28 @@ public class AbilityService {
     public Ability findByName(String name)
     {
         return abilityRepo.findById(name).orElseThrow(NoSuchElementException::new);
+    }
+
+    private static final ExampleMatcher SEARCH_CONDITIONS_MATCH_ALL = ExampleMatcher
+            .matching()
+            .withMatcher("frequency", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+            .withMatcher("actionType", ExampleMatcher.GenericPropertyMatchers.exact())
+            .withMatcher("trigger", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+            .withMatcher("target", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+            .withMatcher("effect", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+            .withIgnorePaths("name", "connection");
+    public List<Ability> findAbilityByExample(Ability ability)
+    {
+        // The Move we're receiving potentially has default values in it from the enums
+        ability.setFrequency(ability.getFrequency() == Frequency.FREQUENCIES ? null : ability.getFrequency());
+        ability.setActionType(ability.getActionType() == ActionType.ACTION_TYPE ? null : ability.getActionType());
+
+        ability.setTrigger(ability.getTrigger().isEmpty() ? null : ability.getTrigger());
+        ability.setTarget(ability.getTarget().isEmpty() ? null : ability.getTarget());
+        ability.setEffect(ability.getEffect().isEmpty() ? null : ability.getEffect());
+
+        Example<Ability> example = Example.of(ability, SEARCH_CONDITIONS_MATCH_ALL);
+        return abilityRepo.findAll(example);
     }
 
     /*

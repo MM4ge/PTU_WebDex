@@ -10,6 +10,4 @@ import java.util.List;
 
 public interface MoveRepository extends JpaRepository<Move, String>, JpaSpecificationExecutor<Move> {
 
-    public List<Move> findByType(Type type);
-
 }
