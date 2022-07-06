@@ -1,4 +1,4 @@
-package org.allenfulmer.ptuviewer;
+package org.allenfulmer.ptuviewer.repositories;
 
 import org.allenfulmer.ptuviewer.models.Ability;
 import org.allenfulmer.ptuviewer.models.Frequency;
@@ -13,15 +13,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
-@RunWith( SpringJUnit4ClassRunner.class )
-@EnableJpaRepositories("org.allenfulmer.ptuviewer.repositories")
+import javax.transaction.Transactional;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@WebAppConfiguration
 public class AbilityRepositoryTest {
 
     @Autowired AbilityRepository abilityRepo;

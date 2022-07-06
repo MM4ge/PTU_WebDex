@@ -35,6 +35,13 @@ public class AbilityService {
         return abilityRepo.findById(name).orElseThrow(NoSuchElementException::new);
     }
 
+    @Transactional(rollbackOn = {IllegalArgumentException.class})
+    public void saveOrUpdate(Ability a)
+    {
+        log.info("Saving ability: " + a.getName());
+        abilityRepo.save(a);
+    }
+
     private static final ExampleMatcher SEARCH_CONDITIONS_MATCH_ALL = ExampleMatcher
             .matching()
             .withMatcher("frequency", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
@@ -42,7 +49,7 @@ public class AbilityService {
             .withMatcher("trigger", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
             .withMatcher("target", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
             .withMatcher("effect", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-            .withIgnorePaths("name", "connection");
+            .withIgnorePaths("name", "connection", "uses");
     public List<Ability> findAbilityByExample(Ability ability)
     {
         // The Move we're receiving potentially has default values in it from the enums

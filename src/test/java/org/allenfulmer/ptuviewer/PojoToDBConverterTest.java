@@ -9,6 +9,8 @@ import org.allenfulmer.ptuviewer.models.*;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.springframework.util.Assert;
@@ -65,5 +67,11 @@ public class PojoToDBConverterTest {
         Assert.isTrue(minus.getTarget().contains("Plus"), "Doesn't reference Plus");
         Assert.isTrue(minus.getEffect().contains("Special Attack"), "Doesn't reference SpAtk");
         org.junit.Assert.assertTrue(true); // Sonarlint doesn't see Spring's Assert as valid, so extra JUnit one
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Bubble", "Tackle", "Fly"})
+    public void parameterizedMoveCheck(String input) {
+        org.junit.Assert.assertNotNull(convertedMoves.get(input));
     }
 }
