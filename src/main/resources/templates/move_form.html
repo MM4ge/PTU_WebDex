@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Handling Form Submission</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet"/>
+</head>
+<body>
+<!-- Responsive navbar-->
+<div th:replace="fragments/nav :: nav"/>
+<div class="h-100 d-flex align-items-center justify-content-center">
+    <div>
+        <div class="mb-3">
+            <h1>Create or Update a Move</h1>
+            <h6>Input the name of the move, all 3 dropdown menus, and any other information.</h6>
+            <h6>If you submit the name of a move that already exists, it will be updated to match this form.</h6>
+            <p th:if="${error != null}" th:text="${error}" class="text-danger"/>
+            <p th:if="${error2 != null}" th:text="${error2}" class="text-danger"/>
+        </div>
+        <form action="#" th:action="@{/move_form}" th:object="${move}" method="post" class="m-3 p-3 border border-dark">
+            <p>Full Name: <input type="text" th:field="*{name}" placeholder="Bubble"/></p>
+            <p>
+                <select name="type">
+                    <option th:each="typeOpt : ${T(org.allenfulmer.ptuviewer.models.Type).values()}"
+                            th:value="${typeOpt}" th:text="${typeOpt.displayName}"></option>
+                </select>
+                <select name="frequency">
+                    <option th:each="frequencyOpt : ${T(org.allenfulmer.ptuviewer.models.Frequency).values()}"
+                            th:value="${frequencyOpt}" th:text="${frequencyOpt.displayName}"></option>
+                </select>
+                <select name="moveClass">
+                    <option th:each="moveClassOpt : ${T(org.allenfulmer.ptuviewer.models.Move.MoveClass).values()}"
+                            th:value="${moveClassOpt}" th:text="${moveClassOpt.displayName}"></option>
+                </select>
+            </p>
+            <p>
+                AC: <input class="form-short" type="text" th:field="*{ac}" placeholder="2" size="6"/>
+                DB: <input class="form-short" type="text" th:field="*{db}" placeholder="4" size="6"/>
+            </p>
+            <p>Range: <input type="text" th:field="*{range}" placeholder="Burst 1" size="35"/></p>
+            <p>Effect: <input type="text" th:field="*{effect}" placeholder="Lowers target's Speed on 16+" size="36"/></p>
+            <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+        </form>
+    </div>
+</div>
+<!-- Footer-->
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
