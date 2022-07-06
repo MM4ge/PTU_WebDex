@@ -22,6 +22,7 @@ public class Ability {
     Frequency frequency;
     int uses = 0;
     ActionType actionType;
+    @Transient
     ActionType.Priority priority = null;
     @Column(name = "abilityTrigger")
     String trigger = "";

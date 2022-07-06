@@ -24,6 +24,7 @@ server:
     include-exception: true
 
 logging:
+  file.name: logs/program.log
   level:
     root: INFO
     com.instructor.springbootdemoproject: INFO
@@ -33,6 +34,7 @@ logging:
         type:
           descriptor:
             sql: TRACE
+
 management:
   endpoints:
     web:

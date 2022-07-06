@@ -34,8 +34,8 @@ public class AppCommandLineRunner implements CommandLineRunner {
     @Override
     public void run(String... args){
         insertTestData();
-//        insertMoves();
-//        insertAbilities();
+        insertMoves();
+        insertAbilities();
 //        insertPokemon();
         log.info("Done with all loading");
 

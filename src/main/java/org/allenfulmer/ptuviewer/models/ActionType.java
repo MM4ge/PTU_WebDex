@@ -11,7 +11,18 @@ public enum ActionType {
     STANDARD_ACTION("Standard Action"), FULL_ACTION("Full Action"),
     EXTENDED_ACTION("Extended Action"), SPECIAL("Special");
     public enum Priority {
-        PRIORITY, INTERRUPT, REACTION;
+        PRIORITY("Priority"), INTERRUPT("Interrupt"), REACTION("Reaction");
+
+        private final String displayName;
+
+        Priority(String displayName)
+        {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName(){
+            return this.displayName;
+        }
 
         public static Priority getWithName(String name) {
             Priority ret;
@@ -24,16 +35,16 @@ public enum ActionType {
         }
     }
 
-    private final String name;
+    private final String displayName;
 
-    ActionType(String name)
+    ActionType(String displayName)
     {
-        this.name = name;
+        this.displayName = displayName;
     }
 
-    public String getName()
+    public String getDisplayName()
     {
-        return this.name;
+        return this.displayName;
     }
 
     private static Map<String, ActionType> nameMap;
@@ -47,7 +58,7 @@ public enum ActionType {
         catch (IllegalArgumentException e) {
             if (nameMap == null) {
                 Map<String, ActionType> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-                Arrays.stream(ActionType.values()).forEach(a -> map.put(a.getName(), a));
+                Arrays.stream(ActionType.values()).forEach(a -> map.put(a.getDisplayName(), a));
                 nameMap = Collections.unmodifiableMap(map);
             }
             ret = nameMap.get(name);
