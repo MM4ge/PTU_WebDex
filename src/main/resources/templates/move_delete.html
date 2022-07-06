@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<div th:replace="fragments/head :: head"/>
+<body>
+<!-- Responsive navbar-->
+<div th:replace="fragments/nav :: nav"/>
+<div class="h-100 d-flex align-items-center justify-content-center">
+    <div>
+        <div class="mb-3">
+            <h1>Delete a Move</h1>
+            <h6>Input the exact name of the move, and if it exists in the database, it will be deleted.</h6>
+            <h6>This action is permanent. Moves cannot be restored, only re-created.</h6>
+            <p th:if="${error != null}" th:text="${error}" class="text-danger"/>
+        </div>
+        <form action="#" th:action="@{/move_delete}" th:object="${moveDTO}" method="post" class="m-3 p-3 border border-dark">
+            <p>Full Name: <input type="text" th:field="*{name}" placeholder="Tackle"/></p>
+            <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+        </form>
+    </div>
+</div>
+<!-- Footer-->
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

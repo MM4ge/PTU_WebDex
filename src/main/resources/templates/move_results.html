@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<div th:replace="fragments/head :: head"/>
+<body>
+<!-- Responsive navbar-->
+<div th:replace="fragments/nav :: nav"/>
+<div class="h-100 d-flex align-items-center justify-content-center">
+    <div class="col-lg-10">
+        <h1 class="text-black text-center">Selected Moves</h1>
+        <table class="table table-light table-striped">
+            <thead style="position: sticky;top: 0" class="thead-light">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Frequency</th>
+                <th scope="col">AC</th>
+                <th scope="col">DB</th>
+                <th scope="col">Move Class</th>
+                <th scope="col">Range</th>
+                <th scope="col">Effect</th>
+            </tr>
+            </thead>
+            <tbody>
+            <div th:if="${movePage != null}">
+                <tr th:each="move: ${movePage.content}">
+                    <th scope="row" th:text="${move.name}"></th>
+                    <td th:text="${move.type.displayName}"></td>
+                    <td th:text="${move.frequency.displayName}"></td>
+                    <td th:text="${move.ac}"></td>
+                    <td th:text="${move.db}"></td>
+                    <td th:text="${move.moveClass.displayName}"></td>
+                    <td th:text="${move.range}"></td>
+                    <td th:text="${move.effect}"></td>
+                </tr>
+            </div>
+            <div th:unless="${movePage != null}">
+                <tr th:each="move: ${moves}">
+                    <th scope="row" th:text="${move.name}"></th>
+                    <td th:text="${move.type.displayName}"></td>
+                    <td th:text="${move.frequency.displayName}"></td>
+                    <td th:text="${move.ac}"></td>
+                    <td th:text="${move.db}"></td>
+                    <td th:text="${move.moveClass.displayName}"></td>
+                    <td th:text="${move.range}"></td>
+                    <td th:text="${move.effect}"></td>
+                </tr>
+            </div>
+            </tbody>
+        </table>
+        <div th:if="${movePage != null}">
+            <ul class="pagination pagination-sm">
+                <li th:if="${movePage.totalPages > 0}" class="page-link" th:each="pageNumber : ${pageNumbers}">
+                    <a th:href="@{/all_moves(size=${movePage.size}, page=${pageNumber})}"
+                       th:text=${pageNumber}
+                    ></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div th:if="${alert != null}">
+    <div th:switch="${alert}">
+        <div th:case="create">
+            <script src="js/create.js"></script>
+        </div>
+        <div th:case="update">
+            <script src="js/update.js"></script>
+        </div>
+        <div th:case="delete">
+            <script src="js/delete.js"></script>
+        </div>
+    </div>
+</div>
+<!-- Footer-->
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

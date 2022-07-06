@@ -1,0 +1,1 @@
+alert("Deletion Successful!");

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<div th:replace="fragments/head :: head"/>
+<body>
+<!-- Responsive navbar-->
+<div th:replace="fragments/nav :: nav"/>
+<div class="h-100 d-flex align-items-center justify-content-center">
+    <div class="col-lg-10">
+        <h1 class="text-black text-center">Selected Abilities</h1>
+        <table class="table table-light table-striped">
+            <thead style="position: sticky;top: 0" class="thead-light">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Frequency</th>
+                <th scope="col">Action Type</th>
+                <th scope="col">Trigger</th>
+                <th scope="col">Target</th>
+                <th scope="col">Effect</th>
+                <th scope="col">Connection</th>
+            </tr>
+            </thead>
+            <tbody>
+            <div th:if="${abilityPage != null}">
+                <tr th:each="ability: ${abilityPage.content}">
+                    <th scope="row" th:text="${ability.name}"></th>
+                    <div th:if="${ability.frequency != null}">
+                        <td th:text="${ability.frequency.displayName}"></td>
+                    </div>
+                    <div th:unless="${ability.frequency != null}">
+                        <td></td>
+                    </div>
+                    <div th:if="${ability.actionType != null}">
+                        <td th:text="${ability.actionType.displayName}"></td>
+                    </div>
+                    <div th:unless="${ability.actionType != null}">
+                        <td></td>
+                    </div>
+                    <td th:text="${ability.trigger}"></td>
+                    <td th:text="${ability.target}"></td>
+                    <td th:text="${ability.effect}"></td>
+                    <div th:if="${ability.connection != null}">
+                        <td th:text="${ability.connection.name}"></td>
+                    </div>
+                    <div th:unless="${ability.connection != null}">
+                        <td></td>
+                    </div>
+                </tr>
+            </div>
+            <div th:unless="${abilityPage != null}">
+                <tr th:each="ability: ${abilities}">
+                    <th scope="row" th:text="${ability.name}"></th>
+                    <div th:if="${ability.frequency != null}">
+                        <td th:text="${ability.frequency.displayName}"></td>
+                    </div>
+                    <div th:unless="${ability.frequency != null}">
+                        <td></td>
+                    </div>
+                    <div th:if="${ability.actionType != null}">
+                        <td th:text="${ability.actionType.displayName}"></td>
+                    </div>
+                    <div th:unless="${ability.actionType != null}">
+                        <td></td>
+                    </div>
+                    <td th:text="${ability.trigger}"></td>
+                    <td th:text="${ability.target}"></td>
+                    <td th:text="${ability.effect}"></td>
+                    <div th:if="${ability.connection != null}">
+                        <td th:text="${ability.connection.name}"></td>
+                    </div>
+                    <div th:unless="${ability.connection != null}">
+                        <td></td>
+                    </div>
+                </tr>
+            </div>
+            </tbody>
+        </table>
+        <div th:if="${abilityPage != null}">
+            <ul class="pagination pagination-sm">
+                <li th:if="${abilityPage.totalPages > 0}" class="page-link" th:each="pageNumber : ${pageNumbers}">
+                    <a th:href="@{/all_abilities(size=${abilityPage.size}, page=${pageNumber})}"
+                       th:text=${pageNumber}
+                    ></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div th:if="${alert != null}">
+    <div th:switch="${alert}">
+        <div th:case="create">
+            <script src="js/create.js"></script>
+        </div>
+        <div th:case="update">
+            <script src="js/update.js"></script>
+        </div>
+        <div th:case="delete">
+            <script src="js/delete.js"></script>
+        </div>
+    </div>
+</div>
+<!-- Footer-->
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

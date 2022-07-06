@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="fragments/head :: head"/>
+<body>
+<!-- Responsive navbar-->
+<div th:replace="fragments/nav :: nav"/>
+
+<!-- Page content-->
+<div class="container">
+    <div class="text-center mt-5">
+        <h1>PTU Viewer</h1>
+        <p class="lead">A simple website to view Pokemon Tabletop United data.</p>
+        <p>CSS Template: Bare - Bootstrap v5.1.3</p>
+        <p th:if="${error != null}" th:text="${error}" color="text-danger"/>
+    </div>
+</div>
+<!-- Footer-->
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
