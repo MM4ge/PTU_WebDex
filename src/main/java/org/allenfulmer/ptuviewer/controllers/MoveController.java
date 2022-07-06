@@ -25,6 +25,13 @@ import java.util.stream.IntStream;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class MoveController {
     MoveService moveServ;
+    private static final String ERR = "error";
+    private static final String ALERT = "alert";
+    private static final String MOVES = "moves";
+    private static final String FORM = "move_form";
+    private static final String RESULTS = "move_results";
+    private static final String DELETE = "move_delete";
+    private static final String SEARCH = "move_search";
 
     @Autowired
     public MoveController(MoveService moveServ)
@@ -35,43 +42,55 @@ public class MoveController {
     @GetMapping("/move_form")
     public String getCreateorUpdateForm(Model model) {
         model.addAttribute("move", new Move());
-        return "move_form";
+        return FORM;
     }
 
     @PostMapping("/move_form")
     public String createOrUpdateMove(@ModelAttribute Move move, Model model) {
         boolean err = false;
-        // Validate the move
+        // Validate the move - it must have a name (unique id) and have selected something from each dropdown
+        //  (each Move has those as requirements)
         if(move.getName().isEmpty())
         {
-            model.addAttribute("error2", "Please add a name.");
+            model.addAttribute(ERR, "Please add a name.");
             log.info("Create/Update Move was supplied an empty name.");
             err = true;
         }
         if(!didChangeDropdowns(move))
         {
-            model.addAttribute("error", "Please choose a selection from each dropdown menu.");
+            model.addAttribute("error2", "Please choose a selection from each dropdown menu.");
             log.info("Create/Update Move was supplied a default dropdown menu choice.");
             err = true;
         }
         if(err)
-            return "move_form";
+            return FORM;
 
-        model.addAttribute("moves", Arrays.asList(move));
+        // Check if we're creating or updating - boolean now in case an error occurs while saving
+        boolean update;
+        if(moveServ.doesMoveExist(move.getName())){ update = true;}
+        else {update = false;}
+
+        model.addAttribute(MOVES, Arrays.asList(move));
         try {
             moveServ.saveOrUpdate(move);
         }
         catch(Exception e)
         {
-            model.addAttribute("error", "An unknown error has occurred. Please try again.");
-            return "move_form";
+            model.addAttribute(ERR, "An unknown error has occurred. Please try again.");
+            return FORM;
         }
 
-        return "move_results";
+        if(update)
+            model.addAttribute(ALERT, "update");
+        else
+            model.addAttribute(ALERT, "create");
+        return RESULTS;
     }
 
     private boolean didChangeDropdowns(Move move)
     {
+        // These are all the defaults for the enum dropdown menus (placed there for reading convenience)
+        //  They aren't used by the JSON, so they should be filtered out
         return !(move.getFrequency() == Frequency.FREQUENCIES ||
                 move.getMoveClass() == Move.MoveClass.MOVE_CLASSES ||
                 move.getType() == Type.TYPES);
@@ -81,27 +100,27 @@ public class MoveController {
     public String moveSearchForm(Model model)
     {
         model.addAttribute("move", new Move());
-        return "move_search";
+        return SEARCH;
     }
 
     @PostMapping("/move_search")
     public String searchMoves(@ModelAttribute Move move, Model model)
     {
-        // If the name isn't empty (was supplied by the user), it's guaranteed to be unique so only search by it
+        // If the name isn't empty (was supplied by the user), it's guaranteed to be unique so only search by it exactly
         if(!move.getName().isEmpty())
         {
             try {
-                model.addAttribute("moves", Arrays.asList(moveServ.findByName(move.getName())));
+                model.addAttribute(MOVES, Arrays.asList(moveServ.findByName(move.getName())));
             }
             catch(NoSuchElementException e){
-                model.addAttribute("error", "No move with the given name was found.");
-                return "move_search";
+                model.addAttribute(ERR, "No move with the given name was found.");
+                return SEARCH;
             }
-            return "move_results";
+            return RESULTS;
         }
 
-        model.addAttribute("moves", moveServ.findMoveByExample(move));
-        return "move_results";
+        model.addAttribute(MOVES, moveServ.findMoveByExample(move));
+        return RESULTS;
     }
 
     /*
@@ -115,22 +134,25 @@ public class MoveController {
         int pageNum = currPage.orElse(1);
         int pageSize = size.orElse(20);
 
+        // Get all the entities to fill up the current page
         Page<Move> movePage = moveServ.findAllPaginated(PageRequest.of(pageNum - 1, pageSize));
         model.addAttribute("movePage", movePage);
         int totalPages = movePage.getTotalPages();
+
+        // Add the page indexes to the model (the pg 1, 2, 3...)
         if(totalPages > 0)
         {
             model.addAttribute("pageNumbers",
                     IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList()));
         }
-        return "move_results";
+        return RESULTS;
     }
 
     @GetMapping("/move_delete")
     public String getDeleteMovePage(Model model)
     {
         model.addAttribute("move", new Move());
-        return "move_delete";
+        return DELETE;
     }
 
     @PostMapping("/move_delete")
@@ -139,14 +161,17 @@ public class MoveController {
         // Ensure the move exists in the database
         if(!moveServ.doesMoveExist(move.getName()))
         {
-            model.addAttribute("error", "The move name didn't match anything in the database.");
-            return "move_delete";
+            model.addAttribute(ERR, "The move name didn't match anything in the database.");
+            return DELETE;
         }
         // Otherwise, it must exist; delete it after grabbing it to show the user what was removed
         Move del = moveServ.findByName(move.getName());
-        model.addAttribute("moves", Arrays.asList(del));
+        model.addAttribute(MOVES, Arrays.asList(del));
         log.info("Move being deleted from database: " + del.getName());
         moveServ.deleteByName(move.getName());
-        return "move_results";
+
+        // Small JS alert flag to drive home the deletion
+        model.addAttribute(ALERT, "delete");
+        return RESULTS;
     }
 }

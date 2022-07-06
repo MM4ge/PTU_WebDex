@@ -65,6 +65,19 @@
         </div>
     </div>
 </div>
+<div th:if="${alert != null}">
+    <div th:switch="${alert}">
+        <div th:case="create">
+            <script src="js/create.js"></script>
+        </div>
+        <div th:case="update">
+            <script src="js/update.js"></script>
+        </div>
+        <div th:case="delete">
+            <script src="js/delete.js"></script>
+        </div>
+    </div>
+</div>
 <!-- Footer-->
 <div th:replace="fragments/footer :: footer"/>
 </body>

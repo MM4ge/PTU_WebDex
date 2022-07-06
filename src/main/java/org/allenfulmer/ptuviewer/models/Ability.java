@@ -19,7 +19,6 @@ public class Ability {
     @Id
     @NonNull
     String name;
-    @NonNull
     Frequency frequency;
     int uses = 0;
     ActionType actionType;
@@ -27,7 +26,6 @@ public class Ability {
     @Column(name = "abilityTrigger")
     String trigger = "";
     String target = "";
-    @NonNull
     @Column(length = 1023)
     String effect;
     @ManyToOne(fetch = FetchType.EAGER)//(cascade = CascadeType.ALL)
@@ -47,6 +45,12 @@ public class Ability {
         this.target = target;
         this.effect = effect;
         this.connection = connection;
+    }
+
+    public Ability(@NonNull String name, Frequency frequency, String effect) {
+        this.name = name;
+        this.frequency = frequency;
+        this.effect = effect;
     }
 
     @Override

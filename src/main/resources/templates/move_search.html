@@ -17,7 +17,7 @@
             <h1>Move Search</h1>
             <h6>Input the name of a move to search for that move specifically.</h6>
             <h6>Input any other number of fields to search for moves that fit all of them.</h6>
-            <span th:if="${error != null}" th:text="${error}" color="red"/>
+            <span th:if="${error != null}" th:text="${error}" color="text-danger"/>
         </div>
         <form action="#" th:action="@{/move_search}" th:object="${move}" method="post"
               class="m-3 p-3 border border-dark">
