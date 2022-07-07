@@ -1,6 +1,5 @@
 package org.allenfulmer.ptuviewer.services;
 
-import org.allenfulmer.ptuviewer.models.Ability;
 import org.allenfulmer.ptuviewer.models.Frequency;
 import org.allenfulmer.ptuviewer.models.Move;
 import org.allenfulmer.ptuviewer.models.Type;
@@ -24,9 +23,13 @@ public class MoveServiceTest {
     MoveService moveService;
 
     @Test
+    public void injectedComponentsAreNotNull() {
+        Assert.assertNotNull(moveService);
+    }
+
+    @Test
     // Save the move, check if it was saved, grab it and compare equality to the original
-    public void saveExistsAndRetrieve()
-    {
+    public void saveExistsAndRetrieve() {
         Move m1 = new Move("Test1");
         moveService.saveOrUpdate(m1);
         Assert.assertTrue(moveService.doesMoveExist(m1.getName()));
@@ -35,8 +38,7 @@ public class MoveServiceTest {
     }
 
     @Test
-    public void saveAndDelete()
-    {
+    public void saveAndDelete() {
         Move m2 = new Move("Test2");
         moveService.saveOrUpdate(m2);
         Assert.assertTrue(moveService.doesMoveExist(m2.getName()));
@@ -45,8 +47,7 @@ public class MoveServiceTest {
     }
 
     @Test
-    public void findAllAndSorted()
-    {
+    public void findAllAndSorted() {
         Move m3 = new Move("Test3");
         Move m4 = new Move("Test4");
         moveService.saveOrUpdate(m3);
@@ -56,15 +57,14 @@ public class MoveServiceTest {
 
         List<Move> moves1 = moveService.findAll();
         List<Move> moves2 = moveService.findAllSorted();
-        Assert.assertTrue(moves1.containsAll(Arrays.asList(m3,m4)));
-        Assert.assertTrue(moves2.containsAll(Arrays.asList(m3,m4)));
+        Assert.assertTrue(moves1.containsAll(Arrays.asList(m3, m4)));
+        Assert.assertTrue(moves2.containsAll(Arrays.asList(m3, m4)));
     }
 
     @Test
-    public void findWithExample()
-    {
-        Move m5 = new Move("Test5",Type.FIRE, Frequency.SPECIAL, "","",
-                Move.MoveClass.SPECIAL,"","");
+    public void findWithExample() {
+        Move m5 = new Move("Test5", Type.FIRE, Frequency.SPECIAL, "", "",
+                Move.MoveClass.SPECIAL, "", "");
         moveService.saveOrUpdate(m5);
         Assert.assertTrue(moveService.doesMoveExist(m5.getName()));
         List<Move> moves3 = moveService.findMoveByExample(m5);

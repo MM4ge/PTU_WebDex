@@ -3,11 +3,8 @@ package org.allenfulmer.ptuviewer.controllers;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.allenfulmer.ptuviewer.dto.AbilityDTO;
 import org.allenfulmer.ptuviewer.dto.PokemonSpeciesDTO;
-import org.allenfulmer.ptuviewer.models.Ability;
 import org.allenfulmer.ptuviewer.models.PokemonSpecies;
-import org.allenfulmer.ptuviewer.services.AbilityService;
 import org.allenfulmer.ptuviewer.services.PokemonSpeciesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,23 +27,20 @@ import java.util.stream.IntStream;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PokemonSpeciesController {
 
-    PokemonSpeciesService pokemonServ;
-
     private static final String ERR = "error";
     private static final String POKEMON = "pokemons";
     private static final String RESULTS = "pokemon_results";
     private static final String SEARCH = "pokemon_search";
+    PokemonSpeciesService pokemonServ;
 
     @Autowired
-    PokemonSpeciesController(PokemonSpeciesService pokemonServ)
-    {
+    PokemonSpeciesController(PokemonSpeciesService pokemonServ) {
         this.pokemonServ = pokemonServ;;
     }
 
     @GetMapping("/all_pokemon")
     public String showAllPokemon(Model model, @RequestParam("page") Optional<Integer> currPage,
-                               @RequestParam("size") Optional<Integer> size)
-    {
+                                 @RequestParam("size") Optional<Integer> size) {
         int pageNum = currPage.orElse(1);
         int pageSize = size.orElse(10);
 
@@ -56,8 +50,7 @@ public class PokemonSpeciesController {
         int totalPages = pokemonPage.getTotalPages();
 
         // Add the page indexes to the model (the pg 1, 2, 3...)
-        if(totalPages > 0)
-        {
+        if (totalPages > 0) {
             model.addAttribute("pageNumbers",
                     IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList()));
         }
@@ -65,22 +58,18 @@ public class PokemonSpeciesController {
     }
 
     @GetMapping("/pokemon_search")
-    public String pokemonSearchForm(Model model)
-    {
+    public String pokemonSearchForm(Model model) {
         model.addAttribute("pokemonDTO", new PokemonSpeciesDTO());
         return SEARCH;
     }
 
     @PostMapping("/pokemon_search")
-    public String searchAbilities(@ModelAttribute PokemonSpeciesDTO pokemonDTO, Model model)
-    {
+    public String searchAbilities(@ModelAttribute PokemonSpeciesDTO pokemonDTO, Model model) {
         // If the dex ID isn't empty (was supplied by the user), it's guaranteed to be unique so only search by it exactly
-        if(!pokemonDTO.getPokedexID().isEmpty())
-        {
+        if (!pokemonDTO.getPokedexID().isEmpty()) {
             try {
                 model.addAttribute(POKEMON, Arrays.asList(pokemonServ.findByID(pokemonDTO.getPokedexID())));
-            }
-            catch(NoSuchElementException e){
+            } catch (NoSuchElementException e) {
                 model.addAttribute(ERR, "No pokemon with the given pokedex ID was found.");
                 return SEARCH;
             }

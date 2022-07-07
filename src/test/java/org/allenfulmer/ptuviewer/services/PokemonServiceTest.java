@@ -1,7 +1,5 @@
 package org.allenfulmer.ptuviewer.services;
 
-import org.allenfulmer.ptuviewer.models.Frequency;
-import org.allenfulmer.ptuviewer.models.Move;
 import org.allenfulmer.ptuviewer.models.PokemonSpecies;
 import org.allenfulmer.ptuviewer.models.Type;
 import org.junit.Assert;
@@ -24,8 +22,12 @@ public class PokemonServiceTest {
     PokemonSpeciesService pokemonService;
 
     @Test
-    public void saveAndRetrieve()
-    {
+    public void injectedComponentsAreNotNull() {
+        Assert.assertNotNull(pokemonService);
+    }
+
+    @Test
+    public void saveAndRetrieve() {
         PokemonSpecies p1 = new PokemonSpecies("2001", "TestMon1", "Test1");
         pokemonService.saveOrUpdate(p1);
         PokemonSpecies dbPoke = pokemonService.findByID(p1.getPokedexID());
@@ -33,20 +35,18 @@ public class PokemonServiceTest {
     }
 
     @Test
-    public void findAll()
-    {
+    public void findAll() {
         PokemonSpecies p2 = new PokemonSpecies("2002", "TestMon2", "Test2");
         PokemonSpecies p3 = new PokemonSpecies("2003", "TestMon3", "Test3");
         pokemonService.saveOrUpdate(p2);
         pokemonService.saveOrUpdate(p3);
 
         List<PokemonSpecies> pokes1 = pokemonService.getAllSpecies();
-        Assert.assertTrue(pokes1.containsAll(Arrays.asList(p2,p3)));
+        Assert.assertTrue(pokes1.containsAll(Arrays.asList(p2, p3)));
     }
 
     @Test
-    public void findWithExample()
-    {
+    public void findWithExample() {
         PokemonSpecies p4 = new PokemonSpecies("2004", "TestMon4", "Test4");
         p4.setTypesFromList(Arrays.asList(Type.FIRE, Type.FIGHTING));
         p4.setEvolutions("1 - TestMon4");

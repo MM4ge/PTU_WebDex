@@ -3,7 +3,9 @@ package org.allenfulmer.ptuviewer.services;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.allenfulmer.ptuviewer.models.*;
+import org.allenfulmer.ptuviewer.models.Ability;
+import org.allenfulmer.ptuviewer.models.ActionType;
+import org.allenfulmer.ptuviewer.models.Frequency;
 import org.allenfulmer.ptuviewer.repositories.AbilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -17,30 +19,9 @@ import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Transactional(rollbackOn = {DataAccessException.class})
 public class AbilityService {
-
-    AbilityRepository abilityRepo;
-
-    @Autowired
-    AbilityService(AbilityRepository abilityRepo)
-    {
-        this.abilityRepo = abilityRepo;
-    }
-
-    @Transactional(rollbackOn = {NoSuchElementException.class})
-    public Ability findByName(String name)
-    {
-        return abilityRepo.findById(name).orElseThrow(NoSuchElementException::new);
-    }
-
-    @Transactional(rollbackOn = {IllegalArgumentException.class})
-    public void saveOrUpdate(Ability a)
-    {
-        log.info("Saving ability: " + a.getName());
-        abilityRepo.save(a);
-    }
 
     private static final ExampleMatcher SEARCH_CONDITIONS_MATCH_ALL = ExampleMatcher
             .matching()
@@ -50,8 +31,25 @@ public class AbilityService {
             .withMatcher("target", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
             .withMatcher("effect", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
             .withIgnorePaths("name", "connection", "uses");
-    public List<Ability> findAbilityByExample(Ability ability)
-    {
+    AbilityRepository abilityRepo;
+
+    @Autowired
+    AbilityService(AbilityRepository abilityRepo) {
+        this.abilityRepo = abilityRepo;
+    }
+
+    @Transactional(rollbackOn = {NoSuchElementException.class})
+    public Ability findByName(String name) {
+        return abilityRepo.findById(name).orElseThrow(NoSuchElementException::new);
+    }
+
+    @Transactional(rollbackOn = {IllegalArgumentException.class})
+    public void saveOrUpdate(Ability a) {
+        log.info("Saving ability: " + a.getName());
+        abilityRepo.save(a);
+    }
+
+    public List<Ability> findAbilityByExample(Ability ability) {
         // The Ability we're receiving potentially has default values in it from the enums
         ability.setFrequency(ability.getFrequency() == Frequency.FREQUENCIES ? null : ability.getFrequency());
         ability.setActionType(ability.getActionType() == ActionType.ACTION_TYPE ? null : ability.getActionType());
@@ -74,12 +72,9 @@ public class AbilityService {
         int startItem = currentPage * pageSize;
         List<Ability> list;
 
-        if (abilityRepo.count() < startItem)
-        {
+        if (abilityRepo.count() < startItem) {
             list = Collections.emptyList();
-        }
-        else
-        {
+        } else {
             int toIndex = Math.min(startItem + pageSize, (int) abilityRepo.count());
             list = abilityRepo.findAll().subList(startItem, toIndex);
         }

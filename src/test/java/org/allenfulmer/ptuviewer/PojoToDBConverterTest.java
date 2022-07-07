@@ -1,47 +1,37 @@
 package org.allenfulmer.ptuviewer;
 
+import org.allenfulmer.ptuviewer.jsonLoading.JsonToPojoLoader;
 import org.allenfulmer.ptuviewer.jsonLoading.PojoToDBConverter;
-import org.allenfulmer.ptuviewer.jsonLoading.PokedexLoader;
-import org.allenfulmer.ptuviewer.jsonLoading.db.ability.AbilityPojo;
-import org.allenfulmer.ptuviewer.jsonLoading.db.move.MovePojo;
-import org.allenfulmer.ptuviewer.jsonLoading.db.pokemon.PokemonSpeciesPojo;
 import org.allenfulmer.ptuviewer.models.*;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 import java.util.Map;
 
 public class PojoToDBConverterTest {
 
-    private static final Map<String, Ability> convertedAbilities = PojoToDBConverter.abilityMapBuilder(PokedexLoader.parsePojoAbilities());
-    private static final Map<String, Move> convertedMoves = PojoToDBConverter.moveMapBuilder(PokedexLoader.parsePojoMoves());
-    private static final Map<String, PokemonSpecies> convertedPokemonSpecies = PojoToDBConverter.pokemonMapBuilder(PokedexLoader.parsePojoPokemon());
+    private static final Map<String, Ability> convertedAbilities = PojoToDBConverter.abilityMapBuilder(JsonToPojoLoader.parsePojoAbilities());
+    private static final Map<String, Move> convertedMoves = PojoToDBConverter.moveMapBuilder(JsonToPojoLoader.parsePojoMoves());
+    private static final Map<String, PokemonSpecies> convertedPokemonSpecies = PojoToDBConverter.pokemonMapBuilder(JsonToPojoLoader.parsePojoPokemon());
 
     @Test
-    public void notEmpty()
-    {
+    public void notEmpty() {
         Assert.assertFalse(convertedMoves.isEmpty());
         Assert.assertFalse(convertedAbilities.isEmpty());
         Assert.assertFalse(convertedPokemonSpecies.isEmpty());
     }
 
     @Test
-    public void hasBasics()
-    {
+    public void hasBasics() {
         Assert.assertNotNull(convertedMoves.get("Tackle"));
         Assert.assertNotNull(convertedAbilities.get("Plus"));
         Assert.assertNotNull(convertedPokemonSpecies.get("001"));
     }
 
     @Test
-    public void specificMove()
-    {
+    public void specificMove() {
         Move ember = convertedMoves.get("Ember");
         Assert.assertNotNull(ember);
         Assert.assertEquals(Type.FIRE, ember.getType());
@@ -54,8 +44,7 @@ public class PojoToDBConverterTest {
     }
 
     @Test
-    public void specificAbility()
-    {
+    public void specificAbility() {
         Ability minus = convertedAbilities.get("Minus");
         Assert.assertNotNull(minus);
         Assert.assertEquals(Frequency.SCENE, minus.getFrequency());
@@ -66,8 +55,7 @@ public class PojoToDBConverterTest {
     }
 
     @Test
-    public void specificPokemon()
-    {
+    public void specificPokemon() {
         PokemonSpecies squirtle = convertedPokemonSpecies.get("007");
         Assert.assertNotNull(squirtle);
         Assert.assertTrue(squirtle.getSpeciesName().equalsIgnoreCase("squirtle"));

@@ -4,9 +4,7 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.allenfulmer.ptuviewer.dto.AbilityDTO;
-import org.allenfulmer.ptuviewer.dto.MoveDTO;
 import org.allenfulmer.ptuviewer.models.Ability;
-import org.allenfulmer.ptuviewer.models.Move;
 import org.allenfulmer.ptuviewer.services.AbilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,19 +27,15 @@ import java.util.stream.IntStream;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class AbilityController {
 
-    AbilityService abilityServ;
-
-    @Autowired
-    AbilityController(AbilityService abilityServ)
-    {
-        this.abilityServ = abilityServ;
-    }
-
-
     private static final String ERR = "error";
     private static final String ABILITIES = "abilities";
     private static final String RESULTS = "ability_results";
     private static final String SEARCH = "ability_search";
+    AbilityService abilityServ;
+    @Autowired
+    AbilityController(AbilityService abilityServ) {
+        this.abilityServ = abilityServ;
+    }
 
     /*
     This code is largely from Baeldung's Spring + Thymeleaf Pagination tutorial:
@@ -49,8 +43,7 @@ public class AbilityController {
      */
     @GetMapping("/all_abilities")
     public String showAllAbilities(Model model, @RequestParam("page") Optional<Integer> currPage,
-                               @RequestParam("size") Optional<Integer> size)
-    {
+                                   @RequestParam("size") Optional<Integer> size) {
         int pageNum = currPage.orElse(1);
         int pageSize = size.orElse(20);
 
@@ -60,8 +53,7 @@ public class AbilityController {
         int totalPages = abilityPage.getTotalPages();
 
         // Add the page indexes to the model (the pg 1, 2, 3...)
-        if(totalPages > 0)
-        {
+        if (totalPages > 0) {
             model.addAttribute("pageNumbers",
                     IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList()));
         }
@@ -69,22 +61,18 @@ public class AbilityController {
     }
 
     @GetMapping("/ability_search")
-    public String abilitySearchForm(Model model)
-    {
+    public String abilitySearchForm(Model model) {
         model.addAttribute("abilityDTO", new AbilityDTO());
         return SEARCH;
     }
 
     @PostMapping("/ability_search")
-    public String searchAbilities(@ModelAttribute AbilityDTO abilityDTO, Model model)
-    {
+    public String searchAbilities(@ModelAttribute AbilityDTO abilityDTO, Model model) {
         // If the name isn't empty (was supplied by the user), it's guaranteed to be unique so only search by it exactly
-        if(!abilityDTO.getName().isEmpty())
-        {
+        if (!abilityDTO.getName().isEmpty()) {
             try {
                 model.addAttribute(ABILITIES, Arrays.asList(abilityServ.findByName(abilityDTO.getName())));
-            }
-            catch(NoSuchElementException e){
+            } catch (NoSuchElementException e) {
                 model.addAttribute(ERR, "No ability with the given name was found.");
                 return SEARCH;
             }

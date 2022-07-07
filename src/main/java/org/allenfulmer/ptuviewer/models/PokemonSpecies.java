@@ -72,7 +72,7 @@ public class PokemonSpecies {
     int spAtk;
     int spDef;
     int speed;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="pokemonSpecies", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemonSpecies", fetch = FetchType.EAGER)
     Set<BaseAbility> baseAbilities = new TreeSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemonSpecies", fetch = FetchType.EAGER)
@@ -111,8 +111,7 @@ public class PokemonSpecies {
         this.speed = pokemonDTO.getSpeed();
     }
 
-    public void setBaseStatsFromMap(EnumMap<Stat.StatName, Integer> stats)
-    {
+    public void setBaseStatsFromMap(EnumMap<Stat.StatName, Integer> stats) {
         this.baseStats = stats;
         this.hp = stats.get(Stat.StatName.HP);
         this.atk = stats.get(Stat.StatName.ATTACK);
@@ -122,8 +121,7 @@ public class PokemonSpecies {
         this.speed = stats.get(Stat.StatName.SPEED);
     }
 
-    public void setBaseStatsFromInts(int hp, int atk, int def, int spAtk, int spDef, int speed)
-    {
+    public void setBaseStatsFromInts(int hp, int atk, int def, int spAtk, int spDef, int speed) {
         this.hp = hp;
         this.atk = atk;
         this.def = def;
@@ -132,56 +130,46 @@ public class PokemonSpecies {
         this.speed = speed;
     }
 
-    public void setTypesFromList(List<Type> types)
-    {
+    public void setTypesFromList(List<Type> types) {
         this.types = types;
-        if(types != null && !types.isEmpty())
-        {
+        if (types != null && !types.isEmpty()) {
             this.primaryType = types.get(0);
-            if(types.size() > 1)
+            if (types.size() > 1)
                 this.secondaryType = types.get(1);
         }
     }
 
-    public void addLevelMove(int level, Move move)
-    {
+    public void addLevelMove(int level, Move move) {
         levelUpMoves.add(new LevelMove(level, move, this));
     }
 
-    public void addBaseAbility(BaseAbility.AbilityType type, Ability ability)
-    {
+    public void addBaseAbility(BaseAbility.AbilityType type, Ability ability) {
         baseAbilities.add(new BaseAbility(type, ability, this));
     }
 
-    public String getBaseAbilitiesString()
-    {
+    public String getBaseAbilitiesString() {
         return getBaseAbilities().stream().sorted().map(BaseAbility::getDisplayName)
                 .collect(Collectors.joining(", "));
     }
 
-    public String getLevelMovesString()
-    {
+    public String getLevelMovesString() {
         return getLevelUpMoves().stream().sorted().map(LevelMove::getDisplayName)
                 .collect(Collectors.joining(", "));
     }
 
-    public String getTmHmMovesString()
-    {
+    public String getTmHmMovesString() {
         return generateStringFromMoves(getTmHmMoves());
     }
 
-    public String getTutorMovesString()
-    {
+    public String getTutorMovesString() {
         return generateStringFromMoves(getTutorMoves());
     }
 
-    public String getEggMovesString()
-    {
+    public String getEggMovesString() {
         return generateStringFromMoves(getEggMoves());
     }
 
-    private String generateStringFromMoves(Set<Move> moves)
-    {
+    private String generateStringFromMoves(Set<Move> moves) {
         return moves.stream().map(Move::getName).sorted().collect(Collectors.joining(", "));
     }
 

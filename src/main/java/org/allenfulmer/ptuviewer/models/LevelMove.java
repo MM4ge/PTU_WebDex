@@ -15,7 +15,7 @@ import java.util.Objects;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
 @Entity
-public class LevelMove implements Comparable<LevelMove>{
+public class LevelMove implements Comparable<LevelMove> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
@@ -33,17 +33,15 @@ public class LevelMove implements Comparable<LevelMove>{
         this.level = level;
         this.move = move;
         this.pokemonSpecies = pokemon;
-        if(move != null)
+        if (move != null)
             move.getLevelMoves().add(this);
     }
 
-    public void removeSelfFromPokemon()
-    {
+    public void removeSelfFromPokemon() {
         getPokemonSpecies().getLevelUpMoves().remove(this);
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return getMove().getName() + " (" + getLevel() + ")";
     }
 
@@ -56,9 +54,9 @@ public class LevelMove implements Comparable<LevelMove>{
     @Override
     public String toString() {
         StringBuilder strBuilder = new StringBuilder("LevelMove{" + "level=" + level);
-        if(getMove() != null)
+        if (getMove() != null)
             strBuilder.append(", move=").append(getMove().getName());
-        if(getPokemonSpecies() != null)
+        if (getPokemonSpecies() != null)
             strBuilder.append(", pokemon=").append(getPokemonSpecies().getSpeciesName())
                     .append(": ").append(getPokemonSpecies().getPokedexID());
         strBuilder.append("}");

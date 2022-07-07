@@ -2,11 +2,11 @@ package org.allenfulmer.ptuviewer.jsonLoading;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.allenfulmer.ptuviewer.jsonLoading.db.ability.AbilityPojo;
-import org.allenfulmer.ptuviewer.jsonLoading.db.move.MovePojo;
-import org.allenfulmer.ptuviewer.jsonLoading.db.pokemon.BaseStats;
-import org.allenfulmer.ptuviewer.jsonLoading.db.pokemon.ImperialHeightRange;
-import org.allenfulmer.ptuviewer.jsonLoading.db.pokemon.PokemonSpeciesPojo;
+import org.allenfulmer.ptuviewer.jsonLoading.pojo.ability.AbilityPojo;
+import org.allenfulmer.ptuviewer.jsonLoading.pojo.move.MovePojo;
+import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.BaseStats;
+import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.ImperialHeightRange;
+import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.PokemonSpeciesPojo;
 import org.allenfulmer.ptuviewer.models.*;
 
 import java.util.EnumMap;
@@ -16,72 +16,34 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class PojoToDBConverter {
-    @AllArgsConstructor
-    @RequiredArgsConstructor
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    private static class PojoFrequency
-    {
-        @NonNull
-        Frequency freq;
-        int uses = 0;
-
-        public Frequency getFreq()
-        {
-            return freq;
-        }
-
-        public int getUses()
-        {
-            return uses;
-        }
-    }
-
-    @AllArgsConstructor
-    @RequiredArgsConstructor
-    @NoArgsConstructor
-    @FieldDefaults(level = AccessLevel.PRIVATE)
-    private static class PojoActionType
-    {
-        @NonNull
-        ActionType actionType;
-        ActionType.Priority priority = null;
-
-        public ActionType getActionType() {
-            return actionType;
-        }
-
-        public ActionType.Priority getPriority() {
-            return priority;
-        }
-    }
-
+    private static final String ABILITY_DIVIDER = " - ";
+    private static final String CONNECTION_HEADER = "Connection - ";
     private static Map<String, Ability> convertedAbilities = null;
     private static Map<String, Move> convertedMoves = null;
     private static Map<String, PokemonSpecies> convertedPokemonSpecies = null;
 
     public static Ability getAbility(String name) {
-        if(convertedAbilities == null)
-            convertedAbilities = abilityMapBuilder(PokedexLoader.parsePojoAbilities());
+        if (convertedAbilities == null)
+            convertedAbilities = abilityMapBuilder(JsonToPojoLoader.parsePojoAbilities());
         Ability mapAbility = convertedAbilities.get(name);
-        if(mapAbility == null)
+        if (mapAbility == null)
             throw new NullPointerException("Ability named " + name + " not found in abilityMap");
         return mapAbility;
     }
 
-    public static Move getMove(String name){
-        if(convertedMoves == null)
-            convertedMoves = moveMapBuilder(PokedexLoader.parsePojoMoves());
+    public static Move getMove(String name) {
+        if (convertedMoves == null)
+            convertedMoves = moveMapBuilder(JsonToPojoLoader.parsePojoMoves());
         Move mapMove = convertedMoves.get(name);
-        if(mapMove == null)
+        if (mapMove == null)
             throw new NullPointerException("Move named " + name + " not found in moveMap");
         return mapMove;
     }
 
-    private static PojoFrequency convertFrequency(String freqText)
-    {
+    private static PojoFrequency convertFrequency(String freqText) {
         Frequency freq = Frequency.getWithName(freqText);
         int uses = (freq == Frequency.DAILY || freq == Frequency.SCENE) ? 1 : 0;
-        if(freq == null) // The frequency must have a usage count on it (i.e. Scene x2)
+        if (freq == null) // The frequency must have a usage count on it (i.e. Scene x2)
         {
             String[] split = freqText.split(" x");
             freq = Frequency.getWithName(split[0]);
@@ -91,11 +53,10 @@ public class PojoToDBConverter {
         return new PojoFrequency(freq, uses);
     }
 
-    private static PojoActionType convertActionType(String actionText)
-    {
+    private static PojoActionType convertActionType(String actionText) {
         ActionType actionType = ActionType.getWithName(actionText);
         ActionType.Priority priority = null;
-        if(actionType == null) // It must have a priority; split via ", "
+        if (actionType == null) // It must have a priority; split via ", "
         {
             String[] split = actionText.split(", ");
             actionType = ActionType.getWithName(split[0]);
@@ -104,19 +65,15 @@ public class PojoToDBConverter {
         return new PojoActionType(actionType, priority);
     }
 
-    private static Type convertType(String typeText)
-    {
+    private static Type convertType(String typeText) {
         try {
             return Type.valueOf(typeText.toUpperCase());
-        }
-        catch (IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
             return Type.TYPELESS;
         }
     }
 
-    private static EnumMap<Stat.StatName, Integer> convertBaseStats(BaseStats baseStats)
-    {
+    private static EnumMap<Stat.StatName, Integer> convertBaseStats(BaseStats baseStats) {
         EnumMap<Stat.StatName, Integer> stats = new EnumMap<>(Stat.StatName.class);
         stats.put(Stat.StatName.HP, baseStats.getHp());
         stats.put(Stat.StatName.ATTACK, baseStats.getAttack());
@@ -127,45 +84,37 @@ public class PojoToDBConverter {
         return stats;
     }
 
-    private static final String ABILITY_DIVIDER = " - ";
-    private static final String CONNECTION_HEADER = "Connection - ";
-
-    public static Map<String, Ability> abilityMapBuilder(Map<String, AbilityPojo> pojoMap)
-    {
+    public static Map<String, Ability> abilityMapBuilder(Map<String, AbilityPojo> pojoMap) {
         // Frequency and ActionType are split with a -
         // Check if one exists to see if we need to split- otherwise it's just Static/Special
-//        Map<String, Ability> abilities = new HashMap<>(pojoMap.size());
         Map<String, Ability> abilities = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
         pojoMap.forEach((name, a) -> {
             PojoFrequency pojoFreq;
             PojoActionType pojoActionType = new PojoActionType();
-            if(a.getFreq().contains(ABILITY_DIVIDER)) // Needs to be split
+            if (a.getFreq().contains(ABILITY_DIVIDER)) // Needs to be split
             {
                 String[] split = a.getFreq().split(ABILITY_DIVIDER);
                 pojoFreq = convertFrequency(split[0]);
                 pojoActionType = convertActionType(split[1]);
-            }
-            else {
+            } else {
                 pojoFreq = convertFrequency(a.getFreq());
             }
 
             Move connection = null;
             String effect = a.getEffect();
-            if(effect.startsWith(CONNECTION_HEADER)) {
+            if (effect.startsWith(CONNECTION_HEADER)) {
                 connection = getMove(effect.substring(CONNECTION_HEADER.length(), effect.indexOf(". ")));
             }
             abilities.put(name, new Ability(name, pojoFreq.getFreq(), pojoFreq.getUses(), pojoActionType.getActionType(),
                     pojoActionType.getPriority(), a.getTrigger(), a.getTarget(), a.getEffect(), connection));
         });
-        if(convertedAbilities == null)
+        if (convertedAbilities == null)
             convertedAbilities = abilities;
         return abilities;
     }
 
-    public static Map<String, Move> moveMapBuilder(Map<String, MovePojo> pojoMap)
-    {
-//        Map<String, Move> moves = new HashMap<>(pojoMap.size());
+    public static Map<String, Move> moveMapBuilder(Map<String, MovePojo> pojoMap) {
         Map<String, Move> moves = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         pojoMap.forEach((name, m) -> {
             Type type = convertType(m.getType());
@@ -177,23 +126,21 @@ public class PojoToDBConverter {
             Move.ContestType contestType = null;
             try {
                 contestType = Move.ContestType.valueOf(m.getContestType().toUpperCase());
+            } catch (IllegalArgumentException | NullPointerException ignored) { // Empty on purpose
             }
-            catch (IllegalArgumentException | NullPointerException ignored) {}
 
             Move.ContestEffect contestEffect = Move.ContestEffect.getContestEffect(m.getContestEffect());
 
             moves.put(name, new Move(name, type, pojoFreq.getFreq(), pojoFreq.getUses(), m.getAc(), m.getDb(),
                     moveClass, m.getRange(), m.getEffect(), contestType, contestEffect, m.getCritsOn()));
         });
-        if(convertedMoves == null)
+        if (convertedMoves == null)
             convertedMoves = moves;
         return moves;
     }
 
-    public static Map<String, PokemonSpecies> pokemonMapBuilder(Map<String, PokemonSpeciesPojo> pojoMap)
-    {
+    public static Map<String, PokemonSpecies> pokemonMapBuilder(Map<String, PokemonSpeciesPojo> pojoMap) {
         Map<String, PokemonSpecies> pokemon = new HashMap<>(pojoMap.size());
-//        Map<String, PokemonSpecies> pokemon = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         pojoMap.forEach((id, p) -> {
             PokemonSpecies newPoke = new PokemonSpecies();
 
@@ -207,9 +154,9 @@ public class PojoToDBConverter {
 
             // Height
             ImperialHeightRange inchRange = p.getHeight().getImperial();
-            newPoke.setInchesHeightMin((int)(inchRange.getMinimum().getInches()
+            newPoke.setInchesHeightMin((int) (inchRange.getMinimum().getInches()
                     + (inchRange.getMinimum().getFeet() * 12)));
-            newPoke.setInchesHeightMax((int)(inchRange.getMaximum().getInches()
+            newPoke.setInchesHeightMax((int) (inchRange.getMaximum().getInches()
                     + (inchRange.getMaximum().getFeet() * 12)));
             newPoke.setHeightCategoryMin(p.getHeight().getCategory().getMinimum());
             newPoke.setHeightCategoryMax(p.getHeight().getCategory().getMaximum());
@@ -233,14 +180,14 @@ public class PojoToDBConverter {
             newPoke.setEvolutions(p.getEvolutionStages().stream().map(e ->
             {
                 String ret = e.getStage() + " - " + e.getSpecies();
-                if(!e.getCriteria().isEmpty())
+                if (!e.getCriteria().isEmpty())
                     ret += " (" + e.getCriteria() + ")";
                 return ret;
             }).collect(Collectors.joining(", ")));
 
             // LevelUpMoves - List<LevelUpMove>
             p.getLevelUpMoves().stream().forEach(m ->
-                newPoke.addLevelMove(m.getLevelLearned(), PojoToDBConverter.getMove(m.getName()))
+                    newPoke.addLevelMove(m.getLevelLearned(), PojoToDBConverter.getMove(m.getName()))
             );
 
             // TM/HM Moves - Set<Move>
@@ -255,28 +202,55 @@ public class PojoToDBConverter {
 
             pokemon.put(id, newPoke);
         });
-        if(convertedPokemonSpecies == null)
+        if (convertedPokemonSpecies == null)
             convertedPokemonSpecies = pokemon;
         return pokemon;
     }
 
-    public static void main(String[] args)
-    {
-        Map<String, MovePojo> pojoMoves = PokedexLoader.parsePojoMoves();
+    public static void main(String[] args) {
+        // Local variables left here for easy debugging in the debugger if necessary
+        Map<String, MovePojo> pojoMoves = JsonToPojoLoader.parsePojoMoves();
         Map<String, Move> moves = moveMapBuilder(pojoMoves);
-        // moves.values().forEach(System.out::println);
 
-        Map<String, AbilityPojo> pojoAbility = PokedexLoader.parsePojoAbilities();
+        Map<String, AbilityPojo> pojoAbility = JsonToPojoLoader.parsePojoAbilities();
         Map<String, Ability> abilities = abilityMapBuilder(pojoAbility);
-//        abilities.values().forEach(System.out::println);
 
-        Map<String, PokemonSpeciesPojo> pojoPokes = PokedexLoader.parsePojoPokemon();
+        Map<String, PokemonSpeciesPojo> pojoPokes = JsonToPojoLoader.parsePojoPokemon();
         Map<String, PokemonSpecies> pokes = pokemonMapBuilder(pojoPokes);
-        //pokes.values().forEach(System.out::println);
+    }
 
-        PokemonSpecies get = pokes.get("001");
-        System.out.println(get.getBaseAbilitiesString());
+    @AllArgsConstructor
+    @RequiredArgsConstructor
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    private static class PojoFrequency {
+        @NonNull
+        Frequency freq;
+        int uses = 0;
 
-        System.out.println("Done");
+        public Frequency getFreq() {
+            return freq;
+        }
+
+        public int getUses() {
+            return uses;
+        }
+    }
+
+    @AllArgsConstructor
+    @RequiredArgsConstructor
+    @NoArgsConstructor
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    private static class PojoActionType {
+        @NonNull
+        ActionType actionType;
+        ActionType.Priority priority = null;
+
+        public ActionType getActionType() {
+            return actionType;
+        }
+
+        public ActionType.Priority getPriority() {
+            return priority;
+        }
     }
 }

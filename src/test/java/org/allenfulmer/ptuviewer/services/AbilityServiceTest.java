@@ -1,6 +1,8 @@
 package org.allenfulmer.ptuviewer.services;
 
-import org.allenfulmer.ptuviewer.models.*;
+import org.allenfulmer.ptuviewer.models.Ability;
+import org.allenfulmer.ptuviewer.models.ActionType;
+import org.allenfulmer.ptuviewer.models.Frequency;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,11 +18,16 @@ import java.util.List;
 @WebAppConfiguration
 public class AbilityServiceTest {
 
-    @Autowired AbilityService abilityService;
+    @Autowired
+    AbilityService abilityService;
 
     @Test
-    public void saveAndRetrieve()
-    {
+    public void injectedComponentsAreNotNull() {
+        Assert.assertNotNull(abilityService);
+    }
+
+    @Test
+    public void saveAndRetrieve() {
         Ability a1 = new Ability("Test1");
         abilityService.saveOrUpdate(a1);
         Ability dbAbility = abilityService.findByName(a1.getName());
@@ -28,10 +35,9 @@ public class AbilityServiceTest {
     }
 
     @Test
-    public void findWithExample()
-    {
-       Ability a2 = new Ability("Test2", Frequency.SPECIAL, 2, ActionType.FREE_ACTION,
-               ActionType.Priority.INTERRUPT, "", "", "", null);
+    public void findWithExample() {
+        Ability a2 = new Ability("Test2", Frequency.SPECIAL, 2, ActionType.FREE_ACTION,
+                ActionType.Priority.INTERRUPT, "", "", "", null);
         abilityService.saveOrUpdate(a2);
         List<Ability> abilities1 = abilityService.findAbilityByExample(a2);
         Assert.assertTrue(abilities1.contains(a2));

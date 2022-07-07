@@ -3,9 +3,8 @@ package org.allenfulmer.ptuviewer.services;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.allenfulmer.ptuviewer.generator.models.Pokemon;
-import org.allenfulmer.ptuviewer.models.*;
-import org.allenfulmer.ptuviewer.repositories.AbilityRepository;
+import org.allenfulmer.ptuviewer.models.PokemonSpecies;
+import org.allenfulmer.ptuviewer.models.Type;
 import org.allenfulmer.ptuviewer.repositories.PokemonSpeciesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -19,35 +18,9 @@ import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Transactional(rollbackOn = {DataAccessException.class})
 public class PokemonSpeciesService {
-
-    PokemonSpeciesRepository pokemonRepo;
-
-    @Autowired
-    PokemonSpeciesService(PokemonSpeciesRepository pokemonRepo)
-    {
-        this.pokemonRepo = pokemonRepo;
-    }
-
-    public List<PokemonSpecies> getAllSpecies()
-    {
-        return pokemonRepo.findAll();
-    }
-
-    @Transactional(rollbackOn = {IllegalArgumentException.class})
-    public void saveOrUpdate(PokemonSpecies p)
-    {
-        log.info("Saving pokemon species: " + p.getSpeciesName());
-        pokemonRepo.save(p);
-    }
-
-    @Transactional(rollbackOn = {NoSuchElementException.class})
-    public PokemonSpecies findByID(String id)
-    {
-        return pokemonRepo.findById(id).orElseThrow(NoSuchElementException::new);
-    }
 
     private static final ExampleMatcher SEARCH_CONDITIONS_MATCH_ALL = ExampleMatcher
             .matching()
@@ -57,8 +30,29 @@ public class PokemonSpeciesService {
             .withMatcher("primaryType", ExampleMatcher.GenericPropertyMatchers.exact())
             .withMatcher("secondaryType", ExampleMatcher.GenericPropertyMatchers.exact())
             .withIgnorePaths("pokedexID", "hp", "atk", "def", "spAtk", "spDef", "speed");
-    public List<PokemonSpecies> findPokemonByExample(PokemonSpecies pokemon)
-    {
+    PokemonSpeciesRepository pokemonRepo;
+
+    @Autowired
+    PokemonSpeciesService(PokemonSpeciesRepository pokemonRepo) {
+        this.pokemonRepo = pokemonRepo;
+    }
+
+    public List<PokemonSpecies> getAllSpecies() {
+        return pokemonRepo.findAll();
+    }
+
+    @Transactional(rollbackOn = {IllegalArgumentException.class})
+    public void saveOrUpdate(PokemonSpecies p) {
+        log.info("Saving pokemon species: " + p.getSpeciesName());
+        pokemonRepo.save(p);
+    }
+
+    @Transactional(rollbackOn = {NoSuchElementException.class})
+    public PokemonSpecies findByID(String id) {
+        return pokemonRepo.findById(id).orElseThrow(NoSuchElementException::new);
+    }
+
+    public List<PokemonSpecies> findPokemonByExample(PokemonSpecies pokemon) {
         // The Move we're receiving potentially has default values in it from the enums
         pokemon.setPrimaryType(pokemon.getPrimaryType() == Type.TYPES ? null : pokemon.getPrimaryType());
         pokemon.setSecondaryType(pokemon.getSecondaryType() == Type.TYPES ? null : pokemon.getSecondaryType());
@@ -81,12 +75,9 @@ public class PokemonSpeciesService {
         int startItem = currentPage * pageSize;
         List<PokemonSpecies> list;
 
-        if (pokemonRepo.count() < startItem)
-        {
+        if (pokemonRepo.count() < startItem) {
             list = Collections.emptyList();
-        }
-        else
-        {
+        } else {
             int toIndex = Math.min(startItem + pageSize, (int) pokemonRepo.count());
             list = pokemonRepo.findAll().subList(startItem, toIndex);
         }

@@ -10,13 +10,11 @@ public enum Type {
 
     private final String displayName;
 
-    private Type(String displayName)
-    {
+    private Type(String displayName) {
         this.displayName = displayName;
     }
 
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return this.displayName;
     }
 }
