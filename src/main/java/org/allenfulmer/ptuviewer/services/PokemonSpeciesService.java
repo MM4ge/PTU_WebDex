@@ -36,6 +36,13 @@ public class PokemonSpeciesService {
         return pokemonRepo.findAll();
     }
 
+    @Transactional(rollbackOn = {IllegalArgumentException.class})
+    public void saveOrUpdate(PokemonSpecies p)
+    {
+        log.info("Saving pokemon species: " + p.getSpeciesName());
+        pokemonRepo.save(p);
+    }
+
     @Transactional(rollbackOn = {NoSuchElementException.class})
     public PokemonSpecies findByID(String id)
     {
@@ -50,7 +57,7 @@ public class PokemonSpeciesService {
             .withMatcher("primaryType", ExampleMatcher.GenericPropertyMatchers.exact())
             .withMatcher("secondaryType", ExampleMatcher.GenericPropertyMatchers.exact())
             .withIgnorePaths("pokedexID", "hp", "atk", "def", "spAtk", "spDef", "speed");
-    public List<PokemonSpecies> findAbilityByExample(PokemonSpecies pokemon)
+    public List<PokemonSpecies> findPokemonByExample(PokemonSpecies pokemon)
     {
         // The Move we're receiving potentially has default values in it from the enums
         pokemon.setPrimaryType(pokemon.getPrimaryType() == Type.TYPES ? null : pokemon.getPrimaryType());

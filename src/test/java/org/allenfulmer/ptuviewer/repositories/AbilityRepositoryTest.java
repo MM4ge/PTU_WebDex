@@ -36,8 +36,6 @@ public class AbilityRepositoryTest {
     @BeforeAll
     public void setup()
     {
-//        insertTestData();
-
         Ability a1 = new Ability("Eat", Frequency.STATIC, "Eats a delicious food buff.");
         Ability a3 = new Ability("Grow", Frequency.AT_WILL, "Grow some berries.");
         ABILITY_CONNECTION.setConnection(MOVE_CONNECTION);

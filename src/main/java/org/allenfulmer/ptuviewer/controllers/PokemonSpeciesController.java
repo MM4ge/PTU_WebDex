@@ -87,7 +87,7 @@ public class PokemonSpeciesController {
             return RESULTS;
         }
 
-        model.addAttribute(POKEMON, pokemonServ.findAbilityByExample(new PokemonSpecies(pokemonDTO)));
+        model.addAttribute(POKEMON, pokemonServ.findPokemonByExample(new PokemonSpecies(pokemonDTO)));
         return RESULTS;
     }
 }
