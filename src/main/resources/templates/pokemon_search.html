@@ -19,11 +19,11 @@
             <p>Form: <input type="text" th:field="*{form}" placeholder="Standard" size = 20 /></p>
             <p>Evolutions: <input type="text" th:field="*{evolutions}" placeholder="1 - Shroomish, 2 - Breloom (Minimum 20)" size = 36/></p>
             <p>
-                <select name="primaryType">
+                Primary Type: <select name="primaryType">
                     <option th:each="typeOpt : ${T(org.allenfulmer.ptuviewer.models.Type).values()}"
                             th:value="${typeOpt}" th:text="${typeOpt.displayName}"></option>
                 </select>
-                <select name="secondaryType">
+                Secondary Type: <select name="secondaryType">
                     <option th:each="typeOpt : ${T(org.allenfulmer.ptuviewer.models.Type).values()}"
                             th:value="${typeOpt}" th:text="${typeOpt.displayName}"></option>
                 </select>
