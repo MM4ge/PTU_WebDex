@@ -4,27 +4,33 @@
 
 This is a small website that allows users to view data from the Pokemon Tabletop United Core Rulebook and Pokedex
 online, instead of having to deal with 1k+ pages of PDFs.
+<br>
+<br>
 The website's CSS Template layout is Bare - Bootstrap v5.1.3 (https://startbootstrap.com/template/bare).
+<br>
+JSON Seed data is from https://github.com/fedorablewill/ptu-toolkit/tree/master/data.
+<br>
+POJO Java classes for the JSON seed data created with https://www.jsonschema2pojo.org/.
 
 ## Viewing Data
 
 ### General Description
 
-Moves and Abilities can easily be viewed or even searched for on the site; go to the dropdown menu in the upper right
+Moves, Abilities, and Pokemon can easily be viewed or even searched for on the site; go to the dropdown menu in the upper right
 for whichever datatype you want to view and select "See All". The website will provide a table with additional page
 navigation on the bottom. If you select "Search For", you'll be presented a form to fill out of what information in your
-datatype you want to find. If you search for a name, it'll only search by name and only for exact matches. Otherwise,
-any datatype that matches what was entered in the form will be presented on a results page.
+datatype you want to find. If you search for a name (or Pokedex ID in the case of Pokemon), the program will only search by name / ID
+and only for exact matches. Otherwise, any datatype that matches what was entered in the form will be presented on a results page.
 
 ### Technical Description
 
-- Abilities and Moves can be read by their entire tables with pagination, or with subsections of searchs via example
-  matching.
+- Moves, Abilities, and Pokemon can be dynamically read by their entire tables with pagination, or with subsections of
+  searches via example matching.
 - When visiting a "See All" page, the database retrieves the first page of entities from the database, and Spring uses
   Pages / Pagination to generate links at the bottom for the other pages, if there are any more.
-- Abilities and Moves data to search for are supplied to/from the user's form via AbilityDTO and MoveDTO respectively to
-  prevent malicious code injection.
-- The DTOs are then used to search the database via an ExampleMatcher, to select any entity that has all of the
+- Moves, Abilities, and Pokemon data to search for are supplied to/from the user's form via MoveDTO, AbilityDTO, and PokemonSpeciesDTO 
+  respectively to prevent malicious code injection.
+- The DTOs are then used to search the database via an ExampleMatcher, to select any entity that has all the
   user-supplied criteria.
 - Matches are shown on the same results page as "See All" but without pagination.
 
@@ -47,7 +53,7 @@ tell you that your action was successful and the results page will show the new/
 - The Create/Update pages uses DTOs like search does, and creates a new entity to save to the database if there aren't
   any errors in the form.
 - If there are errors, like if the name field is blank or all drop-down enum menus don't have a selection, the user is
-  returned back to the form and error messages are shown to them to show what they need to do.
+  returned to the form and error messages are shown to them to show what they need to do.
 - The new/updated entity is shown to the user on a results page, along with a pop-up JS alert to show that the action
   succeeded.
 - Delete also uses a DTO for safety, but the form only has the one input field for the entity's name.
