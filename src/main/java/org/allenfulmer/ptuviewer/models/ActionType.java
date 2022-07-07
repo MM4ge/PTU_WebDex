@@ -10,18 +10,40 @@ public enum ActionType {
     FREE_ACTION("Free Action"), SWIFT_ACTION("Swift Action"), SHIFT_ACTION("Shift Action"),
     STANDARD_ACTION("Standard Action"), FULL_ACTION("Full Action"),
     EXTENDED_ACTION("Extended Action"), SPECIAL("Special");
+
+    private static Map<String, ActionType> nameMap;
+    private final String displayName;
+
+    ActionType(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public static ActionType getWithName(String name) {
+        ActionType ret;
+        try {
+            ret = ActionType.valueOf(name.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            if (nameMap == null) {
+                Map<String, ActionType> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+                Arrays.stream(ActionType.values()).forEach(a -> map.put(a.getDisplayName(), a));
+                nameMap = Collections.unmodifiableMap(map);
+            }
+            ret = nameMap.get(name);
+        }
+        return ret;
+    }
+
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
     public enum Priority {
         PRIORITY("Priority"), INTERRUPT("Interrupt"), REACTION("Reaction");
 
         private final String displayName;
 
-        Priority(String displayName)
-        {
+        Priority(String displayName) {
             this.displayName = displayName;
-        }
-
-        public String getDisplayName(){
-            return this.displayName;
         }
 
         public static Priority getWithName(String name) {
@@ -33,36 +55,9 @@ public enum ActionType {
             }
             return ret;
         }
-    }
 
-    private final String displayName;
-
-    ActionType(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-    public String getDisplayName()
-    {
-        return this.displayName;
-    }
-
-    private static Map<String, ActionType> nameMap;
-
-    public static ActionType getWithName(String name)
-    {
-        ActionType ret;
-        try{
-            ret = ActionType.valueOf(name.toUpperCase());
+        public String getDisplayName() {
+            return this.displayName;
         }
-        catch (IllegalArgumentException e) {
-            if (nameMap == null) {
-                Map<String, ActionType> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-                Arrays.stream(ActionType.values()).forEach(a -> map.put(a.getDisplayName(), a));
-                nameMap = Collections.unmodifiableMap(map);
-            }
-            ret = nameMap.get(name);
-        }
-        return ret;
     }
 }

@@ -3,81 +3,23 @@ package org.allenfulmer.ptuviewer.services;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.allenfulmer.ptuviewer.models.Ability;
-import org.allenfulmer.ptuviewer.models.Frequency;
-import org.allenfulmer.ptuviewer.models.Move;
+import org.allenfulmer.ptuviewer.models.*;
 import org.allenfulmer.ptuviewer.repositories.AbilityRepository;
 import org.allenfulmer.ptuviewer.repositories.LevelMoveRepository;
 import org.allenfulmer.ptuviewer.repositories.MoveRepository;
-import org.allenfulmer.ptuviewer.models.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Transactional(rollbackOn = {DataAccessException.class})
 public class MoveService {
-
-    MoveRepository moveRepo;
-    LevelMoveRepository levelRepo;
-    AbilityRepository abilityRepo;
-
-    @Autowired
-    public MoveService(MoveRepository moveRepo, LevelMoveRepository levelRepo, AbilityRepository abilityRepo)
-    {
-        this.moveRepo = moveRepo;
-        this.levelRepo = levelRepo;
-        this.abilityRepo = abilityRepo;
-    }
-
-    public List<Move> findAll()
-    {
-        return moveRepo.findAll();
-    }
-
-    public List<Move> findAllSorted()
-    {
-        return moveRepo.findAll(Sort.by( "type").ascending().and(Sort.by("name").ascending()));
-    }
-
-    @Transactional(rollbackOn = {IllegalArgumentException.class})
-    public void saveOrUpdate(Move m)
-    {
-        log.info("Saving move: " + m.getName());
-        moveRepo.save(m);
-    }
-
-    public void deleteByName(String name)
-    {
-        Move target = moveRepo.getReferenceById(name);
-        levelRepo.deleteAll(target.getLevelMoves());
-        Optional<Ability> optAbility = abilityRepo.findByConnection(target);
-        if(optAbility.isPresent())
-        {
-            Ability connector = optAbility.get();
-            connector.setConnection(null);
-            abilityRepo.save(connector);
-        }
-        moveRepo.deleteById(name);
-    }
-
-    @Transactional(rollbackOn = {NoSuchElementException.class})
-    public Move findByName(String name) throws NoSuchElementException{
-        return moveRepo.findById(name).orElseThrow(NoSuchElementException::new);
-    }
-
-    public boolean doesMoveExist(String name){
-        return moveRepo.existsById(name);
-    }
 
     /*
     ExampleMatcher sourced from Patrik Hörlin
@@ -93,8 +35,58 @@ public class MoveService {
             .withMatcher("range", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
             .withMatcher("effect", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
             .withIgnorePaths("name");
-    public List<Move> findMoveByExample(Move move)
-    {
+    MoveRepository moveRepo;
+    LevelMoveRepository levelRepo;
+    AbilityRepository abilityRepo;
+
+    @Autowired
+    public MoveService(MoveRepository moveRepo, LevelMoveRepository levelRepo, AbilityRepository abilityRepo) {
+        this.moveRepo = moveRepo;
+        this.levelRepo = levelRepo;
+        this.abilityRepo = abilityRepo;
+    }
+
+    public List<Move> findAll() {
+        return moveRepo.findAll();
+    }
+
+    public List<Move> findAllSorted() {
+        return moveRepo.findAll(Sort.by("type").ascending().and(Sort.by("name").ascending()));
+    }
+
+    @Transactional(rollbackOn = {IllegalArgumentException.class})
+    public void saveOrUpdate(Move m) {
+        log.info("Saving move: " + m.getName());
+        moveRepo.save(m);
+    }
+
+    public void deleteByName(String name) {
+        Move target = moveRepo.findById(name).orElseThrow(NoSuchElementException::new);
+
+        Set<LevelMove> levelMoves = target.getLevelMoves();
+        levelMoves.forEach(LevelMove::removeSelfFromPokemon);
+        target.setLevelMoves(Collections.emptySet());
+
+        levelRepo.deleteAll(levelMoves);
+        Optional<Ability> optAbility = abilityRepo.findByConnection(target);
+        if (optAbility.isPresent()) {
+            Ability connector = optAbility.get();
+            connector.setConnection(null);
+            abilityRepo.save(connector);
+        }
+        moveRepo.deleteById(name);
+    }
+
+    @Transactional(rollbackOn = {NoSuchElementException.class})
+    public Move findByName(String name) throws NoSuchElementException {
+        return moveRepo.findById(name).orElseThrow(NoSuchElementException::new);
+    }
+
+    public boolean doesMoveExist(String name) {
+        return moveRepo.existsById(name);
+    }
+
+    public List<Move> findMoveByExample(Move move) {
         // The Move we're receiving potentially has default values in it from the enums
         move.setType(move.getType() == Type.TYPES ? null : move.getType());
         move.setFrequency(move.getFrequency() == Frequency.FREQUENCIES ? null : move.getFrequency());
@@ -119,12 +111,9 @@ public class MoveService {
         int startItem = currentPage * pageSize;
         List<Move> list;
 
-        if (moveRepo.count() < startItem)
-        {
+        if (moveRepo.count() < startItem) {
             list = Collections.emptyList();
-        }
-        else
-        {
+        } else {
             int toIndex = Math.min(startItem + pageSize, (int) moveRepo.count());
             list = findAllSorted().subList(startItem, toIndex);
         }

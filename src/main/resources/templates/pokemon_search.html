@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<div th:replace="fragments/head :: head"/>
+<body>
+<!-- Responsive navbar-->
+<div th:replace="fragments/nav :: nav"/>
+<div class="h-100 d-flex align-items-center justify-content-center">
+    <div>
+        <div class="mb-3">
+            <h1>Pokemon Search</h1>
+            <h6>Input the pokedex ID of a Pokemon to search fot them specifically.</h6>
+            <h6>Input any other number of fields to search for Pokemon that fit all of them.</h6>
+            <span color="text-danger" th:if="${error != null}" th:text="${error}"/>
+        </div>
+        <form action="#" class="m-3 p-3 border border-dark" method="post" th:action="@{/pokemon_search}"
+              th:object="${pokemonDTO}">
+            <p>Pokedex ID: <input placeholder="286" size=14/ th:field="*{pokedexID}" type="text"></p>
+            <p>Name: <input placeholder="Breloom" size=19/ th:field="*{speciesName}" type="text"></p>
+            <p>Form: <input placeholder="Standard" size=20/ th:field="*{form}" type="text"></p>
+            <p>Evolutions: <input placeholder="1 - Shroomish, 2 - Breloom (Minimum 20)" size=36/
+                                  th:field="*{evolutions}" type="text"></p>
+            <p>
+                Primary Type: <select name="primaryType">
+                <option th:each="typeOpt : ${T(org.allenfulmer.ptuviewer.models.Type).values()}"
+                        th:text="${typeOpt.displayName}" th:value="${typeOpt}"></option>
+            </select>
+                Secondary Type: <select name="secondaryType">
+                <option th:each="typeOpt : ${T(org.allenfulmer.ptuviewer.models.Type).values()}"
+                        th:text="${typeOpt.displayName}" th:value="${typeOpt}"></option>
+            </select>
+            </p>
+            <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+        </form>
+    </div>
+</div>
+<!-- Footer-->
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

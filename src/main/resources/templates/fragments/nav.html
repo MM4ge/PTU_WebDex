@@ -5,28 +5,36 @@
     <title>Title</title>
 </head>
 <body>
-<nav th:fragment="nav" class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3" th:fragment="nav">
     <div class="container">
         <a class="navbar-brand" href="index">PTU Viewer</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+                data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="index">Home</a></li>
+                <li class="nav-item"><a aria-current="page" class="nav-link active" href="index">Home</a></li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">Abilities</a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                       id="navbarDropdown" role="button">Pokemon</a>
+                    <ul aria-labelledby="navbarDropdown" class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="all_pokemon">See All Pokemon</a></li>
+                        <li><a class="dropdown-item" href="pokemon_search">Search for Pokemon</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                       href="#" role="button">Abilities</a>
+                    <ul aria-labelledby="navbarDropdown" class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="all_abilities">See All Abilities</a></li>
                         <li><a class="dropdown-item" href="ability_search">Search for Abilities</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                       aria-expanded="false">Moves</a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                       role="button">Moves</a>
+                    <ul aria-labelledby="navbarDropdown" class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="all_moves">See All Moves</a></li>
                         <li><a class="dropdown-item" href="move_search">Search for Moves</a></li>
                         <li>

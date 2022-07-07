@@ -32,7 +32,7 @@ public class Ability {
     String effect;
     @ManyToOne(fetch = FetchType.EAGER)//(cascade = CascadeType.ALL)
     @JoinColumn(name = "connection_move")
-    Move connection =  null;
+    Move connection = null;
 
     @OneToMany(mappedBy = "ability")//, fetch = FetchType.EAGER)
     Set<BaseAbility> baseAbilities = new HashSet<>();

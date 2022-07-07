@@ -8,7 +8,7 @@
     <div class="col-lg-10">
         <h1 class="text-black text-center">Selected Moves</h1>
         <table class="table table-light table-striped">
-            <thead style="position: sticky;top: 0" class="thead-light">
+            <thead class="thead-light" style="position: sticky;top: 0">
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Type</th>
@@ -48,8 +48,8 @@
             </tbody>
         </table>
         <div th:if="${movePage != null}">
-            <ul class="pagination pagination-sm">
-                <li th:if="${movePage.totalPages > 0}" class="page-link" th:each="pageNumber : ${pageNumbers}">
+            <ul class="pagination pagination-sm d-flex flex-wrap">
+                <li class="page-link" th:each="pageNumber : ${pageNumbers}" th:if="${movePage.totalPages > 0}">
                     <a th:href="@{/all_moves(size=${movePage.size}, page=${pageNumber})}"
                        th:text=${pageNumber}
                     ></a>

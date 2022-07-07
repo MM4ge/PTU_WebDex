@@ -18,67 +18,6 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "moves")
 public class Move {
-    public enum MoveClass {
-        MOVE_CLASSES("Move Class"),
-        PHYSICAL("Physical"), SPECIAL("Special"),
-        STATUS("Status"), STATIC("Static");
-
-        private final String displayName;
-
-        private MoveClass(String displayName)
-        {
-            this.displayName = displayName;
-        }
-
-        public String getDisplayName()
-        {
-            return this.displayName;
-        }
-    }
-    public enum ContestType {
-        BEAUTY, COOL, CUTE, SMART, TOUGH;
-    }
-    public enum ContestEffect {
-        ATTENTION_GRABBER("Attention Grabber"), BIG_SHOW("Big Show"), CATCHING_UP("Catching Up"),
-        DESPERATION("Desperation"), DOUBLE_TIME("Double Time"), EXCITEMENT("Excitement"),
-        EXHAUSTING_ACT("Exhausting Act"), GAMBLE("Gamble"), GET_READY("Get Ready!"),
-        GOOD_SHOW("Good Show!"), INCENTIVES("Incentives"), INVERSED_APPEAL("Inversed Appeal"),
-        REFLECTIVE_APPEAL("Reflective Appeal"), RELIABLE("Reliable"), SABOTAGE("Sabotage"),
-        SAFE_OPTION("Safe Option"), SAVING_GRACE("Saving Grace"), SEEN_NOTHING_YET("Seen Nothing Yet"),
-        SPECIAL_ATTENTION("Special Attention"), STEADY_PERFORMANCE("Steady Performance"),
-        TEASE("Tease"), UNSETTLING("Unsettling");
-
-        String name;
-
-        private static Map<String, ContestEffect> contestEffectMap = null;
-
-        private ContestEffect(String name)
-        {
-            this.name = name;
-        }
-
-        public String getName()
-        {
-            return name;
-        }
-
-        public static ContestEffect getContestEffect(String name)
-        {
-            try {
-                return ContestEffect.valueOf(name.toUpperCase());
-            }
-            catch (IllegalArgumentException ignored) { // Ignored
-            }
-            catch (NullPointerException e) {return null;}
-
-            if(contestEffectMap == null)
-            {
-                contestEffectMap = Arrays.stream(values()).collect(Collectors.toMap(
-                        ContestEffect::getName, Function.identity()));
-            }
-            return contestEffectMap.get(name);
-        }
-    }
     @Id
     @NonNull
     String name;
@@ -105,7 +44,6 @@ public class Move {
     ContestEffect contestEffect;
     @Transient
     String critsOn;
-
     @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "move")
     Set<LevelMove> levelMoves = new HashSet<>();
@@ -113,15 +51,17 @@ public class Move {
     @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER, mappedBy = "connection")
     Set<Ability> connections = new HashSet<>();
     @ToString.Exclude
-    @ManyToMany(mappedBy = "tmHmMoves")
+    @Transient
+    //@ManyToMany(mappedBy = "tmHmMoves")
     Set<PokemonSpecies> tmHmMoves = new HashSet<>();
     @ToString.Exclude
-    @ManyToMany(mappedBy = "tutorMoves")
+    @Transient
+    //@ManyToMany(mappedBy = "tutorMoves")
     Set<PokemonSpecies> tutorMoves = new HashSet<>();
     @ToString.Exclude
-    @ManyToMany(mappedBy = "eggMoves")
+    @Transient
+    //@ManyToMany(mappedBy = "eggMoves")
     Set<PokemonSpecies> eggMoves = new HashSet<>();
-
     public Move(@NonNull String name, @NonNull Type type, @NonNull Frequency frequency, int uses, String ac, String db, @NonNull MoveClass moveClass, String range, String effect, ContestType contestType, ContestEffect contestEffect, String critsOn) {
         this.name = name;
         this.type = type;
@@ -136,7 +76,6 @@ public class Move {
         this.contestEffect = contestEffect;
         this.critsOn = critsOn;
     }
-
     public Move(@NonNull String name, @NonNull Type type, @NonNull Frequency frequency, String ac, String db, @NonNull MoveClass moveClass, String range, String effect) {
         this.name = name;
         this.type = type;
@@ -147,7 +86,6 @@ public class Move {
         this.range = range;
         this.effect = effect;
     }
-
     public Move(@NonNull String name, Type type, Frequency frequency, MoveClass moveClass) {
         this.name = name;
         this.type = type;
@@ -155,8 +93,7 @@ public class Move {
         this.moveClass = moveClass;
     }
 
-    public Move(MoveDTO moveDTO)
-    {
+    public Move(MoveDTO moveDTO) {
         this.name = moveDTO.getName();
         this.type = moveDTO.getType();
         this.frequency = moveDTO.getFrequency();
@@ -196,5 +133,62 @@ public class Move {
                 ", contestEffect=" + contestEffect +
                 ", critsOn='" + critsOn + '\'' +
                 '}';
+    }
+
+    public enum MoveClass {
+        MOVE_CLASSES("Move Class"),
+        PHYSICAL("Physical"), SPECIAL("Special"),
+        STATUS("Status"), STATIC("Static");
+
+        private final String displayName;
+
+        private MoveClass(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return this.displayName;
+        }
+    }
+
+    public enum ContestType {
+        BEAUTY, COOL, CUTE, SMART, TOUGH;
+    }
+
+    public enum ContestEffect {
+        ATTENTION_GRABBER("Attention Grabber"), BIG_SHOW("Big Show"), CATCHING_UP("Catching Up"),
+        DESPERATION("Desperation"), DOUBLE_TIME("Double Time"), EXCITEMENT("Excitement"),
+        EXHAUSTING_ACT("Exhausting Act"), GAMBLE("Gamble"), GET_READY("Get Ready!"),
+        GOOD_SHOW("Good Show!"), INCENTIVES("Incentives"), INVERSED_APPEAL("Inversed Appeal"),
+        REFLECTIVE_APPEAL("Reflective Appeal"), RELIABLE("Reliable"), SABOTAGE("Sabotage"),
+        SAFE_OPTION("Safe Option"), SAVING_GRACE("Saving Grace"), SEEN_NOTHING_YET("Seen Nothing Yet"),
+        SPECIAL_ATTENTION("Special Attention"), STEADY_PERFORMANCE("Steady Performance"),
+        TEASE("Tease"), UNSETTLING("Unsettling");
+
+        private static Map<String, ContestEffect> contestEffectMap = null;
+        String name;
+
+        private ContestEffect(String name) {
+            this.name = name;
+        }
+
+        public static ContestEffect getContestEffect(String name) {
+            try {
+                return ContestEffect.valueOf(name.toUpperCase());
+            } catch (IllegalArgumentException ignored) { // Ignored
+            } catch (NullPointerException e) {
+                return null;
+            }
+
+            if (contestEffectMap == null) {
+                contestEffectMap = Arrays.stream(values()).collect(Collectors.toMap(
+                        ContestEffect::getName, Function.identity()));
+            }
+            return contestEffectMap.get(name);
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 }

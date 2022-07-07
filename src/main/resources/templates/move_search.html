@@ -10,31 +10,31 @@
             <h1>Move Search</h1>
             <h6>Input the name of a Move to search for that Move specifically.</h6>
             <h6>Input any other number of fields to search for Moves that fit all of them.</h6>
-            <span th:if="${error != null}" th:text="${error}" color="text-danger"/>
+            <span color="text-danger" th:if="${error != null}" th:text="${error}"/>
         </div>
-        <form action="#" th:action="@{/move_search}" th:object="${moveDTO}" method="post"
-              class="m-3 p-3 border border-dark">
-            <p>Full Name: <input type="text" th:field="*{name}" placeholder="Ember"/></p>
+        <form action="#" class="m-3 p-3 border border-dark" method="post" th:action="@{/move_search}"
+              th:object="${moveDTO}">
+            <p>Full Name: <input placeholder="Ember" th:field="*{name}" type="text"/></p>
             <p>
                 <select name="type">
                     <option th:each="typeOpt : ${T(org.allenfulmer.ptuviewer.models.Type).values()}"
-                            th:value="${typeOpt}" th:text="${typeOpt.displayName}"></option>
+                            th:text="${typeOpt.displayName}" th:value="${typeOpt}"></option>
                 </select>
                 <select name="frequency">
                     <option th:each="frequencyOpt : ${T(org.allenfulmer.ptuviewer.models.Frequency).values()}"
-                            th:value="${frequencyOpt}" th:text="${frequencyOpt.displayName}"></option>
+                            th:text="${frequencyOpt.displayName}" th:value="${frequencyOpt}"></option>
                 </select>
                 <select name="moveClass">
                     <option th:each="moveClassOpt : ${T(org.allenfulmer.ptuviewer.models.Move.MoveClass).values()}"
-                            th:value="${moveClassOpt}" th:text="${moveClassOpt.displayName}"></option>
+                            th:text="${moveClassOpt.displayName}" th:value="${moveClassOpt}"></option>
                 </select>
             </p>
             <p>
-                AC: <input class="form-short" type="text" th:field="*{ac}" placeholder="2" size="6"/>
-                DB: <input class="form-short" type="text" th:field="*{db}" placeholder="4" size="6"/>
+                AC: <input class="form-short" placeholder="2" size="6" th:field="*{ac}" type="text"/>
+                DB: <input class="form-short" placeholder="4" size="6" th:field="*{db}" type="text"/>
             </p>
-            <p>Range: <input type="text" th:field="*{range}" placeholder="4, 1 Target" size="35"/></p>
-            <p>Effect: <input type="text" th:field="*{effect}" placeholder="Burns on 18+" size="36"/></p>
+            <p>Range: <input placeholder="4, 1 Target" size="35" th:field="*{range}" type="text"/></p>
+            <p>Effect: <input placeholder="Burns on 18+" size="36" th:field="*{effect}" type="text"/></p>
             <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
         </form>
     </div>

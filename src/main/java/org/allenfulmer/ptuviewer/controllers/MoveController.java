@@ -6,14 +6,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.allenfulmer.ptuviewer.dto.MoveDTO;
 import org.allenfulmer.ptuviewer.models.Frequency;
 import org.allenfulmer.ptuviewer.models.Move;
-import org.allenfulmer.ptuviewer.services.MoveService;
 import org.allenfulmer.ptuviewer.models.Type;
+import org.allenfulmer.ptuviewer.services.MoveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -25,7 +28,6 @@ import java.util.stream.IntStream;
 @Slf4j
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class MoveController {
-    MoveService moveServ;
     private static final String ERR = "error";
     private static final String ALERT = "alert";
     private static final String MOVES = "moves";
@@ -33,16 +35,17 @@ public class MoveController {
     private static final String RESULTS = "move_results";
     private static final String DELETE = "move_delete";
     private static final String SEARCH = "move_search";
+    private static final String MOVE_DTO = "moveDTO";
+    MoveService moveServ;
 
     @Autowired
-    public MoveController(MoveService moveServ)
-    {
+    public MoveController(MoveService moveServ) {
         this.moveServ = moveServ;
     }
 
     @GetMapping("/move_form")
     public String getCreateOrUpdateForm(Model model) {
-        model.addAttribute("moveDTO", new MoveDTO());
+        model.addAttribute(MOVE_DTO, new MoveDTO());
         return FORM;
     }
 
@@ -51,48 +54,46 @@ public class MoveController {
         boolean err = false;
         // Validate the move - it must have a name (unique id) and have selected something from each dropdown
         //  (each Move has those as requirements)
-        if(moveDTO.getName().isEmpty())
-        {
+        if (moveDTO.getName().isEmpty()) {
             model.addAttribute(ERR, "Please add a name.");
             log.info("Create/Update Move was supplied an empty name.");
             err = true;
         }
-        if(!didChangeDropdowns(moveDTO))
-        {
+        if (!didChangeDropdowns(moveDTO)) {
             model.addAttribute("error2", "Please choose a selection from each dropdown menu.");
             log.info("Create/Update Move was supplied a default dropdown menu choice.");
             err = true;
         }
-        if(err)
+        if (err)
             return FORM;
 
         // Check if we're creating or updating - save it to aboolean now instead of directly using it
         //  in case an error occurs while saving
         boolean update;
-        if(moveServ.doesMoveExist(moveDTO.getName())){ update = true;}
-        else {update = false;}
+        if (moveServ.doesMoveExist(moveDTO.getName())) {
+            update = true;
+        } else {
+            update = false;
+        }
 
         // Save the move and add it to the model
         try {
             moveServ.saveOrUpdate(new Move(moveDTO));
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             model.addAttribute(ERR, "An unknown error has occurred. Please try again.");
             return FORM;
         }
         model.addAttribute(MOVES, Arrays.asList(moveDTO));
 
         // Update the model with the alert flag
-        if(update)
+        if (update)
             model.addAttribute(ALERT, "update");
         else
             model.addAttribute(ALERT, "create");
         return RESULTS;
     }
 
-    private boolean didChangeDropdowns(MoveDTO move)
-    {
+    private boolean didChangeDropdowns(MoveDTO move) {
         // These are all the defaults for the enum dropdown menus (placed there for reading convenience)
         //  They aren't used by the JSON, so they should be filtered out
         return !(move.getFrequency() == Frequency.FREQUENCIES ||
@@ -101,22 +102,18 @@ public class MoveController {
     }
 
     @GetMapping("/move_search")
-    public String moveSearchForm(Model model)
-    {
-        model.addAttribute("moveDTO", new MoveDTO());
+    public String moveSearchForm(Model model) {
+        model.addAttribute(MOVE_DTO, new MoveDTO());
         return SEARCH;
     }
 
     @PostMapping("/move_search")
-    public String searchMoves(@ModelAttribute MoveDTO moveDTO, Model model)
-    {
+    public String searchMoves(@ModelAttribute MoveDTO moveDTO, Model model) {
         // If the name isn't empty (was supplied by the user), it's guaranteed to be unique so only search by it exactly
-        if(!moveDTO.getName().isEmpty())
-        {
+        if (!moveDTO.getName().isEmpty()) {
             try {
                 model.addAttribute(MOVES, Arrays.asList(moveServ.findByName(moveDTO.getName())));
-            }
-            catch(NoSuchElementException e){
+            } catch (NoSuchElementException e) {
                 model.addAttribute(ERR, "No move with the given name was found.");
                 return SEARCH;
             }
@@ -133,8 +130,7 @@ public class MoveController {
      */
     @GetMapping("/all_moves")
     public String showAllMoves(Model model, @RequestParam("page") Optional<Integer> currPage,
-                               @RequestParam("size") Optional<Integer> size)
-    {
+                               @RequestParam("size") Optional<Integer> size) {
         int pageNum = currPage.orElse(1);
         int pageSize = size.orElse(20);
 
@@ -144,8 +140,7 @@ public class MoveController {
         int totalPages = movePage.getTotalPages();
 
         // Add the page indexes to the model (the pg 1, 2, 3...)
-        if(totalPages > 0)
-        {
+        if (totalPages > 0) {
             model.addAttribute("pageNumbers",
                     IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList()));
         }
@@ -153,18 +148,15 @@ public class MoveController {
     }
 
     @GetMapping("/move_delete")
-    public String getDeleteMovePage(Model model)
-    {
-        model.addAttribute("moveDTO", new MoveDTO());
+    public String getDeleteMovePage(Model model) {
+        model.addAttribute(MOVE_DTO, new MoveDTO());
         return DELETE;
     }
 
     @PostMapping("/move_delete")
-    public String getDeleteMovePage(@ModelAttribute MoveDTO moveDTO, Model model)
-    {
+    public String getDeleteMovePage(@ModelAttribute MoveDTO moveDTO, Model model) {
         // Ensure the move exists in the database
-        if(!moveServ.doesMoveExist(moveDTO.getName()))
-        {
+        if (!moveServ.doesMoveExist(moveDTO.getName())) {
             model.addAttribute(ERR, "The move name didn't match anything in the database.");
             return DELETE;
         }

@@ -1,11 +1,11 @@
 package org.allenfulmer.ptuviewer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.allenfulmer.ptuviewer.jsonLoading.JsonToPojoLoader;
 import org.allenfulmer.ptuviewer.jsonLoading.PojoToDBConverter;
-import org.allenfulmer.ptuviewer.jsonLoading.PokedexLoader;
-import org.allenfulmer.ptuviewer.jsonLoading.db.ability.AbilityPojo;
-import org.allenfulmer.ptuviewer.jsonLoading.db.move.MovePojo;
-import org.allenfulmer.ptuviewer.jsonLoading.db.pokemon.PokemonSpeciesPojo;
+import org.allenfulmer.ptuviewer.jsonLoading.pojo.ability.AbilityPojo;
+import org.allenfulmer.ptuviewer.jsonLoading.pojo.move.MovePojo;
+import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.PokemonSpeciesPojo;
 import org.allenfulmer.ptuviewer.models.*;
 import org.allenfulmer.ptuviewer.repositories.AbilityRepository;
 import org.allenfulmer.ptuviewer.repositories.MoveRepository;
@@ -23,38 +23,38 @@ public class AppCommandLineRunner implements CommandLineRunner {
     AbilityRepository abilityRepo;
     MoveRepository moveRepo;
     PokemonSpeciesRepository pokemonRepo;
+
     @Autowired
     public AppCommandLineRunner(AbilityRepository abilityRepo, MoveRepository moveRepo,
-                                PokemonSpeciesRepository pokemonRepo){
+                                PokemonSpeciesRepository pokemonRepo) {
         this.abilityRepo = abilityRepo;
         this.moveRepo = moveRepo;
         this.pokemonRepo = pokemonRepo;
     }
 
     @Override
-    public void run(String... args){
-        insertTestData();
+    public void run(String... args) {
         insertMoves();
         insertAbilities();
-//        insertPokemon();
-        log.info("Done with all loading");
+        insertPokemon();
+        log.info("---Done with all loading---");
 
         moveRepo.findAll().forEach(m -> log.info(m.toString()));
         abilityRepo.findAll().forEach(a -> log.info(a.toString()));
         pokemonRepo.findAll().forEach(p -> log.info(p.toString()));
+        log.info("---Done logging DB objects---");
     }
 
-    private void insertTestData()
-    {
+    private void insertTestData() {
         PokemonSpecies p1 = new PokemonSpecies("1001", "TestMonA", "Standard");
         PokemonSpecies p2 = new PokemonSpecies("1002", "TestMonB", "Alolan");
         PokemonSpecies p3 = new PokemonSpecies("1003", "TestMonC", "Galar");
-        p1.setTypes(Arrays.asList(Type.BUG, Type.DARK));
-        p2.setTypes(Arrays.asList(Type.ICE));
-        p3.setTypes(Arrays.asList(Type.FIRE, Type.FIGHTING));
-        p1.setBaseStatsFromInts(1,2,3,4,5,6);
-        p2.setBaseStatsFromInts(5,5,5,5,5,5);
-        p3.setBaseStatsFromInts(3,1,4,1,5,9);
+        p1.setTypesFromList(Arrays.asList(Type.BUG, Type.DARK));
+        p2.setTypesFromList(Arrays.asList(Type.ICE));
+        p3.setTypesFromList(Arrays.asList(Type.FIRE, Type.FIGHTING));
+        p1.setBaseStatsFromInts(1, 2, 3, 4, 5, 6);
+        p2.setBaseStatsFromInts(5, 5, 5, 5, 5, 5);
+        p3.setBaseStatsFromInts(3, 1, 4, 1, 5, 9);
 
         Ability a1 = new Ability("Eat", Frequency.STATIC, "Eats a delicious food buff.");
         Ability a2 = new Ability("Cook", Frequency.DAILY, "Creates some food.");
@@ -89,16 +89,16 @@ public class AppCommandLineRunner implements CommandLineRunner {
         p1.addLevelMove(16, m1);
         p1.addLevelMove(28, m3);
 
-        p2.addLevelMove(1,m3);
-        p2.addLevelMove(1,m2);
-        p2.addLevelMove(11,m3);
-        p2.addLevelMove(21,m3);
-        p2.addLevelMove(31,m3);
-        p2.addLevelMove(41,m5);
+        p2.addLevelMove(1, m3);
+        p2.addLevelMove(1, m2);
+        p2.addLevelMove(11, m3);
+        p2.addLevelMove(21, m3);
+        p2.addLevelMove(31, m3);
+        p2.addLevelMove(41, m5);
 
-        p3.addLevelMove(1,m1);
-        p3.addLevelMove(1,m5);
-        p3.addLevelMove(16,m4);
+        p3.addLevelMove(1, m1);
+        p3.addLevelMove(1, m5);
+        p3.addLevelMove(16, m4);
 
         p1.addBaseAbility(BaseAbility.AbilityType.BASIC, a1);
         p1.addBaseAbility(BaseAbility.AbilityType.ADVANCED, a2);
@@ -116,32 +116,26 @@ public class AppCommandLineRunner implements CommandLineRunner {
         pokemonRepo.save(p3);
     }
 
-    private void insertPokemon()
-    {
-        Map<String, PokemonSpeciesPojo> pojoPokes = PokedexLoader.parsePojoPokemon();
+    private void insertPokemon() {
+        Map<String, PokemonSpeciesPojo> pojoPokes = JsonToPojoLoader.parsePojoPokemon();
         Map<String, PokemonSpecies> pokes = PojoToDBConverter.pokemonMapBuilder(pojoPokes);
         pokemonRepo.saveAll(pokes.values());
-        pokemonRepo.findAll().forEach(m -> log.info(m.getSpeciesName()));
         log.info("Done With Pokemon");
     }
 
-    private void insertAbilities()
-    {
-        Map<String, AbilityPojo> pojoAbility = PokedexLoader.parsePojoAbilities();
+    private void insertAbilities() {
+        Map<String, AbilityPojo> pojoAbility = JsonToPojoLoader.parsePojoAbilities();
         Map<String, Ability> abilities = PojoToDBConverter.abilityMapBuilder(pojoAbility);
         abilityRepo.saveAll(abilities.values());
-        abilityRepo.findAll().forEach(a -> log.info(a.getName()));
         log.info("Done With Abilities");
     }
 
-    private void insertMoves()
-    {
-        Map<String, MovePojo> pojoMoves = PokedexLoader.parsePojoMoves();
+    private void insertMoves() {
+        Map<String, MovePojo> pojoMoves = JsonToPojoLoader.parsePojoMoves();
         Map<String, Move> moves = PojoToDBConverter.moveMapBuilder(pojoMoves);
-        moves.values().forEach(m -> {
-            log.info(m.getName());
-            moveRepo.save(m);});
-        moveRepo.findAll().forEach(m -> log.info(m.getName()));
+        // Protects against duplicate value Moves
+        // Individual save duplicates turn into updates, duplicates in saveAll crash
+        moves.values().forEach(moveRepo::save);
         log.info("Done with Moves");
     }
 }

@@ -8,7 +8,7 @@
     <div class="col-lg-10">
         <h1 class="text-black text-center">Selected Abilities</h1>
         <table class="table table-light table-striped">
-            <thead style="position: sticky;top: 0" class="thead-light">
+            <thead class="thead-light" style="position: sticky;top: 0">
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Frequency</th>
@@ -75,8 +75,8 @@
             </tbody>
         </table>
         <div th:if="${abilityPage != null}">
-            <ul class="pagination pagination-sm">
-                <li th:if="${abilityPage.totalPages > 0}" class="page-link" th:each="pageNumber : ${pageNumbers}">
+            <ul class="pagination pagination-sm d-flex flex-wrap">
+                <li class="page-link" th:each="pageNumber : ${pageNumbers}" th:if="${abilityPage.totalPages > 0}">
                     <a th:href="@{/all_abilities(size=${abilityPage.size}, page=${pageNumber})}"
                        th:text=${pageNumber}
                     ></a>

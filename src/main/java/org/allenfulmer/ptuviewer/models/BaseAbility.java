@@ -14,36 +14,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class BaseAbility implements Comparable<BaseAbility>{
-    public enum AbilityType
-    {
-        BASIC(0), ADVANCED(20), HIGH(40);
-
-        public final int level;
-
-        AbilityType(int level)
-        {
-            this.level = level;
-        }
-
-        public int getLevel()
-        {
-            return this.level;
-        }
-
-        public static AbilityType getAbilityType(String str)
-        {
-            if(str.equalsIgnoreCase("Base"))
-                return AbilityType.BASIC;
-            else if(str.equalsIgnoreCase("Advanced"))
-                return AbilityType.ADVANCED;
-            else if(str.equalsIgnoreCase("High"))
-                return AbilityType.HIGH;
-            else
-                return null;
-        }
-    }
-
+public class BaseAbility implements Comparable<BaseAbility> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
@@ -56,6 +27,10 @@ public class BaseAbility implements Comparable<BaseAbility>{
     @ManyToOne(fetch = FetchType.EAGER)
     @NonNull
     PokemonSpecies pokemonSpecies;
+
+    public String getDisplayName() {
+        return getAbility().getName() + " (" + getAbilityType().getDisplayName() + ")";
+    }
 
     @Override
     public int compareTo(@NotNull BaseAbility o) {
@@ -82,5 +57,36 @@ public class BaseAbility implements Comparable<BaseAbility>{
     @Override
     public int hashCode() {
         return Objects.hash(getAbilityType(), getAbility(), getPokemonSpecies());
+    }
+
+    public enum AbilityType {
+        BASIC(0, "Basic"), ADVANCED(20, "Adv"), HIGH(40, "High");
+
+        public final int level;
+        public final String displayName;
+
+        AbilityType(int level, String name) {
+            this.level = level;
+            this.displayName = name;
+        }
+
+        public static AbilityType getAbilityType(String str) {
+            if (str.equalsIgnoreCase("Base"))
+                return AbilityType.BASIC;
+            else if (str.equalsIgnoreCase("Advanced"))
+                return AbilityType.ADVANCED;
+            else if (str.equalsIgnoreCase("High"))
+                return AbilityType.HIGH;
+            else
+                return null;
+        }
+
+        public int getLevel() {
+            return this.level;
+        }
+
+        public String getDisplayName() {
+            return this.displayName;
+        }
     }
 }
