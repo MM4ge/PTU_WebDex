@@ -3,23 +3,17 @@ package org.allenfulmer.ptuviewer.services;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.allenfulmer.ptuviewer.models.Ability;
-import org.allenfulmer.ptuviewer.models.Frequency;
-import org.allenfulmer.ptuviewer.models.Move;
+import org.allenfulmer.ptuviewer.models.*;
 import org.allenfulmer.ptuviewer.repositories.AbilityRepository;
 import org.allenfulmer.ptuviewer.repositories.LevelMoveRepository;
 import org.allenfulmer.ptuviewer.repositories.MoveRepository;
-import org.allenfulmer.ptuviewer.models.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -58,8 +52,13 @@ public class MoveService {
 
     public void deleteByName(String name)
     {
-        Move target = moveRepo.getReferenceById(name);
-        levelRepo.deleteAll(target.getLevelMoves());
+        Move target = moveRepo.findById(name).orElseThrow(NoSuchElementException::new);
+
+        Set<LevelMove> levelMoves = target.getLevelMoves();
+        levelMoves.forEach(LevelMove::removeSelfFromPokemon);
+        target.setLevelMoves(Collections.emptySet());
+
+        levelRepo.deleteAll(levelMoves);
         Optional<Ability> optAbility = abilityRepo.findByConnection(target);
         if(optAbility.isPresent())
         {

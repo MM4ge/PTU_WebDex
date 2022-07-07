@@ -37,6 +37,16 @@ public class LevelMove implements Comparable<LevelMove>{
             move.getLevelMoves().add(this);
     }
 
+    public void removeSelfFromPokemon()
+    {
+        getPokemonSpecies().getLevelUpMoves().remove(this);
+    }
+
+    public String getDisplayName()
+    {
+        return getMove().getName() + " (" + getLevel() + ")";
+    }
+
     @Override
     public int compareTo(@NotNull LevelMove o) {
         int ret = getLevel() - o.getLevel();

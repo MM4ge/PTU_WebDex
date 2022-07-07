@@ -231,7 +231,12 @@ public class PojoToDBConverter {
 
             // Evolution Stages - String
             newPoke.setEvolutions(p.getEvolutionStages().stream().map(e ->
-                e.getStage() + " - " + e.getSpecies() + " " + e.getCriteria()).collect(Collectors.joining("\n")));
+            {
+                String ret = e.getStage() + " - " + e.getSpecies();
+                if(!e.getCriteria().isEmpty())
+                    ret += " (" + e.getCriteria() + ")";
+                return ret;
+            }).collect(Collectors.joining(", ")));
 
             // LevelUpMoves - List<LevelUpMove>
             p.getLevelUpMoves().stream().forEach(m ->
@@ -268,6 +273,10 @@ public class PojoToDBConverter {
         Map<String, PokemonSpeciesPojo> pojoPokes = PokedexLoader.parsePojoPokemon();
         Map<String, PokemonSpecies> pokes = pokemonMapBuilder(pojoPokes);
         //pokes.values().forEach(System.out::println);
+
+        PokemonSpecies get = pokes.get("001");
+        System.out.println(get.getBaseAbilitiesString());
+
         System.out.println("Done");
     }
 }

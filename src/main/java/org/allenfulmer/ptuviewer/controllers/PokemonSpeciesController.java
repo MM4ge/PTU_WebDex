@@ -4,10 +4,11 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.allenfulmer.ptuviewer.dto.AbilityDTO;
-import org.allenfulmer.ptuviewer.dto.MoveDTO;
+import org.allenfulmer.ptuviewer.dto.PokemonSpeciesDTO;
 import org.allenfulmer.ptuviewer.models.Ability;
-import org.allenfulmer.ptuviewer.models.Move;
+import org.allenfulmer.ptuviewer.models.PokemonSpecies;
 import org.allenfulmer.ptuviewer.services.AbilityService;
+import org.allenfulmer.ptuviewer.services.PokemonSpeciesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,37 +28,32 @@ import java.util.stream.IntStream;
 @Controller
 @Slf4j
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class AbilityController {
+public class PokemonSpeciesController {
 
-    AbilityService abilityServ;
-
-    @Autowired
-    AbilityController(AbilityService abilityServ)
-    {
-        this.abilityServ = abilityServ;
-    }
-
+    PokemonSpeciesService pokemonServ;
 
     private static final String ERR = "error";
-    private static final String ABILITIES = "abilities";
-    private static final String RESULTS = "ability_results";
-    private static final String SEARCH = "ability_search";
+    private static final String POKEMON = "pokemons";
+    private static final String RESULTS = "pokemon_results";
+    private static final String SEARCH = "pokemon_search";
 
-    /*
-    This code is largely from Baeldung's Spring + Thymeleaf Pagination tutorial:
-    https://www.baeldung.com/spring-thymeleaf-pagination
-     */
-    @GetMapping("/all_abilities")
-    public String showAllAbilities(Model model, @RequestParam("page") Optional<Integer> currPage,
+    @Autowired
+    PokemonSpeciesController(PokemonSpeciesService pokemonServ)
+    {
+        this.pokemonServ = pokemonServ;;
+    }
+
+    @GetMapping("/all_pokemon")
+    public String showAllPokemon(Model model, @RequestParam("page") Optional<Integer> currPage,
                                @RequestParam("size") Optional<Integer> size)
     {
         int pageNum = currPage.orElse(1);
-        int pageSize = size.orElse(20);
+        int pageSize = size.orElse(10);
 
         // Get all the entities to fill up the current page
-        Page<Ability> abilityPage = abilityServ.findAllPaginated(PageRequest.of(pageNum - 1, pageSize));
-        model.addAttribute("abilityPage", abilityPage);
-        int totalPages = abilityPage.getTotalPages();
+        Page<PokemonSpecies> pokemonPage = pokemonServ.findAllPaginated(PageRequest.of(pageNum - 1, pageSize));
+        model.addAttribute("pokemonPage", pokemonPage);
+        int totalPages = pokemonPage.getTotalPages();
 
         // Add the page indexes to the model (the pg 1, 2, 3...)
         if(totalPages > 0)
@@ -68,30 +64,30 @@ public class AbilityController {
         return RESULTS;
     }
 
-    @GetMapping("/ability_search")
-    public String abilitySearchForm(Model model)
+    @GetMapping("/pokemon_search")
+    public String pokemonSearchForm(Model model)
     {
-        model.addAttribute("abilityDTO", new AbilityDTO());
+        model.addAttribute("pokemonDTO", new PokemonSpeciesDTO());
         return SEARCH;
     }
 
-    @PostMapping("/ability_search")
-    public String searchAbilities(@ModelAttribute AbilityDTO abilityDTO, Model model)
+    @PostMapping("/pokemon_search")
+    public String searchAbilities(@ModelAttribute PokemonSpeciesDTO pokemonDTO, Model model)
     {
-        // If the name isn't empty (was supplied by the user), it's guaranteed to be unique so only search by it exactly
-        if(!abilityDTO.getName().isEmpty())
+        // If the dex ID isn't empty (was supplied by the user), it's guaranteed to be unique so only search by it exactly
+        if(!pokemonDTO.getPokedexID().isEmpty())
         {
             try {
-                model.addAttribute(ABILITIES, Arrays.asList(abilityServ.findByName(abilityDTO.getName())));
+                model.addAttribute(POKEMON, Arrays.asList(pokemonServ.findByID(pokemonDTO.getPokedexID())));
             }
             catch(NoSuchElementException e){
-                model.addAttribute(ERR, "No ability with the given name was found.");
+                model.addAttribute(ERR, "No pokemon with the given pokedex ID was found.");
                 return SEARCH;
             }
             return RESULTS;
         }
 
-        model.addAttribute(ABILITIES, abilityServ.findAbilityByExample(new Ability(abilityDTO)));
+        model.addAttribute(POKEMON, pokemonServ.findAbilityByExample(new PokemonSpecies(pokemonDTO)));
         return RESULTS;
     }
 }

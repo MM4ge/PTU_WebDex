@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<div th:replace="fragments/head :: head"/>
+<body>
+<!-- Responsive navbar-->
+<div th:replace="fragments/nav :: nav"/>
+<div class="h-100 d-flex align-items-center justify-content-center">
+    <div class="col-lg-10">
+        <h1 class="text-black text-center">Selected Pokemon</h1>
+        <div class="table-responsive">
+        <table class="table table-light table-striped table-sm table-bordered
+
+">
+            <thead style="position: sticky;top: 0" class="thead-light">
+            <tr>
+                <th scope="col">Dex ID</th>
+                <th scope="col">Species</th>
+                <th scope="col">Form</th>
+                <th scope="col">Evolutions</th>
+                <th scope="col">Primary Type</th>
+                <th scope="col">Secondary Type</th>
+                <th scope="col">HP</th>
+                <th scope="col">Atk</th>
+                <th scope="col">Def</th>
+                <th scope="col">SpAtk</th>
+                <th scope="col">SpDef</th>
+                <th scope="col">Speed</th>
+                <th scope="col">Abilities</th>
+                <th scope="col">Moves</th>
+<!--                <th scope="col">TM/HM Moves</th>-->
+<!--                <th scope="col">Tutor Moves</th>-->
+<!--                <th scope="col">Egg Moves</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <div th:if="${pokemonPage != null}">
+                <tr th:each="pokemon: ${pokemonPage.content}">
+                    <th scope="row" th:text="${pokemon.pokedexID}"></th>
+                    <td th:text="${pokemon.speciesName}"></td>
+                    <td th:text="${pokemon.form}"></td>
+                    <td th:text="${pokemon.evolutions}"></td>
+                    <td th:text="${pokemon.primaryType.displayName}"></td>
+                    <div th:if="${pokemon.secondaryType != null}">
+                        <td th:text="${pokemon.secondaryType.displayName}"></td>
+                    </div>
+                    <div th:unless="${pokemon.secondaryType != null}">
+                        <td></td>
+                    </div>
+                    <td th:text="${pokemon.hp}"></td>
+                    <td th:text="${pokemon.atk}"></td>
+                    <td th:text="${pokemon.def}"></td>
+                    <td th:text="${pokemon.spAtk}"></td>
+                    <td th:text="${pokemon.spDef}"></td>
+                    <td th:text="${pokemon.speed}"></td>
+                    <td th:text="${pokemon.baseAbilitiesString}">
+                    <td th:text="${pokemon.levelMovesString}">
+<!--                    <td th:text="${pokemon.tmHmMovesString}">-->
+<!--                    <td th:text="${pokemon.tutorMovesString}">-->
+<!--                    <td th:text="${pokemon.eggMovesString}">-->
+                </tr>
+            </div>
+            <div th:unless="${pokemonPage != null}">
+                <tr th:each="pokemon: ${pokemons}">
+                    <th scope="row" th:text="${pokemon.pokedexID}"></th>
+                    <td th:text="${pokemon.speciesName}"></td>
+                    <td th:text="${pokemon.form}"></td>
+                    <td th:text="${pokemon.evolutions}"></td>
+                    <td th:text="${pokemon.primaryType.displayName}"></td>
+                    <div th:if="${pokemon.secondaryType != null}">
+                        <td th:text="${pokemon.secondaryType.displayName}"></td>
+                    </div>
+                    <div th:unless="${pokemon.secondaryType != null}">
+                        <td></td>
+                    </div>
+                    <td th:text="${pokemon.hp}"></td>
+                    <td th:text="${pokemon.atk}"></td>
+                    <td th:text="${pokemon.def}"></td>
+                    <td th:text="${pokemon.spAtk}"></td>
+                    <td th:text="${pokemon.spDef}"></td>
+                    <td th:text="${pokemon.speed}"></td>
+                    <td th:text="${pokemon.baseAbilitiesString}">
+                    <td th:text="${pokemon.levelMovesString}">
+<!--                    <td th:text="${pokemon.tmHmMovesString}">-->
+<!--                    <td th:text="${pokemon.tutorMovesString}">-->
+<!--                    <td th:text="${pokemon.eggMovesString}">-->
+                </tr>
+            </div>
+            </tbody>
+        </table>
+        </div>
+        <div th:if="${pokemonPage != null}">
+            <ul class="pagination pagination-sm d-flex flex-wrap">
+                <li th:if="${pokemonPage.totalPages > 0}" class="page-link" th:each="pageNumber : ${pageNumbers}">
+                    <a th:href="@{/all_pokemon(size=${pokemonPage.size}, page=${pageNumber})}"
+                       th:text=${pageNumber}
+                    ></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div th:if="${alert != null}">
+    <div th:switch="${alert}">
+        <div th:case="create">
+            <script src="js/create.js"></script>
+        </div>
+        <div th:case="update">
+            <script src="js/update.js"></script>
+        </div>
+        <div th:case="delete">
+            <script src="js/delete.js"></script>
+        </div>
+    </div>
+</div>
+<!-- Footer-->
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

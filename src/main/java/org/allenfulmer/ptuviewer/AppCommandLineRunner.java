@@ -33,10 +33,10 @@ public class AppCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args){
-        insertTestData();
+//        insertTestData();
         insertMoves();
         insertAbilities();
-//        insertPokemon();
+        insertPokemon();
         log.info("Done with all loading");
 
         moveRepo.findAll().forEach(m -> log.info(m.toString()));
@@ -49,9 +49,9 @@ public class AppCommandLineRunner implements CommandLineRunner {
         PokemonSpecies p1 = new PokemonSpecies("1001", "TestMonA", "Standard");
         PokemonSpecies p2 = new PokemonSpecies("1002", "TestMonB", "Alolan");
         PokemonSpecies p3 = new PokemonSpecies("1003", "TestMonC", "Galar");
-        p1.setTypes(Arrays.asList(Type.BUG, Type.DARK));
-        p2.setTypes(Arrays.asList(Type.ICE));
-        p3.setTypes(Arrays.asList(Type.FIRE, Type.FIGHTING));
+        p1.setTypesFromList(Arrays.asList(Type.BUG, Type.DARK));
+        p2.setTypesFromList(Arrays.asList(Type.ICE));
+        p3.setTypesFromList(Arrays.asList(Type.FIRE, Type.FIGHTING));
         p1.setBaseStatsFromInts(1,2,3,4,5,6);
         p2.setBaseStatsFromInts(5,5,5,5,5,5);
         p3.setBaseStatsFromInts(3,1,4,1,5,9);

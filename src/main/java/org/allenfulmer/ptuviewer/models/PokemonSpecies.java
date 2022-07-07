@@ -2,9 +2,11 @@ package org.allenfulmer.ptuviewer.models;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.allenfulmer.ptuviewer.dto.PokemonSpeciesDTO;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -70,27 +72,43 @@ public class PokemonSpecies {
     int spAtk;
     int spDef;
     int speed;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="pokemonSpecies")//, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="pokemonSpecies", fetch = FetchType.EAGER)
     Set<BaseAbility> baseAbilities = new TreeSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemonSpecies")//, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemonSpecies", fetch = FetchType.EAGER)
     Set<LevelMove> levelUpMoves = new TreeSet<>();
 
-    @ManyToMany//(fetch = FetchType.EAGER)//, mappedBy = "tmHmMoves")
+    @Transient
+    //@ManyToMany(fetch = FetchType.EAGER)//, mappedBy = "tmHmMoves")
     Set<Move> tmHmMoves;
 
-    @ManyToMany//(fetch = FetchType.EAGER)
+    @Transient
+    //@ManyToMany(fetch = FetchType.EAGER)
     Set<Move> tutorMoves;
-    /**
-     * A Set of every Move the pokemon may learn as an Egg Move.
-     */
-    @ManyToMany//(fetch = FetchType.EAGER)
+
+    @Transient
+    //@ManyToMany(fetch = FetchType.EAGER)
     Set<Move> eggMoves;
 
     public PokemonSpecies(String pokedexID, String speciesName, String form) {
         this.pokedexID = pokedexID;
         this.speciesName = speciesName;
         this.form = form;
+    }
+
+    public PokemonSpecies(PokemonSpeciesDTO pokemonDTO) {
+        this.pokedexID = pokemonDTO.getPokedexID();
+        this.speciesName = pokemonDTO.getSpeciesName();
+        this.form = pokemonDTO.getForm();
+        this.evolutions = pokemonDTO.getEvolutions();
+        this.primaryType = pokemonDTO.getPrimaryType();
+        this.secondaryType = pokemonDTO.getSecondaryType();
+        this.hp = pokemonDTO.getHp();
+        this.atk = pokemonDTO.getAtk();
+        this.def = pokemonDTO.getDef();
+        this.spAtk = pokemonDTO.getSpAtk();
+        this.spDef = pokemonDTO.getSpDef();
+        this.speed = pokemonDTO.getSpeed();
     }
 
     public void setBaseStatsFromMap(EnumMap<Stat.StatName, Integer> stats)
@@ -133,6 +151,38 @@ public class PokemonSpecies {
     public void addBaseAbility(BaseAbility.AbilityType type, Ability ability)
     {
         baseAbilities.add(new BaseAbility(type, ability, this));
+    }
+
+    public String getBaseAbilitiesString()
+    {
+        return getBaseAbilities().stream().sorted().map(BaseAbility::getDisplayName)
+                .collect(Collectors.joining(", "));
+    }
+
+    public String getLevelMovesString()
+    {
+        return getLevelUpMoves().stream().sorted().map(LevelMove::getDisplayName)
+                .collect(Collectors.joining(", "));
+    }
+
+    public String getTmHmMovesString()
+    {
+        return generateStringFromMoves(getTmHmMoves());
+    }
+
+    public String getTutorMovesString()
+    {
+        return generateStringFromMoves(getTutorMoves());
+    }
+
+    public String getEggMovesString()
+    {
+        return generateStringFromMoves(getEggMoves());
+    }
+
+    private String generateStringFromMoves(Set<Move> moves)
+    {
+        return moves.stream().map(Move::getName).sorted().collect(Collectors.joining(", "));
     }
 
     @Override

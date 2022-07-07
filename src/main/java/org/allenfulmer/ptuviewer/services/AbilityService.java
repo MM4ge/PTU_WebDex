@@ -52,7 +52,7 @@ public class AbilityService {
             .withIgnorePaths("name", "connection", "uses");
     public List<Ability> findAbilityByExample(Ability ability)
     {
-        // The Move we're receiving potentially has default values in it from the enums
+        // The Ability we're receiving potentially has default values in it from the enums
         ability.setFrequency(ability.getFrequency() == Frequency.FREQUENCIES ? null : ability.getFrequency());
         ability.setActionType(ability.getActionType() == ActionType.ACTION_TYPE ? null : ability.getActionType());
 

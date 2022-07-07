@@ -29,12 +29,6 @@ logging:
   level:
     root: INFO
     com.instructor.springbootdemoproject: INFO
-    org:
-      hibernate:
-        SQL: TRACE
-        type:
-          descriptor:
-            sql: TRACE
 
 management:
   endpoints:

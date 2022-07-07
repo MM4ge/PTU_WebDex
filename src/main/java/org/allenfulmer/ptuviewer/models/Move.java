@@ -113,13 +113,16 @@ public class Move {
     @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER, mappedBy = "connection")
     Set<Ability> connections = new HashSet<>();
     @ToString.Exclude
-    @ManyToMany(mappedBy = "tmHmMoves")
+    @Transient
+    //@ManyToMany(mappedBy = "tmHmMoves")
     Set<PokemonSpecies> tmHmMoves = new HashSet<>();
     @ToString.Exclude
-    @ManyToMany(mappedBy = "tutorMoves")
+    @Transient
+    //@ManyToMany(mappedBy = "tutorMoves")
     Set<PokemonSpecies> tutorMoves = new HashSet<>();
     @ToString.Exclude
-    @ManyToMany(mappedBy = "eggMoves")
+    @Transient
+    //@ManyToMany(mappedBy = "eggMoves")
     Set<PokemonSpecies> eggMoves = new HashSet<>();
 
     public Move(@NonNull String name, @NonNull Type type, @NonNull Frequency frequency, int uses, String ac, String db, @NonNull MoveClass moveClass, String range, String effect, ContestType contestType, ContestEffect contestEffect, String critsOn) {

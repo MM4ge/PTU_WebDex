@@ -17,19 +17,22 @@ import java.util.Objects;
 public class BaseAbility implements Comparable<BaseAbility>{
     public enum AbilityType
     {
-        BASIC(0), ADVANCED(20), HIGH(40);
+        BASIC(0, "Basic"), ADVANCED(20, "Adv"), HIGH(40, "High");
 
         public final int level;
+        public final String displayName;
 
-        AbilityType(int level)
+        AbilityType(int level, String name)
         {
             this.level = level;
+            this.displayName = name;
         }
 
         public int getLevel()
         {
             return this.level;
         }
+        public String getDisplayName() { return this.displayName; }
 
         public static AbilityType getAbilityType(String str)
         {
@@ -56,6 +59,11 @@ public class BaseAbility implements Comparable<BaseAbility>{
     @ManyToOne(fetch = FetchType.EAGER)
     @NonNull
     PokemonSpecies pokemonSpecies;
+
+    public String getDisplayName()
+    {
+        return getAbility().getName() + " (" + getAbilityType().getDisplayName() + ")";
+    }
 
     @Override
     public int compareTo(@NotNull BaseAbility o) {

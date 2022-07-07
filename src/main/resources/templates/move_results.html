@@ -48,7 +48,7 @@
             </tbody>
         </table>
         <div th:if="${movePage != null}">
-            <ul class="pagination pagination-sm">
+            <ul class="pagination pagination-sm d-flex flex-wrap">
                 <li th:if="${movePage.totalPages > 0}" class="page-link" th:each="pageNumber : ${pageNumbers}">
                     <a th:href="@{/all_moves(size=${movePage.size}, page=${pageNumber})}"
                        th:text=${pageNumber}
