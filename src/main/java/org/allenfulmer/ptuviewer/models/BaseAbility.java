@@ -5,7 +5,6 @@ import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Setter
@@ -74,17 +73,32 @@ public class BaseAbility implements Comparable<BaseAbility> {
          */
         HIGH(40, "High");
 
+        // Make the Ability Types into a linked list - can't be done with constructor due to illegal forward exceptions
+        static {
+            BASIC.prev = null;
+            BASIC.next = ADVANCED;
+            ADVANCED.prev = BASIC;
+            ADVANCED.next = HIGH;
+            HIGH.prev = ADVANCED;
+            HIGH.next = null;
+        }
+
         public final int level;
         public final String displayName;
+        private AbilityType prev;
+        private AbilityType next;
 
         AbilityType(int level, String name) {
             this.level = level;
             this.displayName = name;
         }
 
-        public static AbilityType getHighestType(int level) {
-            return Arrays.stream(AbilityType.values()).filter(a -> a.getLevel() <= level)
-                    .max(java.util.Comparator.naturalOrder()).orElse(BASIC);
+        public AbilityType getPrevType() {
+            return prev;
+        }
+
+        public AbilityType getNextType() {
+            return next;
         }
 
         public static AbilityType getAbilityType(String str) {
