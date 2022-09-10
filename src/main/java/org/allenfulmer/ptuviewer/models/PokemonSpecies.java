@@ -27,6 +27,9 @@ public class PokemonSpecies {
     String form;
     String evolutions;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemonSpecies", fetch = FetchType.EAGER)
+    Set<BaseCapability> baseCapabilities = new TreeSet<>();
+
     // Height
     @Transient
     int inchesHeightMin;
@@ -82,12 +85,14 @@ public class PokemonSpecies {
     //@ManyToMany(fetch = FetchType.EAGER)//, mappedBy = "tmHmMoves")
     Set<Move> tmHmMoves;
 
-    @Transient
-    //@ManyToMany(fetch = FetchType.EAGER)
+        @Transient
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "tutor_moves")
     Set<Move> tutorMoves;
 
-    @Transient
-    //@ManyToMany(fetch = FetchType.EAGER)
+        @Transient
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "egg_moves")
     Set<Move> eggMoves;
 
     public PokemonSpecies(String pokedexID, String speciesName, String form) {
@@ -139,12 +144,25 @@ public class PokemonSpecies {
         }
     }
 
+    public void addBaseCapability(int rank, String criteria, Capability capability) {
+        baseCapabilities.add(new BaseCapability(rank, criteria, capability, this));
+    }
+
+    public void addBaseCapability(int rank, Capability capability) {
+        baseCapabilities.add(new BaseCapability(rank, capability, this));
+    }
+
     public void addLevelMove(int level, Move move) {
         levelUpMoves.add(new LevelMove(level, move, this));
     }
 
     public void addBaseAbility(BaseAbility.AbilityType type, Ability ability) {
         baseAbilities.add(new BaseAbility(type, ability, this));
+    }
+
+    public String getBaseCapabilitiesString() {
+        return getBaseCapabilities().stream().sorted().map(BaseCapability::getDisplayName)
+                .collect(Collectors.joining(", "));
     }
 
     public String getBaseAbilitiesString() {

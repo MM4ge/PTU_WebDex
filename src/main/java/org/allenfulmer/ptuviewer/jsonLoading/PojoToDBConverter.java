@@ -9,15 +9,13 @@ import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.ImperialHeightRange;
 import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.PokemonSpeciesPojo;
 import org.allenfulmer.ptuviewer.models.*;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PojoToDBConverter {
     private static final String ABILITY_DIVIDER = " - ";
     private static final String CONNECTION_HEADER = "Connection - ";
+    private static Map<String, Capability> convertedCapabilities = null;
     private static Map<String, Ability> convertedAbilities = null;
     private static Map<String, Move> convertedMoves = null;
     private static Map<String, PokemonSpecies> convertedPokemonSpecies = null;
@@ -38,6 +36,79 @@ public class PojoToDBConverter {
         if (mapMove == null)
             throw new NullPointerException("Move named " + name + " not found in moveMap");
         return mapMove;
+    }
+
+    public static Capability getCapability(String name) {
+        if (convertedCapabilities == null)
+            convertedCapabilities = JsonToPojoLoader.parseCapabilities();
+        Capability mapCapability = convertedCapabilities.get(name);
+        if (mapCapability == null)
+            throw new NullPointerException("Capability named " + name + " not found in capabilityMap");
+        return mapCapability;
+    }
+
+    private static Set<BaseCapability> convertCapabilities(PokemonSpecies poke,
+                                                           List<org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.Capability> pojoCapabilities) {
+        Set<BaseCapability> capabilities = new TreeSet<>();
+        for (org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.Capability curr : pojoCapabilities) {
+            String name = curr.getCapabilityName();
+            String value = curr.getValue();
+            Capability capability = null;
+
+            /*
+            Check for special cases
+            some capabilites like Alluring and Planter can have additional criteria that are part of the name instead
+                of in the value
+            Jump needs to be split into High and Long Jump
+            Naturewalk needs parentheses around its environments
+             */
+
+            // Check for Jump and Naturewalk
+            if (name.equalsIgnoreCase("Jump")) // Jump X/Y -- X is High, Y is Long
+            {
+                String[] ranks = value.split("/");
+                capabilities.add(new BaseCapability(Integer.parseInt(ranks[0]), getCapability("High Jump"), poke));
+                capabilities.add(new BaseCapability(Integer.parseInt(ranks[1]), getCapability("Long Jump"), poke));
+                continue;
+            } else if (name.equalsIgnoreCase("Naturewalk")) // Naturewalk Tundra,Urban
+            {
+                String environments = Arrays.stream(value.split(",")).map(String::trim)
+                        .collect(Collectors.joining(", ", "(", ")"));
+                capabilities.add(new BaseCapability(environments, getCapability(curr.getCapabilityName()), poke));
+                continue;
+            }
+            // Capabilities with values in the pojo name section
+            try {
+                capability = getCapability(curr.getCapabilityName());
+            } catch (NullPointerException ex) {
+                int firstSpace = name.indexOf(" ");
+                if (firstSpace == -1) // If we can't have a special case, throw the missing capability exception
+                    throw ex;
+
+                // If it can be a special case, try to get it directly then continue as normal
+                value = name.substring(firstSpace, name.length());
+                name = name.substring(0, firstSpace);
+                capability = getCapability(name);
+            }
+
+            // Check for name-only capabilities
+            if (value == null || value.isEmpty()) {
+                capabilities.add(new BaseCapability(capability, poke));
+                continue;
+            }
+
+            // Now for rank capabilities - if the value is a #, then it's a rank, otherwise it's a criteria
+            try {
+                capabilities.add(new BaseCapability(Integer.parseInt(value), capability, poke));
+                continue;
+            } catch (NumberFormatException ignored) {
+            }
+
+            // If we're here, the value is a criteria, just add it
+            capabilities.add(new BaseCapability(value, capability, poke));
+
+        }
+        return capabilities;
     }
 
     private static PojoFrequency convertFrequency(String freqText) {
@@ -149,6 +220,9 @@ public class PojoToDBConverter {
             newPoke.setSpeciesName(p.getSpecies());
             newPoke.setForm(p.getForm());
 
+            // Capabilities - Set<BaseCapability>
+            newPoke.setBaseCapabilities(convertCapabilities(newPoke, p.getCapabilities()));
+
             // Base Stats - EnumMap<Stat.StatName, Integer>
             newPoke.setBaseStatsFromMap(convertBaseStats(p.getBaseStats()));
 
@@ -217,6 +291,8 @@ public class PojoToDBConverter {
 
         Map<String, PokemonSpeciesPojo> pojoPokes = JsonToPojoLoader.parsePojoPokemon();
         Map<String, PokemonSpecies> pokes = pokemonMapBuilder(pojoPokes);
+
+        System.out.println("Done");
     }
 
     @AllArgsConstructor

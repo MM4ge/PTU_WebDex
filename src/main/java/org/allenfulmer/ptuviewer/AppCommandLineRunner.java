@@ -8,6 +8,7 @@ import org.allenfulmer.ptuviewer.jsonLoading.pojo.move.MovePojo;
 import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.PokemonSpeciesPojo;
 import org.allenfulmer.ptuviewer.models.*;
 import org.allenfulmer.ptuviewer.repositories.AbilityRepository;
+import org.allenfulmer.ptuviewer.repositories.CapabilityRepository;
 import org.allenfulmer.ptuviewer.repositories.MoveRepository;
 import org.allenfulmer.ptuviewer.repositories.PokemonSpeciesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,15 @@ import java.util.Map;
 @Component
 @Slf4j
 public class AppCommandLineRunner implements CommandLineRunner {
+    CapabilityRepository capabilityRepo;
     AbilityRepository abilityRepo;
     MoveRepository moveRepo;
     PokemonSpeciesRepository pokemonRepo;
 
     @Autowired
-    public AppCommandLineRunner(AbilityRepository abilityRepo, MoveRepository moveRepo,
-                                PokemonSpeciesRepository pokemonRepo) {
+    public AppCommandLineRunner(CapabilityRepository capabilityRepo, AbilityRepository abilityRepo,
+                                MoveRepository moveRepo, PokemonSpeciesRepository pokemonRepo) {
+        this.capabilityRepo = capabilityRepo;
         this.abilityRepo = abilityRepo;
         this.moveRepo = moveRepo;
         this.pokemonRepo = pokemonRepo;
@@ -34,15 +37,46 @@ public class AppCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        insertCapabilities();
         insertMoves();
         insertAbilities();
         insertPokemon();
         log.info("---Done with all loading---");
 
+        capabilityRepo.findAll().forEach(c -> log.info(c.toString()));
         moveRepo.findAll().forEach(m -> log.info(m.toString()));
         abilityRepo.findAll().forEach(a -> log.info(a.toString()));
         pokemonRepo.findAll().forEach(p -> log.info(p.toString()));
         log.info("---Done logging DB objects---");
+    }
+
+    private void insertCapabilities() {
+        Map<String, Capability> capabilities = JsonToPojoLoader.parseCapabilities();
+        capabilityRepo.saveAll(capabilities.values());
+        log.info("Done With Capabilities");
+    }
+
+    private void insertPokemon() {
+        Map<String, PokemonSpeciesPojo> pojoPokes = JsonToPojoLoader.parsePojoPokemon();
+        Map<String, PokemonSpecies> pokes = PojoToDBConverter.pokemonMapBuilder(pojoPokes);
+        pokemonRepo.saveAll(pokes.values());
+        log.info("Done With Pokemon");
+    }
+
+    private void insertAbilities() {
+        Map<String, AbilityPojo> pojoAbility = JsonToPojoLoader.parsePojoAbilities();
+        Map<String, Ability> abilities = PojoToDBConverter.abilityMapBuilder(pojoAbility);
+        abilityRepo.saveAll(abilities.values());
+        log.info("Done With Abilities");
+    }
+
+    private void insertMoves() {
+        Map<String, MovePojo> pojoMoves = JsonToPojoLoader.parsePojoMoves();
+        Map<String, Move> moves = PojoToDBConverter.moveMapBuilder(pojoMoves);
+        // Protects against duplicate value Moves
+        // Individual save duplicates turn into updates, duplicates in saveAll crash
+        moves.values().forEach(moveRepo::save);
+        log.info("Done with Moves");
     }
 
     private void insertTestData() {
@@ -114,28 +148,5 @@ public class AppCommandLineRunner implements CommandLineRunner {
         pokemonRepo.save(p1);
         pokemonRepo.save(p2);
         pokemonRepo.save(p3);
-    }
-
-    private void insertPokemon() {
-        Map<String, PokemonSpeciesPojo> pojoPokes = JsonToPojoLoader.parsePojoPokemon();
-        Map<String, PokemonSpecies> pokes = PojoToDBConverter.pokemonMapBuilder(pojoPokes);
-        pokemonRepo.saveAll(pokes.values());
-        log.info("Done With Pokemon");
-    }
-
-    private void insertAbilities() {
-        Map<String, AbilityPojo> pojoAbility = JsonToPojoLoader.parsePojoAbilities();
-        Map<String, Ability> abilities = PojoToDBConverter.abilityMapBuilder(pojoAbility);
-        abilityRepo.saveAll(abilities.values());
-        log.info("Done With Abilities");
-    }
-
-    private void insertMoves() {
-        Map<String, MovePojo> pojoMoves = JsonToPojoLoader.parsePojoMoves();
-        Map<String, Move> moves = PojoToDBConverter.moveMapBuilder(pojoMoves);
-        // Protects against duplicate value Moves
-        // Individual save duplicates turn into updates, duplicates in saveAll crash
-        moves.values().forEach(moveRepo::save);
-        log.info("Done with Moves");
     }
 }
