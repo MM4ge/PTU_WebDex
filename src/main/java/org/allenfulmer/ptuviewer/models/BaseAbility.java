@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Objects;
 
 @Setter
@@ -60,7 +61,18 @@ public class BaseAbility implements Comparable<BaseAbility> {
     }
 
     public enum AbilityType {
-        BASIC(0, "Basic"), ADVANCED(20, "Adv"), HIGH(40, "High");
+        /**
+         * Base Abilities are always unlocked
+         */
+        BASIC(0, "Basic"),
+        /**
+         * Advanced Abilities are unlocked at level 20
+         */
+        ADVANCED(20, "Adv"),
+        /**
+         * High Abilities are unlocked at level 40
+         */
+        HIGH(40, "High");
 
         public final int level;
         public final String displayName;
@@ -68,6 +80,11 @@ public class BaseAbility implements Comparable<BaseAbility> {
         AbilityType(int level, String name) {
             this.level = level;
             this.displayName = name;
+        }
+
+        public static AbilityType getHighestType(int level) {
+            return Arrays.stream(AbilityType.values()).filter(a -> a.getLevel() <= level)
+                    .max(java.util.Comparator.naturalOrder()).orElse(BASIC);
         }
 
         public static AbilityType getAbilityType(String str) {

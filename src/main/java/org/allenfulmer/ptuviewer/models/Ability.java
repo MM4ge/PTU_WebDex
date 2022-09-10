@@ -3,6 +3,7 @@ package org.allenfulmer.ptuviewer.models;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.allenfulmer.ptuviewer.dto.AbilityDTO;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Ability {
+public class Ability implements Comparable<Ability> {
     @Id
     @NonNull
     String name;
@@ -90,5 +91,10 @@ public class Ability {
                 ", target='" + target + '\'' +
                 ", effect='" + effect + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(@NotNull Ability o) {
+        return getName().compareTo(o.getName());
     }
 }

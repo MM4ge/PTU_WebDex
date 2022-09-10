@@ -68,7 +68,7 @@ public class PokemonSpecies {
      * Hp, Attack, Defense, Special_Attack, Special_Defense, Speed
      */
     @Transient
-    EnumMap<Stat.StatName, Integer> baseStats;
+    Map<Stat.StatName, Integer> baseStats;
     int hp;
     int atk;
     int def;
@@ -116,7 +116,7 @@ public class PokemonSpecies {
         this.speed = pokemonDTO.getSpeed();
     }
 
-    public void setBaseStatsFromMap(EnumMap<Stat.StatName, Integer> stats) {
+    public void setBaseStatsFromMap(Map<Stat.StatName, Integer> stats) {
         this.baseStats = stats;
         this.hp = stats.get(Stat.StatName.HP);
         this.atk = stats.get(Stat.StatName.ATTACK);
@@ -163,6 +163,22 @@ public class PokemonSpecies {
     public String getBaseCapabilitiesString() {
         return getBaseCapabilities().stream().sorted().map(BaseCapability::getDisplayName)
                 .collect(Collectors.joining(", "));
+    }
+
+    public Map<Stat.StatName, Integer> getBaseStats() {
+        if (baseStats != null && !baseStats.isEmpty())
+            return baseStats;
+
+        Map<Stat.StatName, Integer> stats = new EnumMap<>(Stat.StatName.class);
+        stats.put(Stat.StatName.HP, getHp());
+        stats.put(Stat.StatName.ATTACK, getAtk());
+        stats.put(Stat.StatName.DEFENSE, getDef());
+        stats.put(Stat.StatName.SPECIAL_ATTACK, getSpAtk());
+        stats.put(Stat.StatName.SPECIAL_DEFENSE, getSpDef());
+        stats.put(Stat.StatName.SPEED, getSpeed());
+
+        setBaseStats(stats);
+        return stats;
     }
 
     public String getBaseAbilitiesString() {

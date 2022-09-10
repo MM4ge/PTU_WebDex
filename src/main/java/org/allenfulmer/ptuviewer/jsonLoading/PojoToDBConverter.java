@@ -282,6 +282,10 @@ public class PojoToDBConverter {
     }
 
     public static void main(String[] args) {
+        populatePokemonMaps();
+    }
+
+    public static Map<String, PokemonSpecies> populatePokemonMaps() {
         // Local variables left here for easy debugging in the debugger if necessary
         Map<String, MovePojo> pojoMoves = JsonToPojoLoader.parsePojoMoves();
         Map<String, Move> moves = moveMapBuilder(pojoMoves);
@@ -293,6 +297,7 @@ public class PojoToDBConverter {
         Map<String, PokemonSpecies> pokes = pokemonMapBuilder(pojoPokes);
 
         System.out.println("Done");
+        return pokes;
     }
 
     @AllArgsConstructor
