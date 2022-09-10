@@ -85,12 +85,12 @@ public class PokemonSpecies {
     //@ManyToMany(fetch = FetchType.EAGER)//, mappedBy = "tmHmMoves")
     Set<Move> tmHmMoves;
 
-        @Transient
+    @Transient
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinTable(name = "tutor_moves")
     Set<Move> tutorMoves;
 
-        @Transient
+    @Transient
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinTable(name = "egg_moves")
     Set<Move> eggMoves;

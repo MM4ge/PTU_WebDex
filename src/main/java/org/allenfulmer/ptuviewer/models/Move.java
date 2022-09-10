@@ -62,6 +62,7 @@ public class Move {
     @Transient
     //@ManyToMany(mappedBy = "eggMoves")
     Set<PokemonSpecies> eggMoves = new HashSet<>();
+
     public Move(@NonNull String name, @NonNull Type type, @NonNull Frequency frequency, int uses, String ac, String db, @NonNull MoveClass moveClass, String range, String effect, ContestType contestType, ContestEffect contestEffect, String critsOn) {
         this.name = name;
         this.type = type;
@@ -76,6 +77,7 @@ public class Move {
         this.contestEffect = contestEffect;
         this.critsOn = critsOn;
     }
+
     public Move(@NonNull String name, @NonNull Type type, @NonNull Frequency frequency, String ac, String db, @NonNull MoveClass moveClass, String range, String effect) {
         this.name = name;
         this.type = type;
@@ -86,6 +88,7 @@ public class Move {
         this.range = range;
         this.effect = effect;
     }
+
     public Move(@NonNull String name, Type type, Frequency frequency, MoveClass moveClass) {
         this.name = name;
         this.type = type;

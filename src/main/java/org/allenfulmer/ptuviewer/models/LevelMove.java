@@ -53,7 +53,7 @@ public class LevelMove implements Comparable<LevelMove> {
 
     @Override
     public String toString() {
-        StringBuilder strBuilder = new StringBuilder("LevelMove{" + "level=" + level);
+        StringBuilder strBuilder = new StringBuilder("LevelMove{" + "level=" + getLevel());
         if (getMove() != null)
             strBuilder.append(", move=").append(getMove().getName());
         if (getPokemonSpecies() != null)

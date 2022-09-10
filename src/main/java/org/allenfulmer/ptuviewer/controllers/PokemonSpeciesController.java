@@ -35,7 +35,7 @@ public class PokemonSpeciesController {
 
     @Autowired
     PokemonSpeciesController(PokemonSpeciesService pokemonServ) {
-        this.pokemonServ = pokemonServ;;
+        this.pokemonServ = pokemonServ;
     }
 
     @GetMapping("/all_pokemon")

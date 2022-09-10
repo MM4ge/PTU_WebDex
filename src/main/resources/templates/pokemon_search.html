@@ -18,7 +18,7 @@
             <p>Name: <input placeholder="Breloom" size=19/ th:field="*{speciesName}" type="text"></p>
             <p>Form: <input placeholder="Standard" size=20/ th:field="*{form}" type="text"></p>
             <p>Evolutions: <input placeholder="1 - Shroomish, 2 - Breloom (Minimum 20)" size=36/
-                                  th:field="*{evolutions}" type="text"></p>
+ th:field="*{evolutions}" type="text"></p>
             <p>
                 Primary Type: <select name="primaryType">
                 <option th:each="typeOpt : ${T(org.allenfulmer.ptuviewer.models.Type).values()}"

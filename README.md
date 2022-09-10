@@ -16,11 +16,14 @@ POJO Java classes for the JSON seed data created with https://www.jsonschema2poj
 
 ### General Description
 
-Moves, Abilities, and Pokemon can easily be viewed or even searched for on the site; go to the dropdown menu in the upper right
+Moves, Abilities, and Pokemon can easily be viewed or even searched for on the site; go to the dropdown menu in the
+upper right
 for whichever datatype you want to view and select "See All". The website will provide a table with additional page
 navigation on the bottom. If you select "Search For", you'll be presented a form to fill out of what information in your
-datatype you want to find. If you search for a name (or Pokedex ID in the case of Pokemon), the program will only search by name / ID
-and only for exact matches. Otherwise, any datatype that matches what was entered in the form will be presented on a results page.
+datatype you want to find. If you search for a name (or Pokedex ID in the case of Pokemon), the program will only search
+by name / ID
+and only for exact matches. Otherwise, any datatype that matches what was entered in the form will be presented on a
+results page.
 
 ### Technical Description
 
@@ -28,7 +31,8 @@ and only for exact matches. Otherwise, any datatype that matches what was entere
   searches via example matching.
 - When visiting a "See All" page, the database retrieves the first page of entities from the database, and Spring uses
   Pages / Pagination to generate links at the bottom for the other pages, if there are any more.
-- Moves, Abilities, and Pokemon data to search for are supplied to/from the user's form via MoveDTO, AbilityDTO, and PokemonSpeciesDTO 
+- Moves, Abilities, and Pokemon data to search for are supplied to/from the user's form via MoveDTO, AbilityDTO, and
+  PokemonSpeciesDTO
   respectively to prevent malicious code injection.
 - The DTOs are then used to search the database via an ExampleMatcher, to select any entity that has all the
   user-supplied criteria.

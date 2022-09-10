@@ -32,6 +32,7 @@ public class AbilityController {
     private static final String RESULTS = "ability_results";
     private static final String SEARCH = "ability_search";
     AbilityService abilityServ;
+
     @Autowired
     AbilityController(AbilityService abilityServ) {
         this.abilityServ = abilityServ;

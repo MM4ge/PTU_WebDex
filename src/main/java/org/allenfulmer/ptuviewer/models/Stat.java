@@ -19,6 +19,7 @@ public class Stat {
     int nature = 0;
     int allocated = 0;
     int bonus = 0;
+
     public Stat(int base) {
         this.base = base;
     }
