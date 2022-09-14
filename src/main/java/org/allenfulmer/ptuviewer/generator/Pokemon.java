@@ -2,6 +2,7 @@ package org.allenfulmer.ptuviewer.generator;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.allenfulmer.ptuviewer.generator.models.Nature;
 import org.allenfulmer.ptuviewer.models.Ability;
 import org.allenfulmer.ptuviewer.models.Move;
 import org.allenfulmer.ptuviewer.models.PokemonSpecies;
@@ -17,8 +18,9 @@ import java.util.*;
 public class Pokemon {
     PokemonSpecies species;
     int level;
+    Nature nature;
     Map<Stat.StatName, Stat> stats;
-    Set<Move> moves;
+    List<Move> moves;
     Set<Ability> abilities;
 
     public Pokemon(PokemonSpecies species) {
@@ -28,8 +30,9 @@ public class Pokemon {
     public Pokemon(PokemonSpecies species, int level) {
         this.species = species;
         this.level = level;
+        this.nature = Nature.getRandomNature();
         stats = new EnumMap<>(Stat.StatName.class);
-        moves = new LinkedHashSet<>();
+        moves = new ArrayList<>();
         abilities = new TreeSet<>();
     }
 }

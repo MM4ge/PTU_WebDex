@@ -2,7 +2,9 @@ package org.allenfulmer.ptuviewer.models;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -14,6 +16,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Slf4j
 public class BaseAbility implements Comparable<BaseAbility> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,15 +66,15 @@ public class BaseAbility implements Comparable<BaseAbility> {
         /**
          * Base Abilities are always unlocked
          */
-        BASIC(0, "Basic"),
+        BASIC(0),
         /**
          * Advanced Abilities are unlocked at level 20
          */
-        ADVANCED(20, "Adv"),
+        ADVANCED(20),
         /**
          * High Abilities are unlocked at level 40
          */
-        HIGH(40, "High");
+        HIGH(40);
 
         // Make the Ability Types into a linked list - can't be done with constructor due to illegal forward exceptions
         static {
@@ -84,13 +87,11 @@ public class BaseAbility implements Comparable<BaseAbility> {
         }
 
         public final int level;
-        public final String displayName;
         private AbilityType prev;
         private AbilityType next;
 
-        AbilityType(int level, String name) {
+        AbilityType(int level) {
             this.level = level;
-            this.displayName = name;
         }
 
         public AbilityType getPrevType() {
@@ -102,14 +103,12 @@ public class BaseAbility implements Comparable<BaseAbility> {
         }
 
         public static AbilityType getAbilityType(String str) {
-            if (str.equalsIgnoreCase("Base"))
-                return AbilityType.BASIC;
-            else if (str.equalsIgnoreCase("Advanced"))
-                return AbilityType.ADVANCED;
-            else if (str.equalsIgnoreCase("High"))
-                return AbilityType.HIGH;
-            else
+            try {
+                return AbilityType.valueOf(str.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                log.info("Ability Type named " + str + " not a valid  Ability Type. Returning null.");
                 return null;
+            }
         }
 
         public int getLevel() {
@@ -117,7 +116,7 @@ public class BaseAbility implements Comparable<BaseAbility> {
         }
 
         public String getDisplayName() {
-            return this.displayName;
+            return StringUtils.capitalize(this.name().toLowerCase());
         }
     }
 }

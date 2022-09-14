@@ -2,19 +2,15 @@ package org.allenfulmer.ptuviewer.models;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.*;
+import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ToString
 @EqualsAndHashCode
-public class Stat {
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private static Map<String, Integer> statNames = Collections.unmodifiableMap(initStatNameMap());
+public class Stat implements Comparable<Stat> {
+    StatName name = null;
     int base;
     int nature = 0;
     int allocated = 0;
@@ -24,32 +20,9 @@ public class Stat {
         this.base = base;
     }
 
-    public static Map<String, Integer> getStatNames() {
-        return statNames;
-    }
-
-    private static Map<String, Integer> initStatNameMap() {
-        Map<String, Integer> stats = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        stats.put("HP", 0);
-        stats.put("Attack", 1);
-        stats.put("Defense", 2);
-        stats.put("SpecialAttack", 3);
-        stats.put("SpecialDefense", 4);
-        stats.put("Speed", 5);
-
-        return stats;
-    }
-
-    public static int getStatIndex(String statName) {
-        return getStatNames().get(statName);
-    }
-
-    public static List<Stat> constructStatBlock(int[] baseStats) {
-        List<Stat> statsRet = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
-            statsRet.add(new Stat(baseStats[i]));
-        }
-        return statsRet;
+    public Stat(int base, StatName name) {
+        this.base = base;
+        this.name = name;
     }
 
     /**
@@ -67,14 +40,38 @@ public class Stat {
         return base + nature + allocated + bonus;
     }
 
-    public void incrementNature(int inc) {
-        nature += inc;
-    }
-
     public void increment(int inc) {
         allocated += inc;
     }
 
+    public void setNature(boolean minus) {
+        int amt = 2;
+        if (getName().equals(StatName.HP))
+            amt = 1;
+        if (minus)
+            amt = -amt;
+        nature += amt;
+    }
+
+    @Override
+    public int compareTo(@NotNull Stat o) {
+        int bases = getBase() - o.getBase();
+        return (bases != 0) ? bases : getTotal() - o.getTotal();
+    }
+
+    @Override
+    public String toString() {
+        return "Stat{" +
+                "name=" + name +
+                ", base=" + base +
+                ", nature=" + nature +
+                ", allocated=" + allocated +
+                ", bonus=" + bonus +
+                ", total=" + (base + nature + allocated + bonus) +
+                '}';
+    }
+
+    @Getter
     public enum StatName {
         HP("hp"),
         ATTACK("atk"),
@@ -82,7 +79,7 @@ public class Stat {
         SPECIAL_ATTACK("spatk"),
         SPECIAL_DEFENSE("spdef"),
         SPEED("spd");
-        protected final String shortName;
+        public final String shortName;
 
         StatName(String shortName) {
             this.shortName = shortName;
