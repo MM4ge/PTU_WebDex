@@ -19,20 +19,30 @@ public class Pokemon {
     PokemonSpecies species;
     int level;
     Nature nature;
+    String gender;
     Map<Stat.StatName, Stat> stats;
-    List<Move> moves;
     Set<Ability> abilities;
+    List<Move> moves;
+
 
     public Pokemon(PokemonSpecies species) {
-        new Pokemon(species, 1);
+        this(species, 1);
     }
 
     public Pokemon(PokemonSpecies species, int level) {
+        this(species, level, Nature.getRandomNature());
+    }
+
+    public Pokemon(PokemonSpecies species, int level, Nature nature) {
         this.species = species;
         this.level = level;
-        this.nature = Nature.getRandomNature();
-        stats = new EnumMap<>(Stat.StatName.class);
-        moves = new ArrayList<>();
-        abilities = new TreeSet<>();
+        this.nature = nature;
+        if (species.getMaleChance() != null) {
+            this.gender = (new Random().nextDouble() < species.getMaleChance()) ? "Male" : "Female";
+        } else
+            this.gender = "N/A";
+        this.stats = new EnumMap<>(Stat.StatName.class);
+        this.abilities = new TreeSet<>();
+        this.moves = new ArrayList<>();
     }
 }

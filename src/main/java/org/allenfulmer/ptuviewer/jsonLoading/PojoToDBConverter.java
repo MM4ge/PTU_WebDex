@@ -86,7 +86,7 @@ public class PojoToDBConverter {
                     throw ex;
 
                 // If it can be a special case, try to get it directly then continue as normal
-                value = name.substring(firstSpace, name.length());
+                value = name.substring(firstSpace + 1, name.length());
                 name = name.substring(0, firstSpace);
                 capability = getCapability(name);
             }
@@ -101,8 +101,7 @@ public class PojoToDBConverter {
             try {
                 capabilities.add(new BaseCapability(Integer.parseInt(value), capability, poke));
                 continue;
-            } catch (NumberFormatException ignored) {
-            }
+            } catch (NumberFormatException ignored){}
 
             // If we're here, the value is a criteria, just add it
             capabilities.add(new BaseCapability(value, capability, poke));
@@ -153,6 +152,22 @@ public class PojoToDBConverter {
         stats.put(Stat.StatName.SPECIAL_DEFENSE, baseStats.getSpecialDefense());
         stats.put(Stat.StatName.SPEED, baseStats.getSpeed());
         return stats;
+    }
+
+    private static Set<Skill> convertSkills(PokemonSpecies species,
+                                            List<org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.Skill> pojoSkills) {
+        return pojoSkills.stream().map(s -> {
+            // Convert the die rank and bonuses -- 3d6+4 : rank = 3, bonus = 4
+            // Skills can have formatting errors (2d6 instead of 2d6+0) or negative bonuses (3d6-1)
+            String dice = s.getDiceRank();
+            int rank = Integer.parseInt(dice.substring(0, dice.indexOf('d')));
+            int bonus = 0;
+            // Only change bonus if we have one
+            if (dice.lastIndexOf("d6") + 2 < dice.length()) {
+                bonus = Integer.parseInt(dice.substring(dice.indexOf("d6") + 2, dice.length()));
+            }
+            return new Skill(s.getSkillName(), rank, bonus, species);
+        }).collect(Collectors.toCollection(TreeSet::new));
     }
 
     public static Map<String, Ability> abilityMapBuilder(Map<String, AbilityPojo> pojoMap) {
@@ -223,6 +238,9 @@ public class PojoToDBConverter {
             // Capabilities - Set<BaseCapability>
             newPoke.setBaseCapabilities(convertCapabilities(newPoke, p.getCapabilities()));
 
+            // Skills - Set<Skill>
+            newPoke.setSkills(convertSkills(newPoke, p.getSkills()));
+
             // Base Stats - EnumMap<Stat.StatName, Integer>
             newPoke.setBaseStatsFromMap(convertBaseStats(p.getBaseStats()));
 
@@ -240,6 +258,9 @@ public class PojoToDBConverter {
             newPoke.setPoundsWeightMax(p.getWeight().getImperial().getMaximum().getPounds());
             newPoke.setWeightClassMin((int) p.getWeight().getWeightClass().getMinimum());
             newPoke.setWeightClassMax((int) p.getWeight().getWeightClass().getMaximum());
+
+            // Gender
+            newPoke.setMaleChance((!p.getBreedingData().isHasGender()) ? null : p.getBreedingData().getMaleChance());
 
             // Types - List<Type>
             newPoke.setTypesFromList(p.getTypes().stream().map(PojoToDBConverter::convertType).collect(Collectors.toList()));
@@ -294,9 +315,15 @@ public class PojoToDBConverter {
         Map<String, Ability> abilities = abilityMapBuilder(pojoAbility);
 
         Map<String, PokemonSpeciesPojo> pojoPokes = JsonToPojoLoader.parsePojoPokemon();
-        Map<String, PokemonSpecies> pokes = pokemonMapBuilder(pojoPokes);
+        TreeMap<String, PokemonSpecies> pokes = new TreeMap<>(pokemonMapBuilder(pojoPokes));
 
-        System.out.println("Done");
+        Set<String> connections = abilities.values().stream().map(a -> {
+            Move connection = a.getConnection();
+            return (connection == null) ? null : connection.getDisplayName();
+        }).filter(Objects::nonNull).collect(Collectors.toSet());
+        System.out.println(connections.stream().sorted().collect(Collectors.joining("\n")));
+
+        System.out.println("---Done---");
         return pokes;
     }
 

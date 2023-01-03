@@ -15,7 +15,7 @@ import java.util.Objects;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Slf4j
 @Entity
-public class LevelMove implements Comparable<LevelMove> {
+public class LevelMove implements Comparable<LevelMove>, Displayable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;

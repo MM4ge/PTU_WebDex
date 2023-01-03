@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode
-public class Stat implements Comparable<Stat> {
+public class Stat implements Comparable<Stat>, Displayable {
     StatName name = null;
     int base;
     int nature = 0;
@@ -63,12 +63,18 @@ public class Stat implements Comparable<Stat> {
     public String toString() {
         return "Stat{" +
                 "name=" + name +
-                ", base=" + base +
+                ", effBase=" + getBase() +
+                ", total=" + getTotal() +
+                " -- base=" + base +
                 ", nature=" + nature +
                 ", allocated=" + allocated +
                 ", bonus=" + bonus +
-                ", total=" + (base + nature + allocated + bonus) +
                 '}';
+    }
+
+    @Override
+    public String getDisplayName() {
+        return name.getShortName() + ": " + getTotal();
     }
 
     @Getter

@@ -29,6 +29,8 @@ public class PokemonSpecies {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemonSpecies", fetch = FetchType.EAGER)
     Set<BaseCapability> baseCapabilities = new TreeSet<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemonSpecies", fetch = FetchType.EAGER)
+    Set<Skill> skills = new TreeSet<>();
 
     // Height
     @Transient
@@ -51,6 +53,12 @@ public class PokemonSpecies {
     int weightClassMin;
     @Transient
     int weightClassMax;
+
+    // Gender
+    /**
+     * % Chance of being male. Null means the poke has no genders
+     */
+    Double maleChance;
 
     /*
 

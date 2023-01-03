@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Ability implements Comparable<Ability> {
+public class Ability implements Comparable<Ability>, Displayable {
     @Id
     @NonNull
     String name;
@@ -87,6 +87,7 @@ public class Ability implements Comparable<Ability> {
                 ", uses=" + uses +
                 ", actionType=" + actionType +
                 ", priority=" + priority +
+                ", connection='" + ((connection == null) ? null : connection.getName()) + '\'' +
                 ", trigger='" + trigger + '\'' +
                 ", target='" + target + '\'' +
                 ", effect='" + effect + '\'' +
@@ -96,5 +97,10 @@ public class Ability implements Comparable<Ability> {
     @Override
     public int compareTo(@NotNull Ability o) {
         return getName().compareTo(o.getName());
+    }
+
+    @Override
+    public String getDisplayName() {
+        return name;
     }
 }

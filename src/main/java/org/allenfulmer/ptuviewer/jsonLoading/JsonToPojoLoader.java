@@ -11,9 +11,8 @@ import org.allenfulmer.ptuviewer.models.Capability;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 
@@ -64,15 +63,19 @@ public class JsonToPojoLoader {
         Map<String, MovePojo> moves = parsePojoMoves();
         Map<String, AbilityPojo> abilities = parsePojoAbilities();
         Map<String, PokemonSpeciesPojo> pokes = parsePojoPokemon();
+        List<String> skills = pokes.values().stream().flatMap(p -> p.getSkills().stream()).map(s -> s.getSkillName()).distinct().collect(Collectors.toList());
+        skills.forEach(System.out::println);
+        List<String> skillPowers = pokes.values().stream().flatMap(p -> p.getSkills().stream().map(s -> s.getDiceRank())).distinct().collect(Collectors.toList());
+        skillPowers.forEach(System.out::println);
 
-        Set<String> capabilities = pokes.values().stream().flatMap(p -> p.getCapabilities().stream())
-                .map(c -> c.getCapabilityName()).collect(Collectors.toCollection(TreeSet::new));
-        capabilities.forEach(System.out::println);
-        System.out.println("---------------------------");
-        capabilities = pokes.values().stream().flatMap(p -> p.getCapabilities().stream())
-                .map(c -> {
-                    return c.getCapabilityName() + " " + c.getValue();
-                }).collect(Collectors.toCollection(TreeSet::new));
-        capabilities.forEach(System.out::println);
+//        Set<String> capabilities = pokes.values().stream().flatMap(p -> p.getCapabilities().stream())
+//                .map(c -> c.getCapabilityName()).collect(Collectors.toCollection(TreeSet::new));
+//        capabilities.forEach(System.out::println);
+//        System.out.println("---------------------------");
+//        capabilities = pokes.values().stream().flatMap(p -> p.getCapabilities().stream())
+//                .map(c -> {
+//                    return c.getCapabilityName() + " " + c.getValue();
+//                }).collect(Collectors.toCollection(TreeSet::new));
+//        capabilities.forEach(System.out::println);
     }
 }

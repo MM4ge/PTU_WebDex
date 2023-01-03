@@ -10,11 +10,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Map;
 
-public class PojoToDBConverterTest {
+class PojoToDBConverterTest {
 
     private static final Map<String, Ability> convertedAbilities = PojoToDBConverter.abilityMapBuilder(JsonToPojoLoader.parsePojoAbilities());
     private static final Map<String, Move> convertedMoves = PojoToDBConverter.moveMapBuilder(JsonToPojoLoader.parsePojoMoves());
     private static final Map<String, PokemonSpecies> convertedPokemonSpecies = PojoToDBConverter.pokemonMapBuilder(JsonToPojoLoader.parsePojoPokemon());
+    //TODO: Capabilities test
+    private static final Map<String, Capability> capabilities = JsonToPojoLoader.parseCapabilities();
 
     @Test
     public void notEmpty() {

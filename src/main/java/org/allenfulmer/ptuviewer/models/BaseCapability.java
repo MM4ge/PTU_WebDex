@@ -12,7 +12,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BaseCapability implements Comparable<BaseCapability> {
+public class BaseCapability implements Comparable<BaseCapability>, Displayable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
@@ -52,14 +52,17 @@ public class BaseCapability implements Comparable<BaseCapability> {
         getPokemonSpecies().getBaseCapabilities().remove(this);
     }
 
+    /**
+     * Specifically just to return "Naturewalk (X, Y) as the name since it isn't *really* a criteria
+     */
+    public String getFullName() {
+        if (criteria != null && !criteria.isEmpty())
+            return capability.getName() + " " + getCriteria();
+        return capability.getName();
+    }
+
     public String getDisplayName() {
-        StringBuilder ret = new StringBuilder();
-        ret.append(getCapability().getName());
-        if (rank > 0)
-            ret.append(" " + getRank());
-        if (criteria != null)
-            ret.append(" " + criteria);
-        return ret.toString();
+        return getFullName() + ((rank > 0) ? " " + getRank() : "");
     }
 
     @Override

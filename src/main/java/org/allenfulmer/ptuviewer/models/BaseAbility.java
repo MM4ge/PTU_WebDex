@@ -17,7 +17,7 @@ import java.util.Objects;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Slf4j
-public class BaseAbility implements Comparable<BaseAbility> {
+public class BaseAbility implements Comparable<BaseAbility>, Displayable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;

@@ -11,6 +11,7 @@ import org.allenfulmer.ptuviewer.repositories.AbilityRepository;
 import org.allenfulmer.ptuviewer.repositories.CapabilityRepository;
 import org.allenfulmer.ptuviewer.repositories.MoveRepository;
 import org.allenfulmer.ptuviewer.repositories.PokemonSpeciesRepository;
+import org.allenfulmer.ptuviewer.views.StartupWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -48,6 +49,8 @@ public class AppCommandLineRunner implements CommandLineRunner {
         abilityRepo.findAll().forEach(a -> log.info(a.toString()));
         pokemonRepo.findAll().forEach(p -> log.info(p.toString()));
         log.info("---Done logging DB objects---");
+
+        StartupWindow startup = new StartupWindow();
     }
 
     private void insertCapabilities() {

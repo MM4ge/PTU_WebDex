@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "moves")
-public class Move {
+public class Move implements Displayable {
     @Id
     @NonNull
     String name;
@@ -138,7 +138,12 @@ public class Move {
                 '}';
     }
 
-    public enum MoveClass {
+    @Override
+    public String getDisplayName() {
+        return name;
+    }
+
+    public enum MoveClass implements Displayable {
         MOVE_CLASSES("Move Class"),
         PHYSICAL("Physical"), SPECIAL("Special"),
         STATUS("Status"), STATIC("Static");
