@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.allenfulmer.ptuviewer.generator.models.Nature;
 import org.allenfulmer.ptuviewer.jsonExport.roll20.PokemonRoll20;
 import org.allenfulmer.ptuviewer.jsonLoading.PojoToDBConverter;
@@ -16,35 +17,117 @@ import java.util.stream.Collectors;
 
 @Setter
 @Getter
+@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GeneratedPokemon extends Pokemon {
 
     public static void main(String[] args) {
-        Map<String, PokemonSpecies> pokes = PojoToDBConverter.populatePokemonMaps();
-        GeneratedPokemon p1 = new GeneratedPokemon(pokes.get("420"), 100);
-        p1.initStats();
-        p1.initAbilities(LOWER_ABILITY_TIER_CHANCE);
-        p1.initMoves(true, UNIQUE_MOVE_CHANCE);
-        System.out.println("Done");
+        Scanner input = new Scanner(System.in);
+        log.info("Input the Dex # of the Pokemon:");
+        String dexNum = input.next();
+        log.info("Input the level of the Pokemon:");
+        int level = input.nextInt();
+        GeneratedPokemon p1 = new GeneratedPokemon(PojoToDBConverter.getPokemonSpecies(dexNum), level);
+        p1.setUniqueChance(0);
+        p1.setLowerAbilityTierChance(0);
+        p1.excludeStatFromBST(Stat.StatName.HP).useNonLevelMovesStrat().useFrequencyMovesStrat().useStabMovesStrat();
+        p1.generate();
+        log.info("Done");
         Gson gson = new GsonBuilder()
                 .serializeNulls()
                 .create();
-        System.out.println(gson.toJson(new PokemonRoll20(p1)));
-        System.out.println("Done2");
+        log.info(gson.toJson(new PokemonRoll20(p1)));
+        log.info("Done2");
+    }
+
+    public GeneratedPokemon(PokemonSpecies species, int level) {
+        this(species, level, Nature.getRandomNature());
+    }
+    public GeneratedPokemon(PokemonSpecies species, int level, Nature nature) {
+        super(species, level, nature);
+        moveSavingStrategies.add(this::saveConnectionMoves);
     }
 
     static final Random RANDOM_GEN = new Random();
-    private static List<Stat.StatName> exemptStats = new ArrayList<>();
-    static final double UNIQUE_MOVE_CHANCE = 0.05;
-    static final double LOWER_ABILITY_TIER_CHANCE = 0.33;
-    static final double PRIMARY_STAT_DIFFERENCE = 1.5;
+    private List<Stat.StatName> exemptStats = new ArrayList<>(); // TODO: Default this to block HP in WEBPAGE, not here
+    private List<BinaryOperator<List<Move>>> moveSavingStrategies = new ArrayList<>();
+    private boolean removeOldest = true;
+    private double uniqueChance = 0.04;
+    private double lowerAbilityTierChance = 0.33;
+    private double primaryStatDifference = 1.5;
+    // TODO: Custom set methods for the above that return this
 
-    public GeneratedPokemon(PokemonSpecies species, int level) {
-        super(species, level);
+    /*
+    ##############################################
+    ##############################################
+
+    Builder Functions
+
+    ##############################################
+    ##############################################
+    */
+    /**
+     * Causes the Pokemon to generate its stats, abilities, and moves.
+     * @return The same Pokemon object calling this method, with generated stats, abilities, and moves.
+     */
+    public GeneratedPokemon generate()
+    {
+        initStats();
+        initAbilities();
+        initMoves();
+        return this;
     }
 
-    public GeneratedPokemon(PokemonSpecies species, int level, Nature nature) {
-        super(species, level);
+    /**
+     * Excludes a Stat from BST (Base Stat Relations) when generating this Pokemon's Stats.
+     * @param toExclude The Stat to exclude.
+     * @return The GeneratedPokemon object being called.
+     */
+    public GeneratedPokemon excludeStatFromBST(Stat.StatName toExclude)
+    {
+        exemptStats.add(toExclude);
+        return this;
+    }
+
+    /**
+     * Adds the {@link GeneratedPokemon#saveNonLevelMoves(List, List)} selection strategy to the list of strategies
+     * used to determine which move to remove when getting a new one.
+     * @return The GeneratedPokemon object being called.
+     */
+    public GeneratedPokemon useNonLevelMovesStrat()
+    {
+        moveSavingStrategies.add(this::saveNonLevelMoves);
+        return this;
+    }
+    /**
+     * Adds the {@link GeneratedPokemon#saveFrequencyMoves(List, List)} selection strategy to the list of strategies
+     * used to determine which move to remove when getting a new one.
+     * @return The GeneratedPokemon object being called.
+     */
+    public GeneratedPokemon useFrequencyMovesStrat()
+    {
+        moveSavingStrategies.add(this::saveFrequencyMoves);
+        return this;
+    }
+    /**
+     * Adds the {@link GeneratedPokemon#saveStabMoves(List, List)} selection strategy to the list of strategies
+     * used to determine which move to remove when getting a new one.
+     * @return The GeneratedPokemon object being called.
+     */
+    public GeneratedPokemon useStabMovesStrat()
+    {
+        moveSavingStrategies.add(this::saveStabMoves);
+        return this;
+    }
+    /**
+     * Adds the {@link GeneratedPokemon#savePrimaryStatMoves(List, List)} selection strategy to the list of strategies
+     * used to determine which move to remove when getting a new one.
+     * @return The GeneratedPokemon object being called.
+     */
+    public GeneratedPokemon usePrimaryStatMovesStrat()
+    {
+        moveSavingStrategies.add(this::savePrimaryStatMoves);
+        return this;
     }
 
     /*
@@ -155,14 +238,16 @@ public class GeneratedPokemon extends Pokemon {
     ##############################################
     ##############################################
     */
-    public void initAbilities(double lowerAbilityTierChance) {
+    public void initAbilities() {
         boolean onlyHighest = RANDOM_GEN.nextDouble() >= lowerAbilityTierChance;
 
-        Arrays.stream(BaseAbility.AbilityType.values()).filter(a -> a.getLevel() <= getLevel()).sorted().forEach(curr -> {
+        for(BaseAbility.AbilityType curr = BaseAbility.AbilityType.BASIC; curr != null &&
+                curr.getLevel() <= this.getLevel(); curr = curr.getNextType())
+        {
             List<Ability> possibleAbilities = pickPossibleAbilities(curr, onlyHighest);
-            if (!(possibleAbilities == null || possibleAbilities.isEmpty()))
+            if (!possibleAbilities.isEmpty())
                 getAbilities().add(possibleAbilities.get(RANDOM_GEN.nextInt(possibleAbilities.size())));
-        });
+        }
     }
 
     private List<Ability> pickPossibleAbilities(BaseAbility.AbilityType highestType, boolean onlyHighest) {
@@ -192,6 +277,8 @@ public class GeneratedPokemon extends Pokemon {
     }
 
 
+    //TODO: save startegy for type coverage - remove moves that are the only attacking type of that type the poke has
+    // or like only allowing attacking moves of its own type or duplicated
     /*
     ##############################################
     ##############################################
@@ -201,46 +288,52 @@ public class GeneratedPokemon extends Pokemon {
     ##############################################
     ##############################################
      */
-    public void initMoves(boolean removeOldest, double uniqueChance) {
+    public void initMoves() {
         Function<List<Move>, Move> choiceAlg =
                 (removeOldest) ? GeneratedPokemon::removeOldestMove : GeneratedPokemon::removeRandomMove;
         // Add initial moves; connections and maybe a unique
         getAbilities().stream().map(Ability::getConnection).filter(Objects::nonNull).forEach(getMoves()::add);
-        if (RANDOM_GEN.nextDouble() < uniqueChance) { // TODO: combo tutor and egg
-            List<Move> specialMoves = new ArrayList<>(getSpecies().getEggMoves().isEmpty() ?
-                    getSpecies().getTutorMoves() : getSpecies().getEggMoves());
-            getMoves().add(specialMoves.get(RANDOM_GEN.nextInt(specialMoves.size())));
+        if (RANDOM_GEN.nextDouble() < uniqueChance) {
+            Set<Move> specialMoves = new HashSet<>(getSpecies().getTutorMoves());
+            specialMoves.addAll(getSpecies().getEggMoves());
+            specialMoves.remove(null); // Safety in case EggMoves is empty
+
+            List<Move> randChoice = new ArrayList<>(specialMoves);
+            getMoves().add(randChoice.get(RANDOM_GEN.nextInt(randChoice.size())));
         }
+        //TODO: add multiple environment selectors for webpage, change if they\re AND or OR matching- see what exodus does
+        // if you add more than 1 n copy it?
+        // Its AND not OR - eevee is grassland/forest but throwing arctic in there causes nothing to be returned
 
         for (LevelMove currLevelMove : getSpecies().getLevelUpMoves()) {
             if (currLevelMove.getLevel() > getLevel())
                 break;
 
             Move currMove = currLevelMove.getMove();
-            if (getMoves().contains(currMove)) // No duplicates
-                continue;
-
-            // Add the move
-            while (getMoves().size() >= 6) // If we need to nix one -- never nix a new move, movelist could become stale
+            if (!getMoves().contains(currMove)) // No duplicates
             {
-                getMoves().remove(choiceAlg.apply(chooseRemovableMoves()));
+                // If we need to nix one (or more) -- never nix a new move, movelist could become stale
+                while (getMoves().size() >= PokeConstants.MAX_MOVES)
+                {
+                    getMoves().remove(choiceAlg.apply(chooseRemovableMoves()));
+                }
+                getMoves().add(currMove);
             }
-            getMoves().add(currMove);
         }
     }
 
-    public static Move removeRandomMove(List<Move> moves) {
+    private static Move removeRandomMove(List<Move> moves) {
         return moves == null || moves.isEmpty() ? null : moves.get(RANDOM_GEN.nextInt(moves.size()));
     }
 
-    public static Move removeOldestMove(List<Move> moves) {
+    private static Move removeOldestMove(List<Move> moves) {
         return moves == null || moves.isEmpty() ? null : moves.get(0);
     }
 
-    public List<Move> chooseRemovableMoves() {
+    private List<Move> chooseRemovableMoves() {
         List<Move> safeMoves = new ArrayList<>();
         List<Move> removableMoves = new ArrayList<>(getMoves());
-        for (BinaryOperator<List<Move>> currStrat : registerSaveStrategies()) {
+        for (BinaryOperator<List<Move>> currStrat : moveSavingStrategies) {
             List<Move> importantMoves = currStrat.apply(removableMoves, safeMoves);
             if (importantMoves == null || importantMoves.isEmpty())
                 continue;
@@ -253,32 +346,40 @@ public class GeneratedPokemon extends Pokemon {
         return removableMoves;
     }
 
-    public List<BinaryOperator<List<Move>>> registerSaveStrategies() {
-        List<BinaryOperator<List<Move>>> selectionStrats = new ArrayList<>();
-
-        selectionStrats.add(this::saveConnectionMoves);
-        selectionStrats.add(this::saveNonLevelMoves);
-        selectionStrats.add(this::saveFrequencyMoves);
-        selectionStrats.add(this::saveStabMoves);
-        selectionStrats.add(this::savePrimaryStatMoves);
-
-        return selectionStrats;
-    }
-
-    // These return things we CANNOT remove
+    /**
+     * Saves moves the Pokemon have that are connections to any of its Abilities.
+     * @param removable Moves that are eligible for removal.
+     * @param safe Moves from other selection strategies that cannot be removed. Unused in this function, but kept to
+     *             match BinaryOperator design.
+     * @return A List of moves that are eligible for removal (i.e. the removable list, minus any moves saved here).
+     */
     private List<Move> saveConnectionMoves(List<Move> removable, List<Move> safe) {
         List<Move> connections = getAbilities().stream().map(Ability::getConnection).filter(Objects::nonNull).collect(Collectors.toList());
         return removable.stream().filter(connections::contains).collect(Collectors.toList());
     }
 
-    // Moves that aren't on the level-up list, or are on it but are beyond the pokemon's level
-    //  (i.e. won't be able to learn it) must be retained
+    /**
+     * Saves moves that aren't on the level-up list, or are on it but are beyond the Pokemon's level (i.e. not
+     * naturally learned) to ensure unique moves aren't removed from the movelist.
+     * @param removable Moves that are eligible for removal.
+     * @param safe Moves from other selection strategies that cannot be removed. Unused in this function, but kept to
+     *      *             match BinaryOperator design.
+     * @return A List of moves that are eligible for removal (i.e. the removable list, minus any moves saved here).
+     */
     private List<Move> saveNonLevelMoves(List<Move> removable, List<Move> safe) {
         List<Move> leveledMoves = getSpecies().getLevelUpMoves().stream().filter(lm -> lm.getLevel() <= getLevel())
                 .map(LevelMove::getMove).collect(Collectors.toList());
         return removable.stream().filter(m -> !leveledMoves.contains(m)).collect(Collectors.toList());
     }
 
+    /**
+     * Saves an At-Will or two EOT moves the Pokemon has to ensure they always have a move to use during any turn.
+     * @param removable Moves that are eligible for removal.
+     * @param safe Moves from other selection strategies that cannot be removed. Used to determine which (if any) moves
+     *             are saved based on the frequencies of already-saved moves (i.e. if we have an At-Will move saved, we
+     *             don't need to save anything else).
+     * @return A List of moves that are eligible for removal (i.e. the removable list, minus any moves saved here).
+     */
     private List<Move> saveFrequencyMoves(List<Move> removable, List<Move> safe) {
         List<Move> necessaryMoves = new ArrayList<>();
         int safeEOTs = 0;
@@ -307,6 +408,15 @@ public class GeneratedPokemon extends Pokemon {
         return necessaryMoves;
     }
 
+    /**
+     * Saves one damaging STAB move for each Type the Pokemon has to ensure they have an attacking move of their own
+     * type(s).
+     * @param removable Moves that are eligible for removal.
+     * @param safe Moves from other selection strategies that cannot be removed. Used to determine which (if any) moves
+     *             are saved based on the class and types of already-saved moves (i.e. if we have STAB moves saved for
+     *             each of the Pokemon's types, we don't need to save anything else).
+     * @return A List of moves that are eligible for removal (i.e. the removable list, minus any moves saved here).
+     */
     private List<Move> saveStabMoves(List<Move> removable, List<Move> safe) {
         List<Move> necessaryMoves = new ArrayList<>();
         for (Type currType : getSpecies().getTypes()) {
@@ -322,12 +432,20 @@ public class GeneratedPokemon extends Pokemon {
         return necessaryMoves;
     }
 
-    private List<Move> getMovesOfType(List<Move> moves, Type type) {
+    private static List<Move> getMovesOfType(List<Move> moves, Type type) {
         return moves.stream().filter(m -> m.getType().equals(type) &&
                 ((m.getMoveClass().equals(Move.MoveClass.PHYSICAL)) ||
                         m.getMoveClass().equals(Move.MoveClass.SPECIAL))).collect(Collectors.toList());
     }
 
+    /**
+     * Saves damaging moves of the Pokemon's primary attacking stat, so they have a meta-valuable damaging move.
+     * @param removable Moves that are eligible for removal.
+     * @param safe Moves from other selection strategies that cannot be removed. Used to determine which (if any) moves
+     *             are saved based on the frequencies of already-saved moves (i.e. if we have a matching damaging move
+     *             saved, we don't need to save anything else).
+     * @return A List of moves that are eligible for removal (i.e. the removable list, minus any moves saved here).
+     */
     private List<Move> savePrimaryStatMoves(List<Move> removable, List<Move> safe) {
         List<Move> importantMoves = new ArrayList<>();
         Stat.StatName attackStat = null;
@@ -336,22 +454,20 @@ public class GeneratedPokemon extends Pokemon {
 
         // Stat must be at least X times higher than the other to be the primary attacking stat
         //  If there isn't a primary attacking stat, we don't need to save any moves
-        if (atk >= spAtk * PRIMARY_STAT_DIFFERENCE)
+        if (atk >= spAtk * primaryStatDifference)
             attackStat = Stat.StatName.ATTACK;
-        else if (spAtk >= atk * PRIMARY_STAT_DIFFERENCE)
+        else if (spAtk >= atk * primaryStatDifference)
             attackStat = Stat.StatName.SPECIAL_ATTACK;
         else
             return importantMoves;
 
         // If there's one in safes, no need to add another -- we only need one
         for (Move curr : safe) {
-            if ((attackStat.equals(Stat.StatName.SPECIAL_ATTACK) && curr.getMoveClass().equals(Move.MoveClass.SPECIAL))
-                    || (attackStat.equals(Stat.StatName.ATTACK) && curr.getMoveClass().equals(Move.MoveClass.PHYSICAL)))
+            if (isMatchingMoveClass(attackStat, curr))
                 return importantMoves;
         }
         for (Move curr : removable) {
-            if ((attackStat.equals(Stat.StatName.SPECIAL_ATTACK) && curr.getMoveClass().equals(Move.MoveClass.SPECIAL))
-                    || (attackStat.equals(Stat.StatName.ATTACK) && curr.getMoveClass().equals(Move.MoveClass.PHYSICAL))) {
+            if (isMatchingMoveClass(attackStat, curr)) {
                 importantMoves.add(curr);
             }
         }
@@ -361,5 +477,11 @@ public class GeneratedPokemon extends Pokemon {
 
         importantMoves.clear();
         return importantMoves;
+    }
+
+    private static boolean isMatchingMoveClass(Stat.StatName attackStat, Move move)
+    {
+        return (attackStat.equals(Stat.StatName.SPECIAL_ATTACK) && move.getMoveClass().equals(Move.MoveClass.SPECIAL))
+                || (attackStat.equals(Stat.StatName.ATTACK) && move.getMoveClass().equals(Move.MoveClass.PHYSICAL));
     }
 }

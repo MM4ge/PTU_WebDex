@@ -8,6 +8,7 @@ import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.BaseStats;
 import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.ImperialHeightRange;
 import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.PokemonSpeciesPojo;
 import org.allenfulmer.ptuviewer.models.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,6 +20,30 @@ public class PojoToDBConverter {
     private static Map<String, Ability> convertedAbilities = null;
     private static Map<String, Move> convertedMoves = null;
     private static Map<String, PokemonSpecies> convertedPokemonSpecies = null;
+
+    /**
+     * Small wrapper function to ensure Capabilities aren't parsed twice; once for the DB and once for Pokemon
+     */
+    public static Map<String, Capability> getConvertedCapabilities()
+    {
+        if(convertedCapabilities == null)
+            convertedCapabilities = JsonToPojoLoader.parseCapabilities();
+        return Collections.unmodifiableMap(convertedCapabilities);
+    }
+
+    private static Map<String, PokemonSpecies> getConvertedPokemonSpecies()
+    {
+        if(convertedPokemonSpecies == null)
+            convertedPokemonSpecies = pokemonMapBuilder(JsonToPojoLoader.parsePojoPokemon());
+        return convertedPokemonSpecies;
+    }
+    //TODO: all 4 of the aboves, move functionality out of command line runner and ensure null saftey for maps so they
+    // don't have to be done in order or else everything explodes
+
+    public static Map<String, PokemonSpecies> getConvertedPokemonSpeciesMap()
+    {
+        return Collections.unmodifiableMap(getConvertedPokemonSpecies());
+    }
 
     public static Ability getAbility(String name) {
         if (convertedAbilities == null)
@@ -39,12 +64,17 @@ public class PojoToDBConverter {
     }
 
     public static Capability getCapability(String name) {
-        if (convertedCapabilities == null)
-            convertedCapabilities = JsonToPojoLoader.parseCapabilities();
-        Capability mapCapability = convertedCapabilities.get(name);
+        Capability mapCapability = getConvertedCapabilities().get(name);
         if (mapCapability == null)
             throw new NullPointerException("Capability named " + name + " not found in capabilityMap");
         return mapCapability;
+    }
+
+    public static PokemonSpecies getPokemonSpecies(String dexID) {
+        PokemonSpecies mapPoke = getConvertedPokemonSpecies().get(dexID);
+        if (mapPoke == null)
+            throw new NullPointerException("Pokemon Species with dexID " + dexID + " not found in pokemonSpeciesMap");
+        return mapPoke;
     }
 
     private static Set<BaseCapability> convertCapabilities(PokemonSpecies poke,
@@ -204,10 +234,10 @@ public class PojoToDBConverter {
         Map<String, Move> moves = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         pojoMap.forEach((name, m) -> {
             Type type = convertType(m.getType());
-            PojoFrequency pojoFreq = convertFrequency(m.getFreq());
+            PojoFrequency pojoFreq = convertFrequency(m.getFreq()); //TODO: Why was i here
 
             // All moves have a Move Class, so we don't catch the exception and let it throw if we're missing it
-            Move.MoveClass moveClass = Move.MoveClass.valueOf(m.getDamageClass().toUpperCase());
+            Move.MoveClass moveClass = Move.MoveClass.getWithName(m.getDamageClass());
 
             Move.ContestType contestType = null;
             try {
@@ -259,14 +289,16 @@ public class PojoToDBConverter {
             newPoke.setWeightClassMin((int) p.getWeight().getWeightClass().getMinimum());
             newPoke.setWeightClassMax((int) p.getWeight().getWeightClass().getMaximum());
 
-            // Gender
+            // Breeding Data + Habitats
             newPoke.setMaleChance((!p.getBreedingData().isHasGender()) ? null : p.getBreedingData().getMaleChance());
+            newPoke.setEggGroups(p.getBreedingData().getEggGroups().stream().map(EggGroup::getWithName).collect(Collectors.toList()));
+            newPoke.setHabitats(p.getEnvironment().getHabitats().stream().map(Habitat::getWithName).collect(Collectors.toList()));
 
             // Types - List<Type>
             newPoke.setTypesFromList(p.getTypes().stream().map(PojoToDBConverter::convertType).collect(Collectors.toList()));
 
             // BaseAbilities - List<BaseAbility>
-            p.getAbilities().stream().forEach(a ->
+            p.getAbilities().forEach(a ->
                     newPoke.addBaseAbility(BaseAbility.AbilityType.valueOf(a.getType().toUpperCase()),
                             PojoToDBConverter.getAbility(a.getName()))
             );
@@ -281,7 +313,7 @@ public class PojoToDBConverter {
             }).collect(Collectors.joining(", ")));
 
             // LevelUpMoves - List<LevelUpMove>
-            p.getLevelUpMoves().stream().forEach(m ->
+            p.getLevelUpMoves().forEach(m ->
                     newPoke.addLevelMove(m.getLevelLearned(), PojoToDBConverter.getMove(m.getName()))
             );
 
@@ -324,41 +356,28 @@ public class PojoToDBConverter {
         System.out.println(connections.stream().sorted().collect(Collectors.joining("\n")));
 
         System.out.println("---Done---");
+
         return pokes;
     }
 
     @AllArgsConstructor
     @RequiredArgsConstructor
+    @Getter
     @FieldDefaults(level = AccessLevel.PRIVATE)
     private static class PojoFrequency {
         @NonNull
         Frequency freq;
         int uses = 0;
-
-        public Frequency getFreq() {
-            return freq;
-        }
-
-        public int getUses() {
-            return uses;
-        }
     }
 
     @AllArgsConstructor
     @RequiredArgsConstructor
     @NoArgsConstructor
+    @Getter
     @FieldDefaults(level = AccessLevel.PRIVATE)
     private static class PojoActionType {
         @NonNull
         ActionType actionType;
         ActionType.Priority priority = null;
-
-        public ActionType getActionType() {
-            return actionType;
-        }
-
-        public ActionType.Priority getPriority() {
-            return priority;
-        }
     }
 }

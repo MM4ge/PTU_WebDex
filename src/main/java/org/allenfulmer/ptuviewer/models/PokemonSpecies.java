@@ -24,6 +24,7 @@ public class PokemonSpecies {
     @Column(length = 15)
     String pokedexID;
     String speciesName;
+    @Column(length = 63)
     String form;
     String evolutions;
 
@@ -54,11 +55,22 @@ public class PokemonSpecies {
     @Transient
     int weightClassMax;
 
-    // Gender
+    // Breeding Info
     /**
      * % Chance of being male. Null means the poke has no genders
      */
     Double maleChance;
+    @Transient
+    List<EggGroup> eggGroups;
+    EggGroup primaryEggGroup;
+    EggGroup secondaryEggGroup = null;
+
+    // Habitats
+    @ElementCollection(targetClass = Habitat.class)
+    @JoinTable(name = "pokeHabitats", joinColumns = @JoinColumn(name = "pokedexID"))
+    @Column(name = "Habitat", nullable = false)
+    @Enumerated(EnumType.STRING)
+    List<Habitat> habitats;
 
     /*
 
@@ -150,6 +162,14 @@ public class PokemonSpecies {
             if (types.size() > 1)
                 this.secondaryType = types.get(1);
         }
+    }
+
+    public void setEggGroups(List<EggGroup> eggGroups)
+    {
+        this.eggGroups = eggGroups;
+        this.primaryEggGroup = eggGroups.get(0);
+        if(eggGroups.size() > 1)
+            this.secondaryEggGroup = eggGroups.get(1);
     }
 
     public void addBaseCapability(int rank, String criteria, Capability capability) {

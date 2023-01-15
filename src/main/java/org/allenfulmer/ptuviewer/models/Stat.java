@@ -3,6 +3,7 @@ package org.allenfulmer.ptuviewer.models;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.util.StringUtils;
 
 @AllArgsConstructor
 @Getter
@@ -44,7 +45,7 @@ public class Stat implements Comparable<Stat>, Displayable {
         allocated += inc;
     }
 
-    public void setNature(boolean minus) {
+    public void setNature(boolean minus) { // TODO: use poke constants
         int amt = 2;
         if (getName().equals(StatName.HP))
             amt = 1;
@@ -82,13 +83,20 @@ public class Stat implements Comparable<Stat>, Displayable {
         HP("hp"),
         ATTACK("atk"),
         DEFENSE("def"),
-        SPECIAL_ATTACK("spatk"),
-        SPECIAL_DEFENSE("spdef"),
+        SPECIAL_ATTACK("spatk", "Special Attack"),
+        SPECIAL_DEFENSE("spdef", "Special Defense"),
         SPEED("spd");
         public final String shortName;
+        public final String displayName;
 
         StatName(String shortName) {
             this.shortName = shortName;
+            this.displayName = StringUtils.capitalize(this.name().toLowerCase());
+        }
+
+        StatName(String shortName, String displayName) {
+            this.shortName = shortName;
+            this.displayName = displayName;
         }
     }
 }

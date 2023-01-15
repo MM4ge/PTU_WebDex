@@ -4,7 +4,7 @@ import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @AllArgsConstructor
@@ -99,6 +99,7 @@ public class Skill implements Comparable<Skill>, Displayable {
 
         private final String displayName;
         private final String shortName;
+        private static Map<String, SkillName> nameMap = null;
 
         private SkillName(String displayName, String shortName) {
             this.displayName = displayName;
@@ -110,15 +111,13 @@ public class Skill implements Comparable<Skill>, Displayable {
         }
 
         public static SkillName convertName(String name) {
-            try {
-                return SkillName.valueOf(name.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                for (SkillName curr : SkillName.values()) {
-                    if (curr.getShortName().equalsIgnoreCase(name))
-                        return curr;
-                }
-                throw new IllegalArgumentException("No skill name matching " + name + " was found!");
+            if (nameMap == null) {
+                Map<String, SkillName> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+                Arrays.stream(SkillName.values()).forEach(f -> map.put(f.getDisplayName(), f));
+                Arrays.stream(SkillName.values()).filter(f -> f.getShortName() != null).forEach(f -> map.put(f.getShortName(), f));
+                nameMap = Collections.unmodifiableMap(map);
             }
+            return nameMap.get(name);
         }
     }
 }

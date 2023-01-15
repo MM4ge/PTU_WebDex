@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 import org.allenfulmer.ptuviewer.models.Frequency;
+import org.allenfulmer.ptuviewer.models.PokeConstants;
 
 import javax.annotation.Generated;
 
@@ -38,27 +39,31 @@ public class MoveRoll20 {
     @Expose
     private String effects;
 
-    public MoveRoll20(org.allenfulmer.ptuviewer.models.Move otherMove, int stabDB) {
-        this.name = otherMove.getName();
-        this.type = otherMove.getType().getDisplayName();
-        this.dType = otherMove.getMoveClass().getDisplayName();
+    public MoveRoll20(org.allenfulmer.ptuviewer.models.Move origMove, boolean stab) {
+        this.name = origMove.getName();
+        this.type = origMove.getType().getDisplayName();
+        this.dType = origMove.getMoveClass().getDisplayName();
 
-        this.freq = otherMove.getFrequency().getDisplayName();
-        if (otherMove.getFrequency().equals(Frequency.SEE_TEXT))
+        this.freq = origMove.getFrequency().getDisplayName();
+        if (origMove.getFrequency().equals(Frequency.SEE_TEXT))
             this.freq = Frequency.SPECIAL.getDisplayName();
 
         try {
-            this.db = Integer.parseInt(otherMove.getDb()) + stabDB;
+            this.db = Integer.parseInt(origMove.getDb());
+            if(stab)
+                this.db += PokeConstants.STAB;
         } catch (NumberFormatException ignored) {
             this.db = 0;
         }
 
+
+        // In R20, AC _can_ be a string and it'll parse as an int / default to 0, but bad practice to make R20 handle it
         try {
-            this.ac = Integer.parseInt(otherMove.getAc());
+            this.ac = Integer.parseInt(origMove.getAc());
         } catch (NumberFormatException ignored) {
             this.ac = 0;
         }
-        this.range = otherMove.getRange();
-        this.effects = otherMove.getEffect();
+        this.range = origMove.getRange();
+        this.effects = origMove.getEffect();
     }
 }

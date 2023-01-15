@@ -42,12 +42,12 @@ public class StartupWindow {
             try {
                 Desktop.getDesktop().browse(URI.create("http://localhost:8081/"));
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                throw new RuntimeException("Error in finding, running, or accessing the user's default browser!", ex);
             }
         });
     }
 
     public static void main(String[] args) {
-        StartupWindow startup = new StartupWindow();
+        new StartupWindow();
     }
 }

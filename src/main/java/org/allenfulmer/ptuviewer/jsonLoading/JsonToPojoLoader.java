@@ -5,14 +5,14 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.allenfulmer.ptuviewer.jsonLoading.pojo.ability.AbilityPojo;
 import org.allenfulmer.ptuviewer.jsonLoading.pojo.move.MovePojo;
+import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.Ability;
 import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.PokemonSpeciesPojo;
 import org.allenfulmer.ptuviewer.models.Capability;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -25,7 +25,7 @@ public class JsonToPojoLoader {
     private JsonToPojoLoader() {
     }
 
-    private static Gson gson = new GsonBuilder().setLenient().create();
+    private static final Gson gson = new GsonBuilder().setLenient().create();
 
     public static Map<String, Capability> parseCapabilities() {
         Map<String, String> jsonCapabilities = gson.fromJson(readFromFile(CAPABILITIES_FILEPATH), new TypeToken<Map<String, String>>() {
@@ -65,8 +65,38 @@ public class JsonToPojoLoader {
         Map<String, PokemonSpeciesPojo> pokes = parsePojoPokemon();
         List<String> skills = pokes.values().stream().flatMap(p -> p.getSkills().stream()).map(s -> s.getSkillName()).distinct().collect(Collectors.toList());
         skills.forEach(System.out::println);
-        List<String> skillPowers = pokes.values().stream().flatMap(p -> p.getSkills().stream().map(s -> s.getDiceRank())).distinct().collect(Collectors.toList());
-        skillPowers.forEach(System.out::println);
+
+        String longy = moves.values().stream().map(MovePojo::getEffect).filter(Objects::nonNull).max(Comparator.comparingInt(String::length)).orElse("Nothing");
+        System.out.println("Len: " + longy.length() + " Content: " + longy);
+
+        Set<String> acs = moves.values().stream().map(MovePojo::getAc).collect(Collectors.toSet());
+        for(String curr : acs)
+            System.out.println(curr);
+
+        Set<String> lunch = pokes.values().stream().filter(p ->
+        {
+            List<String> abilityNames = p.getAbilities().stream().map(Ability::getName).collect(Collectors.toList());
+            return abilityNames.contains("Lunchbox");
+        }).map(PokemonSpeciesPojo::getSpecies).collect(Collectors.toSet());
+        lunch.forEach(System.out::println);
+
+//        List<List<String>> habitats = pokes.values().stream().map(p -> p.getEnvironment().getHabitats()).collect(Collectors.toList());
+//        int largest = -1;
+//        for(List<String> curr : habitats)
+//            largest = Math.max(largest, curr.size());
+//        System.out.println("Largest # of habitats on one poke: " + largest);
+//        List<String> sortedHabitats = habitats.stream().flatMap(List::stream).distinct().sorted().collect(Collectors.toList());
+//        sortedHabitats.forEach(System.out::println);
+//
+//        List<List<String>> eggGroups = pokes.values().stream().map(p -> p.getBreedingData().getEggGroups()).collect(Collectors.toList());
+//        largest = -1;
+//        for(List<String> curr : eggGroups)
+//            largest = Math.max(largest, curr.size());
+//        System.out.println("Largest # of eggGroups on one poke: " + largest);
+//        List<String> sortedEggGroups = eggGroups.stream().flatMap(List::stream).distinct().sorted().collect(Collectors.toList());
+//        sortedEggGroups.forEach(System.out::println);
+//        List<String> skillPowers = pokes.values().stream().flatMap(p -> p.getSkills().stream().map(s -> s.getDiceRank())).distinct().collect(Collectors.toList());
+//        skillPowers.forEach(System.out::println);
 
 //        Set<String> capabilities = pokes.values().stream().flatMap(p -> p.getCapabilities().stream())
 //                .map(c -> c.getCapabilityName()).collect(Collectors.toCollection(TreeSet::new));

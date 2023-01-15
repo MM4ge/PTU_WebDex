@@ -45,4 +45,11 @@ public class Pokemon {
         this.abilities = new TreeSet<>();
         this.moves = new ArrayList<>();
     }
+
+    public void setNatureAndStats(Nature nature)
+    {
+        this.nature = nature;
+        getStats().get(getNature().getRaise()).setNature(false);
+        getStats().get(getNature().getLower()).setNature(true);
+    }
 }

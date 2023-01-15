@@ -50,18 +50,17 @@ public class AppCommandLineRunner implements CommandLineRunner {
         pokemonRepo.findAll().forEach(p -> log.info(p.toString()));
         log.info("---Done logging DB objects---");
 
-        StartupWindow startup = new StartupWindow();
+        new StartupWindow();
     }
 
     private void insertCapabilities() {
-        Map<String, Capability> capabilities = JsonToPojoLoader.parseCapabilities();
+        Map<String, Capability> capabilities = PojoToDBConverter.getConvertedCapabilities();
         capabilityRepo.saveAll(capabilities.values());
         log.info("Done With Capabilities");
     }
 
     private void insertPokemon() {
-        Map<String, PokemonSpeciesPojo> pojoPokes = JsonToPojoLoader.parsePojoPokemon();
-        Map<String, PokemonSpecies> pokes = PojoToDBConverter.pokemonMapBuilder(pojoPokes);
+        Map<String, PokemonSpecies> pokes = PojoToDBConverter.getConvertedPokemonSpeciesMap();
         pokemonRepo.saveAll(pokes.values());
         log.info("Done With Pokemon");
     }

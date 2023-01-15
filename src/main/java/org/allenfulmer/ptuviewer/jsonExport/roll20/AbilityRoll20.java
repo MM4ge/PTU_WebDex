@@ -28,15 +28,15 @@ public class AbilityRoll20 {
     @Expose
     private String info;
 
-    public AbilityRoll20(org.allenfulmer.ptuviewer.models.Ability otherAbility) {
-        this.name = otherAbility.getName();
-        this.freq = otherAbility.getFrequency().getDisplayName();
-        if (otherAbility.getUses() > 1)
-            freq += " x" + otherAbility.getUses();
-        if (otherAbility.getActionType() != null)
-            freq += " - " + otherAbility.getActionType().getDisplayName();
-        this.target = otherAbility.getTarget();
-        this.trigger = otherAbility.getTrigger();
-        this.info = otherAbility.getEffect();
+    public AbilityRoll20(org.allenfulmer.ptuviewer.models.Ability origAbility) {
+        this.name = origAbility.getName();
+        this.freq = origAbility.getFrequency().getDisplayName();
+        if (origAbility.getUses() > 1)
+            freq += " x" + origAbility.getUses();
+        if (origAbility.getActionType() != null)
+            freq += " - " + origAbility.getActionType().getDisplayName();
+        this.target = origAbility.getTarget();
+        this.trigger = origAbility.getTrigger();
+        this.info = origAbility.getEffect();
     }
 }

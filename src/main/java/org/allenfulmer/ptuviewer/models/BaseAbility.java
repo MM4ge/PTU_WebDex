@@ -70,11 +70,11 @@ public class BaseAbility implements Comparable<BaseAbility>, Displayable {
         /**
          * Advanced Abilities are unlocked at level 20
          */
-        ADVANCED(20),
+        ADVANCED(PokeConstants.ADVANCED_ABILITY_LEVEL),
         /**
          * High Abilities are unlocked at level 40
          */
-        HIGH(40);
+        HIGH(PokeConstants.HIGH_ABILITY_LEVEL);
 
         // Make the Ability Types into a linked list - can't be done with constructor due to illegal forward exceptions
         static {
@@ -102,13 +102,8 @@ public class BaseAbility implements Comparable<BaseAbility>, Displayable {
             return next;
         }
 
-        public static AbilityType getAbilityType(String str) {
-            try {
-                return AbilityType.valueOf(str.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                log.info("Ability Type named " + str + " not a valid  Ability Type. Returning null.");
-                return null;
-            }
+        public static AbilityType getWithName(String str) {
+            return AbilityType.valueOf(str.toUpperCase());
         }
 
         public int getLevel() {

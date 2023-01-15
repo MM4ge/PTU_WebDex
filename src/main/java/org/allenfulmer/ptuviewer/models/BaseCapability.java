@@ -53,7 +53,7 @@ public class BaseCapability implements Comparable<BaseCapability>, Displayable {
     }
 
     /**
-     * Specifically just to return "Naturewalk (X, Y) as the name since it isn't *really* a criteria
+     * Specifically just to return "Naturewalk (X, Y)" as the name since it isn't *really* a criteria
      */
     public String getFullName() {
         if (criteria != null && !criteria.isEmpty())

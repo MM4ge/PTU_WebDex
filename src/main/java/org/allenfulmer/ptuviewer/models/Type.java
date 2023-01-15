@@ -1,20 +1,21 @@
 package org.allenfulmer.ptuviewer.models;
 
+import lombok.Getter;
+import org.springframework.util.StringUtils;
+
+@Getter
 public enum Type {
     TYPES("Type"),
-    BUG("Bug"), DARK("Dark"), DRAGON("Dragon"), ELECTRIC("Electric"),
-    FAIRY("Fairy"), FIGHTING("Fighting"), FIRE("Fire"), FLYING("Flying"),
-    GHOST("Ghost"), GRASS("Grass"), GROUND("Ground"), ICE("Ice"),
-    NORMAL("Normal"), POISON("Poison"), PSYCHIC("Psychic"), ROCK("Rock"),
-    STEEL("Steel"), WATER("Water"), TYPELESS("Typeless");
+    BUG, DARK, DRAGON, ELECTRIC, FAIRY, FIGHTING, FIRE, FLYING, GHOST,
+    GRASS, GROUND, ICE, NORMAL, POISON, PSYCHIC, ROCK, STEEL, WATER, TYPELESS;
 
     private final String displayName;
 
-    private Type(String displayName) {
-        this.displayName = displayName;
+    private Type() {
+        this.displayName = StringUtils.capitalize(this.name().toLowerCase());
     }
 
-    public String getDisplayName() {
-        return this.displayName;
+    private Type(String displayName) {
+        this.displayName = displayName;
     }
 }

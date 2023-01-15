@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
+import org.allenfulmer.ptuviewer.generator.models.Nature;
 import org.allenfulmer.ptuviewer.models.*;
 
 import javax.annotation.Generated;
@@ -213,6 +214,21 @@ public class PokemonRoll20 {
     @SerializedName("Move7")
     @Expose
     private MoveRoll20 move7;
+    @SerializedName("Move8")
+    @Expose
+    private MoveRoll20 move8;
+    @SerializedName("Move9")
+    @Expose
+    private MoveRoll20 move9;
+    @SerializedName("Move10")
+    @Expose
+    private MoveRoll20 move10;
+    @SerializedName("Move11")
+    @Expose
+    private MoveRoll20 move11;
+    @SerializedName("Move12")
+    @Expose
+    private MoveRoll20 move12;
     @SerializedName("Struggle_Type")
     @Expose
     private String struggleType = "Normal";
@@ -240,6 +256,30 @@ public class PokemonRoll20 {
     @SerializedName("Ability4")
     @Expose
     private AbilityRoll20 ability4;
+    @SerializedName("Ability5")
+    @Expose
+    private AbilityRoll20 ability5;
+    @SerializedName("Ability6")
+    @Expose
+    private AbilityRoll20 ability6;
+    @SerializedName("Ability7")
+    @Expose
+    private AbilityRoll20 ability7;
+    @SerializedName("Ability8")
+    @Expose
+    private AbilityRoll20 ability8;
+    @SerializedName("Ability9")
+    @Expose
+    private AbilityRoll20 ability9;
+    @SerializedName("Ability10")
+    @Expose
+    private AbilityRoll20 ability10;
+    @SerializedName("Ability11")
+    @Expose
+    private AbilityRoll20 ability11;
+    @SerializedName("Ability12")
+    @Expose
+    private AbilityRoll20 ability12;
     @SerializedName("sniper")
     @Expose
     private Integer sniper = 0;
@@ -301,16 +341,14 @@ public class PokemonRoll20 {
     @Expose
     private String notes;
     @Transient
-    private transient StringBuilder notesBuilder = new StringBuilder("If the Sheet has weird things (like a move having " +
-            "another's effect), make a new character sheet and re-import the same JSON. If it still exists, tell me " +
-            "about the error and give me the JSON.\n\n");
+    private transient StringBuilder notesBuilder = new StringBuilder("General Generator / Converter Notes:\nIf the " +
+            "Sheet has weird things (like a move having another's effect), make a new character sheet and re-import the " +
+            "same JSON from the Import page. If it still exists, tell Mage about the error and give him the JSON.\n");
+
     @Transient
-    private transient StringBuilder stabMoves = new StringBuilder();
-    @Transient
-    private transient boolean stabAdded = false;
+    private transient StringBuilder changeNotesBuilder = new StringBuilder("Manual Changes Notes:\n");
 
     public PokemonRoll20(org.allenfulmer.ptuviewer.generator.Pokemon poke) {
-        notesBuilder.append("Generator / Converter Notes:\n");
         PokemonSpecies species = poke.getSpecies();
         String speciesName = species.getSpeciesName();
         this.nickname = speciesName;
@@ -325,9 +363,19 @@ public class PokemonRoll20 {
 
         this.level = poke.getLevel();
         this.gender = poke.getGender();
-        this.nature = poke.getNature().getDisplayName();
-        if (poke.getNature().raise != poke.getNature().lower)
-            notesBuilder.append("Nature changes to base stats already applied.\n");
+        Nature pokeNat = poke.getNature();
+        this.nature = pokeNat.getDisplayName();
+        if (pokeNat.getRaise() != pokeNat.getLower()) { // applied (hp +1, def -2)
+            notesBuilder.append("Nature changes to base stats already applied (");
+            notesBuilder.append(pokeNat.getRaise().getShortName());
+            notesBuilder.append(" +");
+            notesBuilder.append(pokeNat.getRaiseValue());
+            notesBuilder.append(", ");
+            notesBuilder.append(pokeNat.getLower().getShortName());
+            notesBuilder.append(" -");
+            notesBuilder.append(pokeNat.getLowerValue());
+            notesBuilder.append(").\n");
+        }
         this.height = species.getHeightCategoryMax();
         this.weightClass = species.getWeightClassMax();
 
@@ -345,6 +393,13 @@ public class PokemonRoll20 {
         this.spatk = stats.get(Stat.StatName.SPECIAL_ATTACK).getAllocated();
         this.spdef = stats.get(Stat.StatName.SPECIAL_DEFENSE).getAllocated();
         this.speed = stats.get(Stat.StatName.SPEED).getAllocated();
+
+        this.hpBonus = stats.get(Stat.StatName.HP).getBonus();
+        this.atkBonus = stats.get(Stat.StatName.ATTACK).getBonus();
+        this.defBonus = stats.get(Stat.StatName.DEFENSE).getBonus();
+        this.spAtkBonus = stats.get(Stat.StatName.SPECIAL_ATTACK).getBonus();
+        this.spDefBonus = stats.get(Stat.StatName.SPECIAL_DEFENSE).getBonus();
+        this.speedBonus = stats.get(Stat.StatName.SPEED).getBonus();
 
         //Pokémon Hit Points = Pokémon Level + (HP x3) + 10
         this.hitPoints = level + (stats.get(Stat.StatName.HP).getTotal() * 3) + 10;
@@ -371,19 +426,10 @@ public class PokemonRoll20 {
         convertMoves(poke.getMoves(), species.getTypes());
 
         // Abilities
-        List<org.allenfulmer.ptuviewer.models.Ability> abilities = new ArrayList<>(poke.getAbilities());
-        if (!abilities.isEmpty())
-            this.ability1 = new AbilityRoll20(abilities.get(0));
-        if (abilities.size() > 1)
-            this.ability2 = new AbilityRoll20(abilities.get(1));
-        if (abilities.size() > 2)
-            this.ability3 = new AbilityRoll20(abilities.get(2));
-        if (abilities.size() > 3)
-            this.ability4 = new AbilityRoll20(abilities.get(3));
-        notesBuilder.append("Any stat, capability, or move changes by Abilities or Moves, if present, need to be manually applied.\n");
+        convertAbilities(poke.getAbilities());
 
         // Skills
-        // Choosing to read this is a mistake
+        // Choosing to read the following block of code is a mistake
         // This could be done with reflection or altering the SkillName enum to have consumers, but that's actually kinda worse
         Map<Skill.SkillName, Skill> skills = species.getSkills().stream().collect(Collectors.toMap(
                 Skill::getSkillName, s -> s));
@@ -462,52 +508,183 @@ public class PokemonRoll20 {
             setIntuitionBonus(skills.get(Skill.SkillName.INTUITION).getBonus());
         }
 
+        if(changeNotesBuilder.length() > 23)
+        {
+            notesBuilder.append("\n");
+            notesBuilder.append(changeNotesBuilder);
+        }
+        notesBuilder.append("Any stat, capability, or move changes by Abilities or Moves, if present, need to be manually applied.\n");
         this.notes = notesBuilder.toString();
     }
 
-    // The list of types could be re-created from the two types member variables (or just checked for equality twice
-    //  with the move's type's displayName, but since we already have the list from making the pokemon itself, why
-    //  make more lists?
-    private MoveRoll20 convertMove(Move move, List<Type> types) {
-        boolean stab = types.contains(move.getType());
-        stabAdded |= stab;
-        if (stab) {
-            if (stabMoves.length() > 0)
-                stabMoves.append(", ");
-            stabMoves.append(move.getName());
-        }
-
-        if (move.getFrequency().equals(Frequency.SCENE) || move.getFrequency().equals(Frequency.DAILY)) {
-            notesBuilder.append(move.getFrequency().getDisplayName());
-            notesBuilder.append(" move ");
-            notesBuilder.append(move.getName());
-            notesBuilder.append(" has ");
-            notesBuilder.append(move.getUses());
-            notesBuilder.append(" use(s).\n");
-        }
-
-        return new MoveRoll20(move, ((stab) ? 2 : 0));
+    private void convertAbilities(Set<Ability> origAbilities)
+    {
+        List<org.allenfulmer.ptuviewer.models.Ability> abilities = new ArrayList<>(origAbilities);
+        if (!abilities.isEmpty())
+            this.ability1 = new AbilityRoll20(abilities.get(0));
+        if (abilities.size() > 1)
+            this.ability2 = new AbilityRoll20(abilities.get(1));
+        if (abilities.size() > 2)
+            this.ability3 = new AbilityRoll20(abilities.get(2));
+        if (abilities.size() > 3)
+            this.ability4 = new AbilityRoll20(abilities.get(3));
+        if (abilities.size() > 4)
+            this.ability5 = new AbilityRoll20(abilities.get(4));
+        if (abilities.size() > 5)
+            this.ability6 = new AbilityRoll20(abilities.get(5));
+        if (abilities.size() > 6)
+            this.ability7 = new AbilityRoll20(abilities.get(6));
+        if (abilities.size() > 7)
+            this.ability8 = new AbilityRoll20(abilities.get(7));
+        if (abilities.size() > 8)
+            this.ability9 = new AbilityRoll20(abilities.get(8));
+        if (abilities.size() > 9)
+            this.ability10 = new AbilityRoll20(abilities.get(9));
+        if (abilities.size() > 10)
+            this.ability11 = new AbilityRoll20(abilities.get(10));
+        if (abilities.size() > 11)
+            this.ability12 = new AbilityRoll20(abilities.get(11));
     }
 
+    // TODO: Grassknot says STAB can't be autoapplied but has it autoapplied
+    // TODO: Attacking moves that are See Effect aren't treated as non-attacking for inheriting db
     private void convertMoves(List<Move> moves, List<Type> types) {
-        if (!moves.isEmpty())
-            this.move1 = convertMove(moves.get(0), types);
-        if (moves.size() > 1)
-            this.move2 = convertMove(moves.get(1), types);
-        if (moves.size() > 2)
-            this.move3 = convertMove(moves.get(2), types);
-        if (moves.size() > 3)
-            this.move4 = convertMove(moves.get(3), types);
-        if (moves.size() > 4)
-            this.move5 = convertMove(moves.get(4), types);
-        if (moves.size() > 5)
-            this.move6 = convertMove(moves.get(5), types);
-        if (moves.size() > 6)
-            this.move7 = convertMove(moves.get(6), types);
-        if (stabAdded) {
-            notesBuilder.append("STAB's +2 DB already applied to same-typed damaging moves (");
-            notesBuilder.append(stabMoves);
-            notesBuilder.append(").\n");
+        List<MoveRoll20> convertedMoves = new ArrayList<>(moves.size());
+        List<Move> stabMoves = new ArrayList<>(moves.size());
+        List<Move> zeroDBStabMoves = new ArrayList<>(moves.size());
+        List<Move> zeroDBAfterDBMoves = new ArrayList<>(moves.size());
+        List<Move> sceneAndDailyMoves = new ArrayList<>(moves.size());
+
+        boolean anyPrevDB = false;
+        for (Move curr : moves) {
+            boolean sameType = types.contains(curr.getType());
+            boolean attackingMove = curr.getMoveClass() == Move.MoveClass.PHYSICAL || curr.getMoveClass() == Move.MoveClass.SPECIAL;
+            boolean zeroDb = true;
+            try {
+                zeroDb = Integer.parseInt(curr.getDb()) == 0;
+            } catch (NumberFormatException ignored) {}
+
+            if(zeroDb)
+            {
+                // Moves without a DB inherit the damage totals of the previously occurring DB total in R20
+                if(anyPrevDB)
+                    zeroDBAfterDBMoves.add(curr);
+                // STAB can't be automatically added to 0 DB same-typed attacking moves
+                if(sameType && attackingMove)
+                    zeroDBStabMoves.add(curr);
+            }
+
+            // Only add STAB to same typed attacking moves - already handled 0 DB moves
+            else if(attackingMove)
+            {
+                anyPrevDB = true;
+                if(sameType)
+                    stabMoves.add(curr);
+            }
+
+            // Moves with # of uses - R20 doesn't have an import for max uses
+            if (curr.getFrequency().equals(Frequency.SCENE) || curr.getFrequency().equals(Frequency.DAILY)) {
+                sceneAndDailyMoves.add(curr);
+            }
+
+            convertedMoves.add(new MoveRoll20(curr, (sameType && attackingMove && !zeroDb)));
         }
+
+        if (!moves.isEmpty())
+            this.move1 = convertedMoves.get(0);
+        if (moves.size() > 1)
+            this.move2 = convertedMoves.get(1);
+        if (moves.size() > 2)
+            this.move3 = convertedMoves.get(2);
+        if (moves.size() > 3)
+            this.move4 = convertedMoves.get(3);
+        if (moves.size() > 4)
+            this.move5 = convertedMoves.get(4);
+        if (moves.size() > 5)
+            this.move6 = convertedMoves.get(5);
+        if (moves.size() > 6)
+            this.move7 = convertedMoves.get(6);
+        if (moves.size() > 7)
+            this.move8 = convertedMoves.get(7);
+        if (moves.size() > 8)
+            this.move9 = convertedMoves.get(8);
+        if (moves.size() > 9)
+            this.move10 = convertedMoves.get(9);
+        if (moves.size() > 10)
+            this.move11 = convertedMoves.get(10);
+        if (moves.size() > 11)
+            this.move12 = convertedMoves.get(11);
+
+        // Notes
+        appendStabNotes(stabMoves, zeroDBStabMoves);
+        appendZeroDBNotes(zeroDBAfterDBMoves);
+        appendUseNotes(sceneAndDailyMoves);
+    }
+
+    private void appendStabNotes(List<Move> normalDBMoves, List<Move> nonstandardDBMoves) {
+        if (normalDBMoves.isEmpty() && nonstandardDBMoves.isEmpty())
+            return;
+
+//        List<Move> normalDBMoves = new ArrayList<>(stabMoves.size());
+//        List<Move> nonstandardDBMoves = new ArrayList<>(stabMoves.size());
+//
+//        // Remove the non-numeric DB moves from the numeric ones
+//        for (Move curr : stabMoves) {
+//            try {
+//                Integer.parseInt(curr.getDb());
+//                normalDBMoves.add(curr);
+//            } catch (NumberFormatException ex) {
+//                nonstandardDBMoves.add(curr);
+//            }
+//        }
+
+        // Numeric STAB Moves
+        if(!normalDBMoves.isEmpty()) {
+            if (normalDBMoves.size() == 1)
+                notesBuilder.append("STAB's +2 DB already applied to the same-typed damaging move ");
+            else
+                notesBuilder.append("STAB's +2 DB already applied to these same-typed damaging moves: ");
+
+            notesBuilder.append(normalDBMoves.stream().map( // Ember (5 → 7)
+                    m -> m.getName() + " (" + m.getDb() + " → " + (Integer.parseInt(m.getDb()) + PokeConstants.STAB) + ")")
+                    .collect(Collectors.joining(", ", "", ".\n")));
+        }
+
+        // Non-Numerics
+        if(!nonstandardDBMoves.isEmpty()) {
+            if (nonstandardDBMoves.size() == 1)
+                changeNotesBuilder.append("The following STAB move has a non-standard DB; STAB could not be applied automatically: ");
+            else
+                changeNotesBuilder.append("The following STAB moves have non-standard DBs; STAB could not be applied automatically: ");
+
+            changeNotesBuilder.append(nonstandardDBMoves.stream().map(Move::getName).collect(Collectors.joining(", ",
+                    "", ".\n")));
+        }
+    }
+
+    private void appendUseNotes(List<Move> limitedUseMoves) {
+        if(limitedUseMoves.isEmpty())
+            return;
+
+        if(limitedUseMoves.size() == 1)
+            changeNotesBuilder.append("This limited-use move has the following number of uses: ");
+        else
+            changeNotesBuilder.append("These limited-use moves have the following number of uses: ");
+
+        changeNotesBuilder.append(limitedUseMoves.stream().map(m -> m.getName() + " (" + m.getUses() + ")").collect(
+                Collectors.joining(", ","",".\n")));
+    }
+
+    private void appendZeroDBNotes(List<Move> zeroDBMoves) {
+        if(zeroDBMoves.isEmpty())
+            return;
+
+        if(zeroDBMoves.size() == 1)
+            changeNotesBuilder.append("A move without a base DB has inherited a previous move's DB total when it should be 0: ");
+        else
+            changeNotesBuilder.append("Some moves without a base DB have inherited a previous move's DB total when it should be 0: ");
+
+        changeNotesBuilder.append(zeroDBMoves.stream().map(Move::getName).collect(Collectors.joining(", ","",".\n")));
+
     }
 }

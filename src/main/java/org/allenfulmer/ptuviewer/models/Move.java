@@ -143,6 +143,8 @@ public class Move implements Displayable {
         return name;
     }
 
+    // should prob consolidate them out of the converter if that's my convention
+    @Getter
     public enum MoveClass implements Displayable {
         MOVE_CLASSES("Move Class"),
         PHYSICAL("Physical"), SPECIAL("Special"),
@@ -154,8 +156,8 @@ public class Move implements Displayable {
             this.displayName = displayName;
         }
 
-        public String getDisplayName() {
-            return this.displayName;
+        public static MoveClass getWithName(String str) {
+            return MoveClass.valueOf(str.toUpperCase());
         }
     }
 
@@ -163,6 +165,7 @@ public class Move implements Displayable {
         BEAUTY, COOL, CUTE, SMART, TOUGH;
     }
 
+    @Getter
     public enum ContestEffect {
         ATTENTION_GRABBER("Attention Grabber"), BIG_SHOW("Big Show"), CATCHING_UP("Catching Up"),
         DESPERATION("Desperation"), DOUBLE_TIME("Double Time"), EXCITEMENT("Excitement"),
@@ -174,29 +177,18 @@ public class Move implements Displayable {
         TEASE("Tease"), UNSETTLING("Unsettling");
 
         private static Map<String, ContestEffect> contestEffectMap = null;
-        String name;
+        final String name;
 
         private ContestEffect(String name) {
             this.name = name;
         }
 
         public static ContestEffect getContestEffect(String name) {
-            try {
-                return ContestEffect.valueOf(name.toUpperCase());
-            } catch (IllegalArgumentException ignored) { // Ignored
-            } catch (NullPointerException e) {
-                return null;
-            }
-
             if (contestEffectMap == null) {
                 contestEffectMap = Arrays.stream(values()).collect(Collectors.toMap(
                         ContestEffect::getName, Function.identity()));
             }
             return contestEffectMap.get(name);
-        }
-
-        public String getName() {
-            return name;
         }
     }
 }
