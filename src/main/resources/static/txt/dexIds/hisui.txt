@@ -1,0 +1,27 @@
+724:H Decidueye Hisuian
+157:H Typhlosion Hisuian
+503:H Samurott Hisuian
+058:H Growlithe Hisuian
+059:H Arcanine Hisuian
+100:H Voltorb Hisuian
+101:H Electrode Hisuian
+211:H Qwilfish Hisuian
+904 Overqwil
+215:H Sneasel Hisuian
+903 Sneasler
+549:H Lilligant Hisuian
+570:H Zorua Hisuian
+571:H Zoroark Hisuian
+628:H Braviary Hisuian
+705:H Sliggoo Hisuian
+706:H Goodra Hisuian
+713:H Avalugg Hisuian
+899 Wyrdeer
+900 Kleavor
+901 Ursaluna
+902 Basculegion Male
+902:F Basculegion Female
+483:O Dialga Origin Forme
+484:O Palkia Origin Forme
+905 Enamorus Incarnate Forme
+905:T Enamorus Therian Forme

@@ -1,7 +1,7 @@
 package org.allenfulmer.ptuviewer.generator;
 
-import org.allenfulmer.ptuviewer.jsonLoading.JsonToPojoLoader;
-import org.allenfulmer.ptuviewer.jsonLoading.PojoToDBConverter;
+import org.allenfulmer.ptuviewer.fileLoading.JsonToPojoLoader;
+import org.allenfulmer.ptuviewer.fileLoading.PojoToDBConverter;
 import org.allenfulmer.ptuviewer.models.Ability;
 import org.allenfulmer.ptuviewer.models.Move;
 import org.allenfulmer.ptuviewer.models.PokemonSpecies;

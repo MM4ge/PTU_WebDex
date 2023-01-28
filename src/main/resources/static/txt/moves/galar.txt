@@ -1,0 +1,450 @@
+Move: False Surrender
+Type: Dark
+Frequency: EOT
+AC: None
+Damage Base 8: 2d6+8 / 19
+Class: Physical
+Range: Melee, 1 Target
+Effect: False Surrender cannot miss.
+Contest Type: Smart
+Contest Effect: Reliable
+Move: Jaw Lock
+Type: Dark
+Frequency: Scene x2
+AC: 2
+Damage Base 8: 2d6+8 / 19
+Class: Physical
+Range: Melee, 1 Target
+Effect: You may perform a Grapple Maneuver against
+the target as a Free Action.
+Contest Type: Tough
+Contest Effect: Sabotage
+Move: Obstruct
+Type: Dark
+Frequency: Scene
+AC: None
+Class: Status
+Range: Self, Interrupt, Shield, Trigger
+Effect: If the user is hit by a Move, the user may use
+Obstruct. The user is instead not hit by the Move. You
+do not take any damage nor are you affected by any
+of the Move’s effects. In addition, if the triggering
+attack was Melee ranged, the attacker’s Defense is
+lowered by 2 Combat Stages.
+Contest Type: Smart
+Contest Effect: Inversed Appeal
+Move: Breaking Swipe
+Type: Dragon
+Frequency: EOT
+AC: 2
+Damage Base 6: 2d6+8 / 15
+Class: Physical
+Range: Close Blast 2
+Effect: The target’s Attack is lowered 1 CS.
+Contest Type: Tough
+Contest Effect: Desperation
+Move: Clangorous Soul
+Type: Dragon
+Frequency: Scene
+AC: None
+Class: Status
+Range: Self
+Effect: The user loses 1/3rd of their Max Hit Points
+and has each of its stats raised by +1 Combat Stage.
+Contest Type: Cool
+Contest Effect: Seen Nothing Yet
+Note: This Move is not in the ‘Dex. It is learned by
+Kommo-o at level 68.
+Move: Dragon Darts
+Type: Dragon
+Frequency: EOT
+AC: 2
+Damage Base 5: 1d8+8 / 13
+Class: Physical
+Range: 6, 1 Target, Double Strike; or 6, 2 Targets
+Contest Type: Smart
+Contest Effect: Double Time
+Move: Dynamax Cannon
+Type: Dragon
+Frequency: Scene x2
+AC: 2
+Damage Base 10: 3d8+10 / 24
+Class: Special
+Range: 6, 1 Target
+Effect: The DB of Dynamax Cannon increases by +2 for
+each positive CS the target has, to a maximum of DB
+20.
+Contest Type: Cool
+Contest Effect: Unsettling
+Move: Eternabeam
+Type: Dragon
+Frequency: Scene
+AC: 4
+Damage Base 16: 5d10+20 / 50
+Class: Special
+Range: Line 6, Smite, Exhaust
+Contest Type: Cool
+Contest Effect: Seen Nothing Yet
+Move: Aura Wheel
+Type: Electric
+Frequency: Scene x2
+AC: 2
+Damage Base 11: 3d10+10 / 27
+Class: Physical
+Range: Melee, 1 Target
+Effect: The user’s Speed is increased 1 CS.
+Contest Type: Cool
+Contest Effect: Special Attention
+Special: If the user is in Hangry Mode, Aura Wheel is
+Dark-Typed.
+Move: Bolt Beak
+Type: Electric
+Frequency: Scene x2
+AC: 2
+Damage Base 9: 2d10+10 / 21
+Class: Physical
+Range: Melee, 1 Target
+Effect: Against targets with a lower initiative that
+have not yet acted this round, Bolt Beak deals +10
+damage.
+Contest Type: Cool
+Contest Effect: Catching Up
+Move: Magnetic Flux
+Type: Electric
+Frequency: Scene x2
+AC: None
+Class: Status
+Range: Burst 4
+Effect: Choose +1 or -1. All targets that are Electric-
+Type or have the Magnetic Capability receive that
+many Defense and Special Defense Combat Stages.
+Contest Type: Smart
+Contest Effect: Incentives
+Special: Grants Magnetic
+Move: Overdrive
+Type: Electric
+Frequency: EOT
+AC: 2
+Damage Base 8: 2d8+10 / 19
+Class: Special
+Range: Cone 2, Sonic
+Contest Type: Cool
+Contest Effect: Attention Grabber
+Move: Decorate
+Type: Fairy
+Frequency: Scene
+AC: None
+Class: Status
+Range: Melee, 1 Target
+Effect: The target gains +2 CS in both Attack and
+Special Attack.
+Contest Type: Beauty
+Contest Effect: Reflective Appeal
+Move: Spirit Break
+Type: Fairy
+Frequency: EOT
+AC: 2
+Damage Base 8: 2d8+10 / 19
+Class: Physical
+Range: Melee, 1 Target
+Effect: The target’s Special Attack stat is lowered 1 CS.
+Contest Type: Tough
+Contest Effect: Sabotage
+Move: Strange Steam
+Type: Fairy
+Frequency: Scene x2
+AC: 3
+Damage Base 9: 2d10+10 / 21
+Class: Special
+Range: Burst 1
+Effect: The target is confused on 17+.
+Contest Type: Beauty
+Contest Effect: Good Show
+Move: Body Press
+Type: Fighting
+Frequency: Scene x2
+AC: 2
+Damage Base 8: 2d8+10 / 19
+Class: Physical
+Range: Melee, 1 Target
+Effect: The user’s Defense Stat is added to the
+damage roll instead of the Attack Stat.
+Contest Type: Tough
+Contest Effect: Gamble
+Move: Meteor Assault
+Type: Fighting
+Frequency: Daily x2
+AC: 2
+Damage Base 15: 4d10+20 / 45
+Class: Physical
+Range: Burst 1, Smite, Exhaust
+Contest Type: Tough
+Contest Effect: Exhausting Act
+Move: No Retreat
+Type: Fighting
+Frequency: Scene
+AC: None
+Class: Status
+Range: Self
+Effect: The user gains +1 CS in each stat. In addition,
+the user may not be recalled or switched out until the
+end of the Scene, and counts as Slowed for the
+purposes of any movement that would end further
+away from the nearest enemy than the user started.
+Contest Type: Tough
+Contest Effect: Get Ready
+Move: Octolock
+Type: Fighting
+Frequency: Scene
+AC: 2
+Class: Status
+Range: Melee, 1 Target
+Effect: The user initiates a Grapple Maneuver with the
+target, which automatically hits. If successful, until
+the user no longer has Dominance in the grapple, the
+target is Trapped and loses 1 CS in Defense and
+Special Defense at the end of each of their turns.
+Contest Type: Tough
+Contest Effect: Sabotage
+Move: Pyro Ball
+Type: Fire
+Frequency: Scene x2
+AC: 4
+Damage Base 12: 3d12+10 / 30
+Class: Physical
+Range: 6, 1 Target, Smite
+Effect: The target is Burned on 19+.
+Contest Type: Cool
+Contest Effect: Attention Grabber
+Move: Apple Acid
+Type: Grass
+Frequency: EOT
+AC: 2
+Damage Base 8: 2d8+10 / 19
+Class: Special
+Range: Cone 2
+Effect: The target’s Special Defense is lowered by 1
+CS.
+Contest Type: Smart
+Contest Effect: Unsettling
+Move: Branch Poke
+Type: Grass
+Frequency: At-Will
+AC: 2
+Damage Base 4: 1d8+6 / 11
+Class: Physical
+Range: 2, 1 Target
+Contest Type: Tough
+Contest Effect: Steady Performance
+Move: Drum Beating
+Type: Grass
+Frequency: EOT
+AC: 2
+Damage Base 8: 2d8+10 / 19
+Class: Physical
+Range: 4, 1 Target
+Effect: The target’s Speed is lowered by 1 CS.
+Contest Type: Smart
+Contest Effect: Big Show
+Move: Grav Apple
+Type: Grass
+Frequency: EOT
+AC: 2
+Damage Base 8: 2d8+10 / 19
+Class: Physical
+Range: 6, 1 Target
+Effect: The target’s Defense is lowered by 1 CS.
+Contest Type: Smart
+Contest Effect: Excitement
+Move: Snap Trap
+Type: Grass
+Frequency: Scene x2
+AC: 2
+Damage Base 4: 1d8+6 / 11
+Class: Physical
+Range: Melee, 1 Target
+Effect: The target is trapped in a Vortex. The DC to
+escape the Vortex is increased by 3.
+Contest Type: Smart
+Contest Effect: Sabotage
+Move: Court Change
+Type: Normal
+Frequency: Daily
+AC: None
+Class: Status
+Range: Field
+Effect: All Blessings and Hazards swap which side that
+they belong to.
+Contest Type: Smart
+Contest Effect: Sabotage
+Move: Howl
+Type: Normal
+Frequency: EOT
+AC: None
+Class: Status
+Range: Burst 1
+Effect: The user and all allies in the Burst have their
+Attack CS raised by 1.
+Contest Type: Cool
+Contest Effect: Get Ready
+Move: Multi-Attack
+Type: Normal
+Frequency: Scene x2
+AC: 2
+Damage Base 12: 3d12+10 / 30
+Class: Physical
+Range: Melee, 1 Target
+Effect: Multi-Attack is the same Type as the Memory
+Disc, Plate, or Drive Item held.
+Contest Type: Cool
+Contest Effect: Reflective Appeal
+Move: Rapid Spin
+Type: Normal
+Frequency: At-Will
+AC: 2
+Damage Base 5: 1d8+8 / 13
+Class: Physical
+Range: Melee, 1 Target, Spirit Surge
+Effect: Rapid Spin destroys all Hazards within 5
+meters, removes Leech Seeds, and removes the user’s
+Trapped or Stuck status. If Rapid Spin hits, the user’s
+speed raises 1 CS.
+Contest Type: Cool
+Contest Effect: Exhausting Act
+Move: Stuff Cheeks
+Type: Normal
+Frequency: Scene
+AC: None
+Class: Status
+Range: Self
+Effect: The user immediately consumes one of its
+Food Buffs, regardless of any conditions that need to
+be met, gaining its benefit if applicable. If a Buff is
+consumed, the user’s Defense CS is raised by 2.
+Contest Type: Cute
+Contest Effect: Get Ready
+Move: Teatime
+Type: Normal
+Frequency: Scene
+AC: None
+Class: Status
+Range: Field, Social
+Effect: All participants in the battle may choose to
+immediately consume one of their Food Buffs,
+regardless of if the conditions to do so are met.
+Contest Type: Cute
+Contest Effect: Safe Option
+Move: Magic Powder
+Type: Psychic
+Frequency: Daily
+AC: 2
+Class: Status
+Range: 5, 1 Target
+Effect: The target gains the Psychic Type in addition
+to its other Types for 5 turns.
+Contest Type: Smart
+Contest Effect: Safe Option
+Move: Tar Shot
+Type: Rock
+Frequency: Scene
+AC: 2
+Class: Status
+Range: Cone 2
+Effect: The target gains a Coat that is automatically
+expended upon being hit with a Fire Type attack in
+order to make them one step more vulnerable to that
+attack. In addition, the target’s Speed is lowered by 1
+CS.
+Contest Type: Tough
+Contest Effect: Sabotage
+Move: Behemoth Bash
+Type: Steel
+Frequency: Scene x2
+AC: 2
+Damage Base 10: 3d8+10 / 24
+Class: Physical
+Range: Melee, 1 Target
+Effect: The DB of Behemoth Bash increases by +2 for
+each positive CS the target has, to a maximum of DB
+20.
+Contest Type: Tough
+Contest Effect: Steady Performance
+Move: Behemoth Blade
+Type: Steel
+Frequency: Scene x2
+AC: 2
+Damage Base 10: 3d8+10 / 24
+Class: Physical
+Range: Melee, 1 Target
+Effect: The DB of Behemoth Blade increases by +2 for
+each positive CS the target has, to a maximum of DB
+20.
+Contest Type: Cool
+Contest Effect: Good Show
+Move: Double Iron Bash
+Type: Steel
+Frequency: Scene x2
+AC: 2
+Damage Base 6: 2d6+8 / 15
+Class: Physical
+Range: Melee, 1 Target, Double Strike
+Effect: Double Iron Bash Flinches the targets on 15+.
+This move is affected by Iron Fist.
+Contest Type: Tough
+Contest Effect: Reliable
+Move: Gear Up
+Type: Steel
+Frequency: Scene x2
+Class: Status
+Range: Burst 4
+Effect: All targets that are Steel-Typed receive +1
+Attack and Special Attack Combat Stages
+Contest Type: Smart
+Contest Effect: Get Ready
+Move: Steel Beam
+Type: Steel
+Frequency: Daily
+AC: 3
+Damage Base 14: 4d10+15 / 40
+Class: Special
+Range: Cone 3, Smite
+Effect: The user’s Hit Points are reduced by 50% of
+their full Hit Point value. This Hit Point loss cannot be
+prevented or reduced in any way.
+Contest Type: Smart
+Contest Effect: Big Show
+Move: Fishious Rend
+Type: Water
+Frequency: Scene x2
+AC: 2
+Damage Base 9: 2d10+10 / 21
+Class: Physical
+Range: Melee, 1 Target
+Effect: Against targets with a lower initiative that
+have not yet acted this round, Fishious Rend deals +10
+damage.
+Contest Type: Cool
+Contest Effect: Catching Up
+Move: Life Dew
+Type: Water
+Frequency: Daily x2
+AC: None
+Class: Status
+Range: Burst 1, Healing
+Effect: The user and all allies in the burst regain Hit
+Points equal to 1/4 of their Maximum Hit Points.
+Contest Type: Beauty
+Contest Effect: Saving Grace
+Move: Snipe Shot
+Type: Water
+Frequency: EOT
+AC: 2
+Damage Base 8: 2d8+10 / 19
+Class: Special
+Range: 8, 1 Target
+Effect: Snipe Shot is a Critical Hit on 18+. This Move
+may not be Intercepted, nor may any Abilities, Moves,
+or Features be activated to change this Move’s target.
+Any of those existing effects (such as Follow Me) fail.
+Contest Type: Beauty
+Contest Effect: Reliable

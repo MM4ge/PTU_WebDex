@@ -30,7 +30,7 @@ public class Ability implements Comparable<Ability>, Displayable {
     String trigger = "";
     String target = "";
     @Column(length = 1023)
-    String effect;
+    String effect = "";
     @ManyToOne(fetch = FetchType.EAGER)//(cascade = CascadeType.ALL)
     @JoinColumn(name = "connection_move")
     Move connection = null;

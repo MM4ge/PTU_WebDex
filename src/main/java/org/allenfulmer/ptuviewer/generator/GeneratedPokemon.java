@@ -5,9 +5,9 @@ import com.google.gson.GsonBuilder;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.allenfulmer.ptuviewer.fileLoading.PojoToDBConverter;
 import org.allenfulmer.ptuviewer.generator.models.Nature;
 import org.allenfulmer.ptuviewer.jsonExport.roll20.PokemonRoll20;
-import org.allenfulmer.ptuviewer.jsonLoading.PojoToDBConverter;
 import org.allenfulmer.ptuviewer.models.*;
 
 import java.util.*;

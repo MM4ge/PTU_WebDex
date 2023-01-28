@@ -1,7 +1,7 @@
 package org.allenfulmer.ptuviewer;
 
-import org.allenfulmer.ptuviewer.jsonLoading.JsonToPojoLoader;
-import org.allenfulmer.ptuviewer.jsonLoading.PojoToDBConverter;
+import org.allenfulmer.ptuviewer.fileLoading.JsonToPojoLoader;
+import org.allenfulmer.ptuviewer.fileLoading.PojoToDBConverter;
 import org.allenfulmer.ptuviewer.models.*;
 import org.junit.Assert;
 import org.junit.Test;

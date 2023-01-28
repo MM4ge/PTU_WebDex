@@ -1,11 +1,10 @@
 package org.allenfulmer.ptuviewer;
 
 import lombok.extern.slf4j.Slf4j;
-import org.allenfulmer.ptuviewer.jsonLoading.JsonToPojoLoader;
-import org.allenfulmer.ptuviewer.jsonLoading.PojoToDBConverter;
-import org.allenfulmer.ptuviewer.jsonLoading.pojo.ability.AbilityPojo;
-import org.allenfulmer.ptuviewer.jsonLoading.pojo.move.MovePojo;
-import org.allenfulmer.ptuviewer.jsonLoading.pojo.pokemon.PokemonSpeciesPojo;
+import org.allenfulmer.ptuviewer.fileLoading.JsonToPojoLoader;
+import org.allenfulmer.ptuviewer.fileLoading.PojoToDBConverter;
+import org.allenfulmer.ptuviewer.fileLoading.pojo.ability.AbilityPojo;
+import org.allenfulmer.ptuviewer.fileLoading.pojo.move.MovePojo;
 import org.allenfulmer.ptuviewer.models.*;
 import org.allenfulmer.ptuviewer.repositories.AbilityRepository;
 import org.allenfulmer.ptuviewer.repositories.CapabilityRepository;
