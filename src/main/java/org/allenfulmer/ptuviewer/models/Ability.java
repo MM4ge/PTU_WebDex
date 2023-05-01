@@ -18,6 +18,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Ability implements Comparable<Ability>, Displayable {
+    //TODO: Abilities that have uses become Moves- similarly to how I do [- Type, Status, Free, 1AP: When Burned] stuff
     @Id
     @NonNull
     String name;

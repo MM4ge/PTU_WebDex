@@ -53,7 +53,7 @@ public class PokemonSpeciesService {
     }
 
     public List<PokemonSpecies> findPokemonByExample(PokemonSpecies pokemon) {
-        // The Move we're receiving potentially has default values in it from the enums
+        // The Pokemon we're receiving potentially has default values in it from the enums
         pokemon.setPrimaryType(pokemon.getPrimaryType() == Type.TYPES ? null : pokemon.getPrimaryType());
         pokemon.setSecondaryType(pokemon.getSecondaryType() == Type.TYPES ? null : pokemon.getSecondaryType());
 

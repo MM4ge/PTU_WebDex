@@ -2,10 +2,13 @@ package org.allenfulmer.ptuviewer.models;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.allenfulmer.ptuviewer.dto.PokemonGeneratorDTO;
 import org.allenfulmer.ptuviewer.dto.PokemonSpeciesDTO;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -123,8 +126,7 @@ public class PokemonSpecies {
 
     public PokemonSpecies(PokemonSpeciesDTO pokemonDTO) {
         this.pokedexID = pokemonDTO.getPokedexID();
-        this.speciesName = pokemonDTO.getSpeciesName();
-        this.form = pokemonDTO.getForm();
+        parseNameAndForm(pokemonDTO.getSpeciesName());
         this.evolutions = pokemonDTO.getEvolutions();
         this.primaryType = pokemonDTO.getPrimaryType();
         this.secondaryType = pokemonDTO.getSecondaryType();
@@ -134,6 +136,38 @@ public class PokemonSpecies {
         this.spAtk = pokemonDTO.getSpAtk();
         this.spDef = pokemonDTO.getSpDef();
         this.speed = pokemonDTO.getSpeed();
+    }
+
+    public PokemonSpecies(PokemonGeneratorDTO pokemonDTO)
+    {
+        parseNameAndForm(pokemonDTO.getSpeciesName());
+        // TODO: Habitats
+        // TODO: Types
+    }
+
+    private void parseNameAndForm(String name)
+    {
+        if(name.contains("("))
+        {
+            Matcher m = Pattern.compile("(.*) \\((.+)\\)", Pattern.MULTILINE).matcher(name);
+            if(!m.find())
+                throw new RuntimeException("No name match found for species " + name + "!");
+            this.speciesName = m.group(1);
+            this.form = m.group(2);
+        }
+        else
+        {
+            this.speciesName = name;
+            this.form = PokeConstants.NON_REGIONAL_FORM;
+        }
+    }
+
+    public String getNameAndForm()
+    {
+        String ret = this.getSpeciesName();
+        if(!this.getForm().equalsIgnoreCase(PokeConstants.NON_REGIONAL_FORM))
+            ret += " (" + this.getForm() + ")";
+        return ret;
     }
 
     public void setBaseStatsFromMap(Map<Stat.StatName, Integer> stats) {

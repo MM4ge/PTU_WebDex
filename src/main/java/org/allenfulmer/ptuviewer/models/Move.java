@@ -38,6 +38,7 @@ public class Move implements Displayable {
     String range;
     @Column(length = 1023)
     String effect;
+    // TODO: Untransient this; it's useful for Coordinator and Style Expert
     @Transient
     ContestType contestType;
     @Transient

@@ -3,6 +3,7 @@ package org.allenfulmer.ptuviewer.controllers;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.allenfulmer.ptuviewer.dto.PokemonGeneratorDTO;
 import org.allenfulmer.ptuviewer.dto.PokemonSpeciesDTO;
 import org.allenfulmer.ptuviewer.models.PokemonSpecies;
 import org.allenfulmer.ptuviewer.services.PokemonSpeciesService;
@@ -16,9 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,6 +30,7 @@ public class PokemonSpeciesController {
     private static final String POKEMON = "pokemons";
     private static final String RESULTS = "pokemon_results";
     private static final String SEARCH = "pokemon_search";
+    private static final String GENERATOR = "pokemon_generator";
     PokemonSpeciesService pokemonServ;
 
     @Autowired
@@ -60,6 +60,8 @@ public class PokemonSpeciesController {
     @GetMapping("/pokemon_search")
     public String pokemonSearchForm(Model model) {
         model.addAttribute("pokemonDTO", new PokemonSpeciesDTO());
+        model.addAttribute("pokemonSpeciesNames", pokemonServ.getAllSpecies().stream()
+                .map(PokemonSpecies::getNameAndForm).collect(Collectors.toList()));
         return SEARCH;
     }
 
@@ -68,7 +70,7 @@ public class PokemonSpeciesController {
         // If the dex ID isn't empty (was supplied by the user), it's guaranteed to be unique so only search by it exactly
         if (!pokemonDTO.getPokedexID().isEmpty()) {
             try {
-                model.addAttribute(POKEMON, Arrays.asList(pokemonServ.findByID(pokemonDTO.getPokedexID())));
+                model.addAttribute(POKEMON, Collections.singletonList(pokemonServ.findByID(pokemonDTO.getPokedexID())));
             } catch (NoSuchElementException e) {
                 model.addAttribute(ERR, "No pokemon with the given pokedex ID was found.");
                 return SEARCH;
@@ -78,5 +80,22 @@ public class PokemonSpeciesController {
 
         model.addAttribute(POKEMON, pokemonServ.findPokemonByExample(new PokemonSpecies(pokemonDTO)));
         return RESULTS;
+    }
+
+    // TODO: Finish these
+    @GetMapping("/" + GENERATOR)
+    public String pokemonGeneratorForm(Model model) {
+        model.addAttribute("pokemonDTO", new PokemonGeneratorDTO());
+        model.addAttribute("pokemonSpeciesNames", pokemonServ.getAllSpecies().stream()
+                .map(PokemonSpecies::getNameAndForm).collect(Collectors.toList()));
+        return GENERATOR;
+    }
+
+    @PostMapping("/" + GENERATOR)
+    public String showGenerated(@ModelAttribute PokemonGeneratorDTO pokemonDTO, Model model) {
+
+        List<PokemonSpecies> pokes = pokemonServ.findPokemonByExample(new PokemonSpecies(pokemonDTO));
+
+        return GENERATOR;
     }
 }
