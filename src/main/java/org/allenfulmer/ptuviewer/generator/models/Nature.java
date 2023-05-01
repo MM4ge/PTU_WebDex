@@ -2,6 +2,7 @@ package org.allenfulmer.ptuviewer.generator.models;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.allenfulmer.ptuviewer.generator.Pokemon;
 import org.allenfulmer.ptuviewer.models.PokeConstants;
 import org.allenfulmer.ptuviewer.models.Stat;
 import org.springframework.util.StringUtils;
@@ -11,6 +12,7 @@ import java.util.Random;
 @Getter
 @Slf4j
 public enum Nature {
+    NATURES(null, null),
     CUDDLY(Stat.StatName.HP, Stat.StatName.ATTACK),
     DISTRACTED(Stat.StatName.HP, Stat.StatName.DEFENSE),
     PROUD(Stat.StatName.HP, Stat.StatName.SPECIAL_ATTACK),
@@ -48,8 +50,6 @@ public enum Nature {
     QUIRKY(Stat.StatName.SPECIAL_DEFENSE, Stat.StatName.SPECIAL_DEFENSE),
     SERIOUS(Stat.StatName.SPEED, Stat.StatName.SPEED);
 
-    private static final Random rand = new Random();
-
     public final Stat.StatName raise;
     public final Stat.StatName lower;
 
@@ -68,7 +68,7 @@ public enum Nature {
     }
 
     public static Nature getRandomNature() {
-        return Nature.values()[rand.nextInt(Nature.values().length)];
+        return Nature.values()[PokeConstants.RANDOM_GEN.nextInt(Nature.values().length - 1) + 1];
     }
 
     /**

@@ -48,7 +48,6 @@ public class GeneratedPokemon extends Pokemon {
         moveSavingStrategies.add(this::saveConnectionMoves);
     }
 
-    static final Random RANDOM_GEN = new Random();
     private List<Stat.StatName> exemptStats = new ArrayList<>(); // TODO: Default this to block HP in WEBPAGE, not here
     private List<BinaryOperator<List<Move>>> moveSavingStrategies = new ArrayList<>();
     private boolean removeOldest = true;
@@ -187,7 +186,7 @@ public class GeneratedPokemon extends Pokemon {
 
         // Allocate stat points
         for (int statPoints = getLevel() + 10; statPoints > 0; statPoints--) {
-            availableStats.get(RANDOM_GEN.nextInt(availableStats.size())).increment(availableStats);
+            availableStats.get(PokeConstants.RANDOM_GEN.nextInt(availableStats.size())).increment(availableStats);
         }
     }
 
@@ -239,14 +238,14 @@ public class GeneratedPokemon extends Pokemon {
     ##############################################
     */
     public void initAbilities() {
-        boolean onlyHighest = RANDOM_GEN.nextDouble() >= lowerAbilityTierChance;
+        boolean onlyHighest = PokeConstants.RANDOM_GEN.nextDouble() >= lowerAbilityTierChance;
 
         for(BaseAbility.AbilityType curr = BaseAbility.AbilityType.BASIC; curr != null &&
                 curr.getLevel() <= this.getLevel(); curr = curr.getNextType())
         {
             List<Ability> possibleAbilities = pickPossibleAbilities(curr, onlyHighest);
             if (!possibleAbilities.isEmpty())
-                getAbilities().add(possibleAbilities.get(RANDOM_GEN.nextInt(possibleAbilities.size())));
+                getAbilities().add(possibleAbilities.get(PokeConstants.RANDOM_GEN.nextInt(possibleAbilities.size())));
         }
     }
 
@@ -293,13 +292,13 @@ public class GeneratedPokemon extends Pokemon {
                 (removeOldest) ? GeneratedPokemon::removeOldestMove : GeneratedPokemon::removeRandomMove;
         // Add initial moves; connections and maybe a unique
         getAbilities().stream().map(Ability::getConnection).filter(Objects::nonNull).forEach(getMoves()::add);
-        if (RANDOM_GEN.nextDouble() < uniqueChance) {
+        if (PokeConstants.RANDOM_GEN.nextDouble() < uniqueChance) {
             Set<Move> specialMoves = new HashSet<>(getSpecies().getTutorMoves());
             specialMoves.addAll(getSpecies().getEggMoves());
             specialMoves.remove(null); // Safety in case EggMoves is empty
 
             List<Move> randChoice = new ArrayList<>(specialMoves);
-            getMoves().add(randChoice.get(RANDOM_GEN.nextInt(randChoice.size())));
+            getMoves().add(randChoice.get(PokeConstants.RANDOM_GEN.nextInt(randChoice.size())));
         }
         //TODO: add multiple environment selectors for webpage, change if they\re AND or OR matching- see what exodus does
         // if you add more than 1 n copy it?
@@ -323,7 +322,7 @@ public class GeneratedPokemon extends Pokemon {
     }
 
     private static Move removeRandomMove(List<Move> moves) {
-        return moves == null || moves.isEmpty() ? null : moves.get(RANDOM_GEN.nextInt(moves.size()));
+        return moves == null || moves.isEmpty() ? null : moves.get(PokeConstants.RANDOM_GEN.nextInt(moves.size()));
     }
 
     private static Move removeOldestMove(List<Move> moves) {
@@ -448,7 +447,7 @@ public class GeneratedPokemon extends Pokemon {
      */
     private List<Move> savePrimaryStatMoves(List<Move> removable, List<Move> safe) {
         List<Move> importantMoves = new ArrayList<>();
-        Stat.StatName attackStat = null;
+        Stat.StatName attackStat;
         int atk = getStats().get(Stat.StatName.ATTACK).getTotal();
         int spAtk = getStats().get(Stat.StatName.SPECIAL_ATTACK).getTotal();
 

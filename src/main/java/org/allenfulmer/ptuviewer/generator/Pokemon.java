@@ -3,10 +3,7 @@ package org.allenfulmer.ptuviewer.generator;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.allenfulmer.ptuviewer.generator.models.Nature;
-import org.allenfulmer.ptuviewer.models.Ability;
-import org.allenfulmer.ptuviewer.models.Move;
-import org.allenfulmer.ptuviewer.models.PokemonSpecies;
-import org.allenfulmer.ptuviewer.models.Stat;
+import org.allenfulmer.ptuviewer.models.*;
 
 import java.util.*;
 
@@ -38,7 +35,7 @@ public class Pokemon {
         this.level = level;
         this.nature = nature;
         if (species.getMaleChance() != null) {
-            this.gender = (new Random().nextDouble() < species.getMaleChance()) ? "Male" : "Female";
+            this.gender = (PokeConstants.RANDOM_GEN.nextDouble() < species.getMaleChance()) ? "Male" : "Female";
         } else
             this.gender = "N/A";
         this.stats = new EnumMap<>(Stat.StatName.class);
