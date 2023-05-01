@@ -2,6 +2,7 @@ package org.allenfulmer.ptuviewer.jsonExport;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.allenfulmer.ptuviewer.fileLoading.PojoToDBConverter;
 import org.allenfulmer.ptuviewer.generator.Pokemon;
 import org.allenfulmer.ptuviewer.generator.models.Nature;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class ExodusConverter {
 
     private static final Gson gson = new GsonBuilder().serializeNulls().disableHtmlEscaping().setLenient().create();
@@ -26,10 +28,10 @@ public class ExodusConverter {
     public static void main(String[] args)
     {
         Scanner input = new Scanner(System.in);
-        System.out.println("Input the exodusJSON (un-beautified - as one line), then hit Enter:");
+        log.info("Input the exodusJSON (un-beautified - as one line), then hit Enter:");
         String exodusJSON = input.nextLine();
         Pokemon p1 = convertFromExodus(exodusJSON);
-        System.out.println(gson.toJson(new PokemonRoll20(p1)));
+        log.info(gson.toJson(new PokemonRoll20(p1)));
     }
 
     public static Pokemon convertFromExodus(String exodusJSON)
@@ -42,11 +44,11 @@ public class ExodusConverter {
         Map<String, PokemonSpecies> allPokes = PojoToDBConverter.getConvertedPokemonSpeciesMap();
         List<PokemonSpecies> speciesMatches = allPokes.values().stream()
                 .filter(p -> p.getSpeciesName().equalsIgnoreCase(e1.getPokedexEntry().getSpecies()))
-                .filter(p -> p.getForm().toUpperCase().startsWith(e1.getPokedexEntry().getForm().toUpperCase()))
+                .filter(p -> e1.getPokedexEntry().getForm().toUpperCase().startsWith(p.getForm().toUpperCase()))
                 .collect(Collectors.toList());
 
         if(speciesMatches.isEmpty())
-            return null;
+            throw new RuntimeException("Exodus Pokemon matched no species!");
         else if (speciesMatches.size() > 1)
             throw new RuntimeException("Exodus Pokemon matched more than one DB Species!");
         p1.setSpecies(speciesMatches.get(0));
