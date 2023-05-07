@@ -31,7 +31,7 @@ public class PlaintextToPojo {
 
             switch (lineType) {
                 case ("Move"):
-                    if(effect.length() != 0)
+                    if (effect.length() != 0)
                         move.setEffect(effect.toString());
                     effect.setLength(0);
 

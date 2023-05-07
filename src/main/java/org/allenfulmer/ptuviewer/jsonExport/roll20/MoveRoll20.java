@@ -52,7 +52,7 @@ public class MoveRoll20 {
 
         try {
             this.db = Integer.parseInt(origMove.getDb());
-            if(stab)
+            if (stab)
                 this.db += PokeConstants.STAB;
         } catch (NumberFormatException ignored) {
             this.db = 0;

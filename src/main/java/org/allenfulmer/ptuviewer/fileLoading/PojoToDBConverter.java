@@ -26,13 +26,13 @@ public class PojoToDBConverter {
      * Small wrapper function to ensure Capabilities aren't parsed twice; once for the DB and once for Pokemon
      */
     public static Map<String, Capability> getConvertedCapabilities() {
-        if(convertedCapabilities == null)
+        if (convertedCapabilities == null)
             convertedCapabilities = JsonToPojoLoader.parseCapabilities();
         return Collections.unmodifiableMap(convertedCapabilities);
     }
 
     private static Map<String, PokemonSpecies> getConvertedPokemonSpecies() {
-        if(convertedPokemonSpecies == null)
+        if (convertedPokemonSpecies == null)
             convertedPokemonSpecies = pokemonMapBuilder(JsonToPojoLoader.parsePojoPokemon());
         return convertedPokemonSpecies;
     }

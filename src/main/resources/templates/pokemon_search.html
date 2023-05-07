@@ -15,10 +15,11 @@
         <form action="#" class="m-3 p-3 border border-dark" method="post" th:action="@{/pokemon_search}"
               th:object="${pokemonDTO}">
             <p>Pokedex ID: <input placeholder="286" size=14/ th:field="*{pokedexID}" type="text"></p>
-<!--            <p>Name: <input placeholder="Breloom" size=19/ th:field="*{speciesName}" type="text"></p>-->
+            <!--            <p>Name: <input placeholder="Breloom" size=19/ th:field="*{speciesName}" type="text"></p>-->
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-            <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+            <link rel="stylesheet"
+                  href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
             <script th:inline="javascript">
                 var real_data = /*[[${pokemonSpeciesNames}]]*/'noValue';
@@ -28,10 +29,11 @@
                     source : real_data,
                     })
                 });
+
             </script>
             <p>Name: <input id="speciesField" placeholder="Breloom" size=19/ th:field="*{speciesName}" type="text"></p>
 
-<!--            <p>Form: <input placeholder="Standard" size=20/ th:field="*{form}" type="text"></p>-->
+            <!--            <p>Form: <input placeholder="Standard" size=20/ th:field="*{form}" type="text"></p>-->
             <p>Evolutions: <input placeholder="1 - Shroomish, 2 - Breloom (Minimum 20)" size=36/
  th:field="*{evolutions}" type="text"></p>
             <p>

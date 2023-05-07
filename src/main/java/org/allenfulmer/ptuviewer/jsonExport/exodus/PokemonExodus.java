@@ -1,10 +1,10 @@
-
 package org.allenfulmer.ptuviewer.jsonExport.exodus;
 
-import java.util.List;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import javax.annotation.Generated;
+import java.util.List;
 
 @Generated("jsonschema2pojo")
 public class PokemonExodus {

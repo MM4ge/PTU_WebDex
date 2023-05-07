@@ -2,12 +2,9 @@ package org.allenfulmer.ptuviewer.generator.models;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.allenfulmer.ptuviewer.generator.Pokemon;
 import org.allenfulmer.ptuviewer.models.PokeConstants;
 import org.allenfulmer.ptuviewer.models.Stat;
 import org.springframework.util.StringUtils;
-
-import java.util.Random;
 
 @Getter
 @Slf4j
@@ -73,25 +70,24 @@ public enum Nature {
 
     /**
      * Get the number of stat points this Nature should add for its given raising stat.
+     *
      * @return Either 1 for HP, or 2 for any other stat.
      */
-    public int getRaiseValue()
-    {
+    public int getRaiseValue() {
         return getStatValue(getRaise());
     }
 
     /**
      * Get the number of stat points this Nature should remove for its given lowering stat.
+     *
      * @return Either 1 for HP, or 2 for any other stat. Does NOT return a negative number.
      */
-    public int getLowerValue()
-    {
+    public int getLowerValue() {
         return getStatValue(getLower());
     }
 
-    private int getStatValue(Stat.StatName stat)
-    {
-        if(stat.equals(Stat.StatName.HP))
+    private int getStatValue(Stat.StatName stat) {
+        if (stat.equals(Stat.StatName.HP))
             return PokeConstants.HP_NATURE_CHANGE_VALUE;
         return PokeConstants.NORMAL_NATURE_CHANGE_VALUE;
     }

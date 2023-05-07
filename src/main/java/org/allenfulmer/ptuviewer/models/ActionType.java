@@ -3,7 +3,10 @@ package org.allenfulmer.ptuviewer.models;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Getter
 public enum ActionType {
@@ -21,18 +24,17 @@ public enum ActionType {
 
     public static ActionType getWithName(String name) {
         if (nameMap == null) {
-                Map<String, ActionType> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-                Arrays.stream(ActionType.values()).forEach(a -> map.put(a.getDisplayName(), a));
-                nameMap = Collections.unmodifiableMap(map);
-            }
+            Map<String, ActionType> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+            Arrays.stream(ActionType.values()).forEach(a -> map.put(a.getDisplayName(), a));
+            nameMap = Collections.unmodifiableMap(map);
+        }
         return nameMap.get(name);
     }
 
     public enum Priority {
         PRIORITY, INTERRUPT, REACTION;
 
-        public String getDisplayName()
-        {
+        public String getDisplayName() {
             return StringUtils.capitalize(this.name().toLowerCase());
         }
 

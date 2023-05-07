@@ -145,12 +145,13 @@ public class GeneratedPokemon extends Pokemon {
     ##############################################
     ##############################################
     */
+
     /**
      * Causes the Pokemon to generate its stats, abilities, and moves.
+     *
      * @return The same Pokemon object calling this method, with generated stats, abilities, and moves.
      */
-    public GeneratedPokemon generate()
-    {
+    public GeneratedPokemon generate() {
         initStats();
         initAbilities();
         initMoves();
@@ -159,11 +160,11 @@ public class GeneratedPokemon extends Pokemon {
 
     /**
      * Excludes a Stat from BST (Base Stat Relations) when generating this Pokemon's Stats.
+     *
      * @param toExclude The Stat to exclude.
      * @return The GeneratedPokemon object being called.
      */
-    public GeneratedPokemon excludeStatFromBST(Stat.StatName toExclude)
-    {
+    public GeneratedPokemon excludeStatFromBST(Stat.StatName toExclude) {
         exemptStats.add(toExclude);
         return this;
     }
@@ -171,40 +172,43 @@ public class GeneratedPokemon extends Pokemon {
     /**
      * Adds the {@link GeneratedPokemon#saveNonLevelMoves(List, List)} selection strategy to the list of strategies
      * used to determine which move to remove when getting a new one.
+     *
      * @return The GeneratedPokemon object being called.
      */
-    public GeneratedPokemon useNonLevelMovesStrat()
-    {
+    public GeneratedPokemon useNonLevelMovesStrat() {
         moveSavingStrategies.add(this::saveNonLevelMoves);
         return this;
     }
+
     /**
      * Adds the {@link GeneratedPokemon#saveFrequencyMoves(List, List)} selection strategy to the list of strategies
      * used to determine which move to remove when getting a new one.
+     *
      * @return The GeneratedPokemon object being called.
      */
-    public GeneratedPokemon useFrequencyMovesStrat()
-    {
+    public GeneratedPokemon useFrequencyMovesStrat() {
         moveSavingStrategies.add(this::saveFrequencyMoves);
         return this;
     }
+
     /**
      * Adds the {@link GeneratedPokemon#saveStabMoves(List, List)} selection strategy to the list of strategies
      * used to determine which move to remove when getting a new one.
+     *
      * @return The GeneratedPokemon object being called.
      */
-    public GeneratedPokemon useStabMovesStrat()
-    {
+    public GeneratedPokemon useStabMovesStrat() {
         moveSavingStrategies.add(this::saveStabMoves);
         return this;
     }
+
     /**
      * Adds the {@link GeneratedPokemon#savePrimaryStatMoves(List, List)} selection strategy to the list of strategies
      * used to determine which move to remove when getting a new one.
+     *
      * @return The GeneratedPokemon object being called.
      */
-    public GeneratedPokemon usePrimaryStatMovesStrat()
-    {
+    public GeneratedPokemon usePrimaryStatMovesStrat() {
         moveSavingStrategies.add(this::savePrimaryStatMoves);
         return this;
     }
@@ -389,9 +393,8 @@ public class GeneratedPokemon extends Pokemon {
     public void initAbilities() {
         boolean onlyHighest = PokeConstants.RANDOM_GEN.nextDouble() >= lowerAbilityTierChance;
 
-        for(BaseAbility.AbilityType curr = BaseAbility.AbilityType.BASIC; curr != null &&
-                curr.getLevel() <= this.getLevel(); curr = curr.getNextType())
-        {
+        for (BaseAbility.AbilityType curr = BaseAbility.AbilityType.BASIC; curr != null &&
+                curr.getLevel() <= this.getLevel(); curr = curr.getNextType()) {
             List<Ability> possibleAbilities = pickPossibleAbilities(curr, onlyHighest);
             if (!possibleAbilities.isEmpty())
                 getAbilities().add(possibleAbilities.get(PokeConstants.RANDOM_GEN.nextInt(possibleAbilities.size())));
@@ -461,8 +464,7 @@ public class GeneratedPokemon extends Pokemon {
             if (!getMoves().contains(currMove)) // No duplicates
             {
                 // If we need to nix one (or more) -- never nix a new move, movelist could become stale
-                while (getMoves().size() >= PokeConstants.MAX_MOVES)
-                {
+                while (getMoves().size() >= PokeConstants.MAX_MOVES) {
                     getMoves().remove(choiceAlg.apply(chooseRemovableMoves()));
                 }
                 getMoves().add(currMove);
@@ -496,9 +498,10 @@ public class GeneratedPokemon extends Pokemon {
 
     /**
      * Saves moves the Pokemon have that are connections to any of its Abilities.
+     *
      * @param removable Moves that are eligible for removal.
-     * @param safe Moves from other selection strategies that cannot be removed. Unused in this function, but kept to
-     *             match BinaryOperator design.
+     * @param safe      Moves from other selection strategies that cannot be removed. Unused in this function, but kept to
+     *                  match BinaryOperator design.
      * @return A List of moves that are eligible for removal (i.e. the removable list, minus any moves saved here).
      */
     private List<Move> saveConnectionMoves(List<Move> removable, List<Move> safe) {
@@ -509,9 +512,10 @@ public class GeneratedPokemon extends Pokemon {
     /**
      * Saves moves that aren't on the level-up list, or are on it but are beyond the Pokemon's level (i.e. not
      * naturally learned) to ensure unique moves aren't removed from the movelist.
+     *
      * @param removable Moves that are eligible for removal.
-     * @param safe Moves from other selection strategies that cannot be removed. Unused in this function, but kept to
-     *      *             match BinaryOperator design.
+     * @param safe      Moves from other selection strategies that cannot be removed. Unused in this function, but kept to
+     *                  *             match BinaryOperator design.
      * @return A List of moves that are eligible for removal (i.e. the removable list, minus any moves saved here).
      */
     private List<Move> saveNonLevelMoves(List<Move> removable, List<Move> safe) {
@@ -522,10 +526,11 @@ public class GeneratedPokemon extends Pokemon {
 
     /**
      * Saves an At-Will or two EOT moves the Pokemon has to ensure they always have a move to use during any turn.
+     *
      * @param removable Moves that are eligible for removal.
-     * @param safe Moves from other selection strategies that cannot be removed. Used to determine which (if any) moves
-     *             are saved based on the frequencies of already-saved moves (i.e. if we have an At-Will move saved, we
-     *             don't need to save anything else).
+     * @param safe      Moves from other selection strategies that cannot be removed. Used to determine which (if any) moves
+     *                  are saved based on the frequencies of already-saved moves (i.e. if we have an At-Will move saved, we
+     *                  don't need to save anything else).
      * @return A List of moves that are eligible for removal (i.e. the removable list, minus any moves saved here).
      */
     private List<Move> saveFrequencyMoves(List<Move> removable, List<Move> safe) {
@@ -557,10 +562,11 @@ public class GeneratedPokemon extends Pokemon {
     /**
      * Saves one damaging STAB move for each Type the Pokemon has to ensure they have an attacking move of their own
      * type(s).
+     *
      * @param removable Moves that are eligible for removal.
-     * @param safe Moves from other selection strategies that cannot be removed. Used to determine which (if any) moves
-     *             are saved based on the class and types of already-saved moves (i.e. if we have STAB moves saved for
-     *             each of the Pokemon's types, we don't need to save anything else).
+     * @param safe      Moves from other selection strategies that cannot be removed. Used to determine which (if any) moves
+     *                  are saved based on the class and types of already-saved moves (i.e. if we have STAB moves saved for
+     *                  each of the Pokemon's types, we don't need to save anything else).
      * @return A List of moves that are eligible for removal (i.e. the removable list, minus any moves saved here).
      */
     private List<Move> saveStabMoves(List<Move> removable, List<Move> safe) {
@@ -586,10 +592,11 @@ public class GeneratedPokemon extends Pokemon {
 
     /**
      * Saves damaging moves of the Pokemon's primary attacking stat, so they have a meta-valuable damaging move.
+     *
      * @param removable Moves that are eligible for removal.
-     * @param safe Moves from other selection strategies that cannot be removed. Used to determine which (if any) moves
-     *             are saved based on the frequencies of already-saved moves (i.e. if we have a matching damaging move
-     *             saved, we don't need to save anything else).
+     * @param safe      Moves from other selection strategies that cannot be removed. Used to determine which (if any) moves
+     *                  are saved based on the frequencies of already-saved moves (i.e. if we have a matching damaging move
+     *                  saved, we don't need to save anything else).
      * @return A List of moves that are eligible for removal (i.e. the removable list, minus any moves saved here).
      */
     private List<Move> savePrimaryStatMoves(List<Move> removable, List<Move> safe) {
@@ -625,8 +632,7 @@ public class GeneratedPokemon extends Pokemon {
         return importantMoves;
     }
 
-    private static boolean isMatchingMoveClass(Stat.StatName attackStat, Move move)
-    {
+    private static boolean isMatchingMoveClass(Stat.StatName attackStat, Move move) {
         return (attackStat.equals(Stat.StatName.SPECIAL_ATTACK) && move.getMoveClass().equals(Move.MoveClass.SPECIAL))
                 || (attackStat.equals(Stat.StatName.ATTACK) && move.getMoveClass().equals(Move.MoveClass.PHYSICAL));
     }

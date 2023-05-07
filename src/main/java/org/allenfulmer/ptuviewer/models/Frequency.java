@@ -21,10 +21,10 @@ public enum Frequency {
 
     public static Frequency getWithName(String name) {
         if (nameMap == null) {
-                Map<String, Frequency> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-                Arrays.stream(Frequency.values()).forEach(f -> map.put(f.getDisplayName(), f));
-                nameMap = Collections.unmodifiableMap(map);
-            }
+            Map<String, Frequency> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+            Arrays.stream(Frequency.values()).forEach(f -> map.put(f.getDisplayName(), f));
+            nameMap = Collections.unmodifiableMap(map);
+        }
         return nameMap.get(name);
     }
 }

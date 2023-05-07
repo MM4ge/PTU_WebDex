@@ -138,34 +138,28 @@ public class PokemonSpecies {
         this.speed = pokemonDTO.getSpeed();
     }
 
-    public PokemonSpecies(PokemonGeneratorDTO pokemonDTO)
-    {
+    public PokemonSpecies(PokemonGeneratorDTO pokemonDTO) {
         parseNameAndForm(pokemonDTO.getSpeciesName());
         // TODO: Habitats
         // TODO: Types
     }
 
-    private void parseNameAndForm(String name)
-    {
-        if(name.contains("("))
-        {
+    private void parseNameAndForm(String name) {
+        if (name.contains("(")) {
             Matcher m = Pattern.compile("(.*) \\((.+)\\)", Pattern.MULTILINE).matcher(name);
-            if(!m.find())
+            if (!m.find())
                 throw new IllegalArgumentException("No name match found for species " + name + "!");
             this.speciesName = m.group(1);
             this.form = m.group(2);
-        }
-        else
-        {
+        } else {
             this.speciesName = name;
             this.form = PokeConstants.NON_REGIONAL_FORM;
         }
     }
 
-    public String getNameAndForm()
-    {
+    public String getNameAndForm() {
         String ret = this.getSpeciesName();
-        if(!this.getForm().equalsIgnoreCase(PokeConstants.NON_REGIONAL_FORM))
+        if (!this.getForm().equalsIgnoreCase(PokeConstants.NON_REGIONAL_FORM))
             ret += " (" + this.getForm() + ")";
         return ret;
     }
@@ -198,11 +192,10 @@ public class PokemonSpecies {
         }
     }
 
-    public void setEggGroups(List<EggGroup> eggGroups)
-    {
+    public void setEggGroups(List<EggGroup> eggGroups) {
         this.eggGroups = eggGroups;
         this.primaryEggGroup = eggGroups.get(0);
-        if(eggGroups.size() > 1)
+        if (eggGroups.size() > 1)
             this.secondaryEggGroup = eggGroups.get(1);
     }
 

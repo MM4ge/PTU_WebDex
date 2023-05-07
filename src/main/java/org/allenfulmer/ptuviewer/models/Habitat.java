@@ -12,7 +12,7 @@ import java.util.TreeMap;
 @Getter
 public enum Habitat {
     ARCTIC, BEACH, CAVE, DESERT, FOREST, FRESHWATER, GRASSLAND, MARSH, MOUNTAIN, NON_SPACE("Non Space"),
-        OCEAN, RAINFOREST, TAIGA, TUNDRA, UNKNOWN("???"), URBAN;
+    OCEAN, RAINFOREST, TAIGA, TUNDRA, UNKNOWN("???"), URBAN;
 
     private final String displayName;
     private static Map<String, Habitat> nameMap;

@@ -27,10 +27,10 @@ public enum EggGroup {
 
     public static EggGroup getWithName(String name) {
         if (nameMap == null) {
-                Map<String, EggGroup> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-                Arrays.stream(EggGroup.values()).forEach(f -> map.put(f.getDisplayName(), f));
-                nameMap = Collections.unmodifiableMap(map);
-            }
+            Map<String, EggGroup> map = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+            Arrays.stream(EggGroup.values()).forEach(f -> map.put(f.getDisplayName(), f));
+            nameMap = Collections.unmodifiableMap(map);
+        }
         return nameMap.get(name);
     }
 }

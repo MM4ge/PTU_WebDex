@@ -23,10 +23,10 @@ public class ExodusConverter {
 
     private static final Gson gson = new GsonBuilder().serializeNulls().disableHtmlEscaping().setLenient().create();
 
-    private ExodusConverter(){}
+    private ExodusConverter() {
+    }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         log.info("Input the exodusJSON (un-beautified - as one line), then hit Enter:");
         String exodusJSON = input.nextLine();
@@ -34,8 +34,7 @@ public class ExodusConverter {
         log.info(gson.toJson(new Roll20Builder(p1).build()));
     }
 
-    public static Pokemon convertFromExodus(String exodusJSON)
-    {
+    public static Pokemon convertFromExodus(String exodusJSON) {
         PokemonExodus e1 = gson.fromJson(exodusJSON, PokemonExodus.class);
         Pokemon p1 = new Pokemon();
 
@@ -46,7 +45,7 @@ public class ExodusConverter {
                 .filter(p -> p.getSpeciesName().equalsIgnoreCase(e1.getPokedexEntry().getSpecies()))
                 .filter(p -> e1.getPokedexEntry().getForm().toUpperCase().startsWith(p.getForm().toUpperCase())).toList();
 
-        if(speciesMatches.isEmpty())
+        if (speciesMatches.isEmpty())
             throw new IllegalArgumentException("Exodus Pokemon matched no species!");
         else if (speciesMatches.size() > 1)
             throw new IllegalArgumentException("Exodus Pokemon matched more than one DB Species!");
