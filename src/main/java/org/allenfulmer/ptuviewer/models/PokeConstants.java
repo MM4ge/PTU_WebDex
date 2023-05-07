@@ -11,6 +11,8 @@ public class PokeConstants {
     public static final int HIGH_ABILITY_LEVEL = 40;
     public static final int EVO_LEVEL_MOVE_VALUE = -1;
     public static final String NON_REGIONAL_FORM = "Standard";
+    public static final String SEE_EFFECT_DB = "See Effect";
+    public static final String ROLL_20_DEFAULT_TYPE = "Taco";
 
     // TODO: Put a gson in here, use that in each object instead of replicating it
     // TODO: Same for random

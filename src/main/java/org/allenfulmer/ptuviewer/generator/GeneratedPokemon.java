@@ -7,12 +7,14 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.allenfulmer.ptuviewer.fileLoading.PojoToDBConverter;
 import org.allenfulmer.ptuviewer.generator.models.Nature;
-import org.allenfulmer.ptuviewer.jsonExport.roll20.PokemonRoll20;
+import org.allenfulmer.ptuviewer.jsonExport.roll20.Roll20Builder;
 import org.allenfulmer.ptuviewer.models.*;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.function.ObjIntConsumer;
 import java.util.stream.Collectors;
 
 @Setter
@@ -20,41 +22,119 @@ import java.util.stream.Collectors;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GeneratedPokemon extends Pokemon {
-
+    // TODO: combine weighted and batch random - make them flags that are or aren't added to the process?
     public static void main(String[] args) {
+        mainGenerate();
+//        testGenerate();
+        log.info("Done");
+    }
+
+    public static void testGenerate() {
+        List<String> dexNums = new ArrayList<>();
+        dexNums.add("025"); // Pikachu
+        dexNums.add("213"); // Shuckle, VERY high Def, low else
+        dexNums.add("132"); // Ditto, equal everything
+        dexNums.add("495"); // Snivy, half 6, half 5
+        dexNums.add("125"); // Electabuzz, all different BST but v close together
+        dexNums.add("208"); // Steelix, all different BSTs but one large BST (Def)
+        int level = 100;
+
+        for (String dexNum : dexNums) {
+            PokemonSpecies baseSpecies = PojoToDBConverter.getPokemonSpecies(dexNum);
+            log.info("");
+            log.info("");
+            log.info("Pure Base Stats for " + baseSpecies.getSpeciesName() + ":");
+            log.info(baseSpecies.getBaseStats().entrySet().stream().map(e ->
+                            String.format("%-6sB:%2d      ",
+                                    StringUtils.capitalize(e.getKey().getShortName()),
+                                    e.getValue()))
+                    .collect(Collectors.joining()));
+
+            for (int i = 0; i < statAlgs.size(); i++) {
+                ObjIntConsumer<List<GeneratedPokemon.ManagedStat>> currAlg = statAlgs.get(i);
+                if (i == 0)
+                    log.info("---Pure Random---");
+                else if (i == 1)
+                    log.info("---Weighted Random---");
+                else if (i == 2)
+                    log.info("---Batch Random---");
+                else if (i == 3)
+                    log.info("---Weighted Batch---");
+                else
+                    throw new RuntimeException("Unidentified stat algorithm");
+
+                for (int j = 0; j < 3; j++) {
+                    GeneratedPokemon rand = new GeneratedPokemon(PojoToDBConverter.getPokemonSpecies(dexNum), level);
+                    rand.setStatChoiceAlg(currAlg);
+                    rand.setNature(Nature.COMPOSED); // Neutral Nature
+                    mainGenerate2(rand);
+
+                    Map<Stat.StatName, Stat> pokeStats = rand.getStats();
+                    log.info(pokeStats.entrySet().stream().map(e ->
+                                    String.format("%-6sB:%2d T:%2d ",
+                                            StringUtils.capitalize(e.getKey().getShortName()),
+                                            e.getValue().getBase(), e.getValue().getTotal()))
+                            .collect(Collectors.joining()));
+                }
+            }
+        }
+    }
+
+    public static void mainGenerate() {
         Scanner input = new Scanner(System.in);
-        log.info("Input the Dex # of the Pokemon:");
-        String dexNum = input.next();
+        PokemonSpecies species = null;
+        try {
+            log.info("Input the Name of the Pokemon:");
+            String name = input.next();
+            log.info("Input the Form of the Pokemon, or anything if it only has 1 form:");
+            String form = input.next();
+            species = PojoToDBConverter.getPokemonSpecies(name, form);
+        } catch (NullPointerException ignored) {
+            log.info("Name/Form Combo not found.");
+            log.info("Input the Dex # of the Pokemon:");
+            species = PojoToDBConverter.getPokemonSpecies(input.next());
+        }
         log.info("Input the level of the Pokemon:");
         int level = input.nextInt();
-        GeneratedPokemon p1 = new GeneratedPokemon(PojoToDBConverter.getPokemonSpecies(dexNum), level);
-        p1.setUniqueChance(0);
-        p1.setLowerAbilityTierChance(0);
-        p1.excludeStatFromBST(Stat.StatName.HP).useNonLevelMovesStrat().useFrequencyMovesStrat().useStabMovesStrat();
-        p1.generate();
+        GeneratedPokemon p1 = new GeneratedPokemon(species, level);
+        mainGenerate2(p1);
         log.info("Done");
         Gson gson = new GsonBuilder()
                 .serializeNulls()
                 .create();
-        log.info(gson.toJson(new PokemonRoll20(p1)));
+        log.info(gson.toJson(new Roll20Builder(p1).setAbilitiesAsMoves(true).build()));
         log.info("Done2");
+    }
+
+    // TODO: make these default from constructor or otherwise
+    public static GeneratedPokemon mainGenerate2(GeneratedPokemon p1) {
+        p1.setUniqueChance(0);
+        p1.setLowerAbilityTierChance(0);
+        p1.excludeStatFromBST(Stat.StatName.HP).useNonLevelMovesStrat().useFrequencyMovesStrat().useStabMovesStrat();
+        p1.generate();
+        return p1;
     }
 
     public GeneratedPokemon(PokemonSpecies species, int level) {
         this(species, level, Nature.getRandomNature());
     }
+
     public GeneratedPokemon(PokemonSpecies species, int level, Nature nature) {
         super(species, level, nature);
         moveSavingStrategies.add(this::saveConnectionMoves);
+        statChoiceAlg = statAlgs.get(PokeConstants.RANDOM_GEN.nextInt(statAlgs.size()));
     }
 
     private List<Stat.StatName> exemptStats = new ArrayList<>(); // TODO: Default this to block HP in WEBPAGE, not here
     private List<BinaryOperator<List<Move>>> moveSavingStrategies = new ArrayList<>();
+
+    // TODO: set this in factory or constructor, same for Moves and Abilities
+    private ObjIntConsumer<List<ManagedStat>> statChoiceAlg;
     private boolean removeOldest = true;
     private double uniqueChance = 0.04;
     private double lowerAbilityTierChance = 0.33;
     private double primaryStatDifference = 1.5;
-    // TODO: Custom set methods for the above that return this
+    // TODO: Custom set methods for the above that return this like how factory design patterns do it
 
     /*
     ##############################################
@@ -177,6 +257,77 @@ public class GeneratedPokemon extends Pokemon {
         }
     }
 
+    private static void randomStats(List<ManagedStat> stats, int level) {
+        // TODO: save these in a Map with their name as key - save whichs tat gen was used in poke notes
+//        log.info("Assigning stats with pure randomization");
+        for (int statPoints = level + 10; statPoints > 0; statPoints--) {
+            stats.get(PokeConstants.RANDOM_GEN.nextInt(stats.size())).increment(stats);
+        }
+    }
+
+    private static void weightedStats(List<ManagedStat> stats, int level) {
+//        log.info("Assigning stats with weighted randomization");
+        for (int statPoints = level + 10; statPoints > 0; statPoints--) {
+            ArrayList<ManagedStat> weightedStats = new ArrayList<>();
+            for (ManagedStat curr : stats) {
+                for (int i = 0; i < curr.getBase(); i++)
+                    weightedStats.add(curr);
+            }
+
+            weightedStats.get(PokeConstants.RANDOM_GEN.nextInt(weightedStats.size())).increment(stats);
+        }
+    }
+
+    private static void weightedBatchStats(List<ManagedStat> stats, int level) {
+//        log.info("Assigning stats in weighted batches");
+        int totalPoints = level + 10;
+        int maxBatchSize = totalPoints / 10;
+        while (totalPoints > 0) {
+            int currBatch = Math.min(totalPoints, PokeConstants.RANDOM_GEN.nextInt(maxBatchSize) + 1);
+            ArrayList<ManagedStat> weightedStats = new ArrayList<>();
+            for (ManagedStat curr : stats) {
+                for (int i = 0; i < curr.getBase(); i++)
+                    weightedStats.add(curr);
+            }
+            ManagedStat currStat = weightedStats.get(PokeConstants.RANDOM_GEN.nextInt(weightedStats.size()));
+
+            while (stats.contains(currStat) && currBatch > 0) {
+                currStat.increment(stats);
+                currBatch--;
+                totalPoints--;
+            }
+        }
+    }
+
+    // TODO: finish the yolo stats, no BST, 20% points instantly in highest BST, etc
+//    private static void diverseStats(List<ManagedStat> stats, int level)
+//    {
+//        log.info("Assigning stats chaotically");
+//        int totalPoints = level + 10;
+//    }
+
+    private static void batchedStats(List<ManagedStat> stats, int level) {
+//        log.info("Assigning stats in random batches");
+        int totalPoints = level + 10;
+        int maxBatchSize = totalPoints / 10;
+        while (totalPoints > 0) {
+            int currBatch = Math.min(totalPoints, PokeConstants.RANDOM_GEN.nextInt(maxBatchSize) + 1);
+            ManagedStat currStat = stats.get(PokeConstants.RANDOM_GEN.nextInt(stats.size()));
+            while (stats.contains(currStat) && currBatch > 0) {
+                currStat.increment(stats);
+                currBatch--;
+                totalPoints--;
+            }
+        }
+    }
+
+    // TODO: basic priority from user input - if most priority is a possibility, pick it, etc
+    // Allow for custom weight, like "8Hp, 5Atk, 3SpAtk" etc
+    // 50% HP -> 50% Attack -> Even distribution
+    private static List<ObjIntConsumer<List<ManagedStat>>> statAlgs = Arrays.asList(
+            GeneratedPokemon::randomStats, GeneratedPokemon::weightedStats, GeneratedPokemon::batchedStats,
+            GeneratedPokemon::weightedBatchStats);
+
     public void initStats() {
         getSpecies().getBaseStats().forEach((key, value) -> getStats().put(key, new Stat(value, key)));
         getStats().get(getNature().getRaise()).setNature(false);
@@ -185,9 +336,7 @@ public class GeneratedPokemon extends Pokemon {
         List<ManagedStat> availableStats = linkStats();
 
         // Allocate stat points
-        for (int statPoints = getLevel() + 10; statPoints > 0; statPoints--) {
-            availableStats.get(PokeConstants.RANDOM_GEN.nextInt(availableStats.size())).increment(availableStats);
-        }
+        statChoiceAlg.accept(availableStats, getLevel());
     }
 
     private List<ManagedStat> linkStats() {
@@ -195,7 +344,7 @@ public class GeneratedPokemon extends Pokemon {
         List<ManagedStat> prevStats = new ArrayList<>();
         List<ManagedStat> currStats = new ArrayList<>();
 
-        List<Stat> allStats = getStats().values().stream().sorted().collect(Collectors.toList());
+        List<Stat> allStats = getStats().values().stream().sorted().toList();
         int currBase = allStats.get(0).getBase();
         for (Stat curr : allStats) {
             ManagedStat nextStat = new ManagedStat(curr);
@@ -267,17 +416,17 @@ public class GeneratedPokemon extends Pokemon {
 
     private List<Ability> gatherAbilitiesOfType(BaseAbility.AbilityType type) {
         return getSpecies().getBaseAbilities().stream().filter(b -> b.getAbilityType() == type)
-                .map(BaseAbility::getAbility).filter(a -> !getAbilities().contains(a)).collect(Collectors.toList());
+                .map(BaseAbility::getAbility).filter(a -> !getAbilities().contains(a)).toList();
     }
 
     private List<Ability> gatherAbilitiesToType(BaseAbility.AbilityType type) {
         return getSpecies().getBaseAbilities().stream().filter(b -> b.getAbilityType().getLevel() <= type.getLevel())
-                .map(BaseAbility::getAbility).filter(a -> !getAbilities().contains(a)).collect(Collectors.toList());
+                .map(BaseAbility::getAbility).filter(a -> !getAbilities().contains(a)).toList();
     }
 
 
-    //TODO: save startegy for type coverage - remove moves that are the only attacking type of that type the poke has
-    // or like only allowing attacking moves of its own type or duplicated
+    // FC: save startegy for type coverage - remove moves that are the only attacking type of that type the poke has
+    //  or like only allowing attacking moves of its own type or duplicated
     /*
     ##############################################
     ##############################################
@@ -353,8 +502,8 @@ public class GeneratedPokemon extends Pokemon {
      * @return A List of moves that are eligible for removal (i.e. the removable list, minus any moves saved here).
      */
     private List<Move> saveConnectionMoves(List<Move> removable, List<Move> safe) {
-        List<Move> connections = getAbilities().stream().map(Ability::getConnection).filter(Objects::nonNull).collect(Collectors.toList());
-        return removable.stream().filter(connections::contains).collect(Collectors.toList());
+        List<Move> connections = getAbilities().stream().map(Ability::getConnection).filter(Objects::nonNull).toList();
+        return removable.stream().filter(connections::contains).toList();
     }
 
     /**
@@ -367,8 +516,8 @@ public class GeneratedPokemon extends Pokemon {
      */
     private List<Move> saveNonLevelMoves(List<Move> removable, List<Move> safe) {
         List<Move> leveledMoves = getSpecies().getLevelUpMoves().stream().filter(lm -> lm.getLevel() <= getLevel())
-                .map(LevelMove::getMove).collect(Collectors.toList());
-        return removable.stream().filter(m -> !leveledMoves.contains(m)).collect(Collectors.toList());
+                .map(LevelMove::getMove).toList();
+        return removable.stream().filter(m -> !leveledMoves.contains(m)).toList();
     }
 
     /**
@@ -394,10 +543,8 @@ public class GeneratedPokemon extends Pokemon {
             }
         }
 
-        List<Move> atWills = removable.stream().filter(m -> m.getFrequency().equals(Frequency.AT_WILL))
-                .collect(Collectors.toList());
-        List<Move> eots = removable.stream().filter(m -> m.getFrequency().equals(Frequency.EOT))
-                .collect(Collectors.toList());
+        List<Move> atWills = removable.stream().filter(m -> m.getFrequency().equals(Frequency.AT_WILL)).toList();
+        List<Move> eots = removable.stream().filter(m -> m.getFrequency().equals(Frequency.EOT)).toList();
 
         // At-will must be kept if there's only one, EOTs must be kept if there's only two; >N means all are removable
         // If both criteria are met exactly, none need to be kept; pkmn will have something each turn to do either way
@@ -434,7 +581,7 @@ public class GeneratedPokemon extends Pokemon {
     private static List<Move> getMovesOfType(List<Move> moves, Type type) {
         return moves.stream().filter(m -> m.getType().equals(type) &&
                 ((m.getMoveClass().equals(Move.MoveClass.PHYSICAL)) ||
-                        m.getMoveClass().equals(Move.MoveClass.SPECIAL))).collect(Collectors.toList());
+                        m.getMoveClass().equals(Move.MoveClass.SPECIAL))).toList();
     }
 
     /**

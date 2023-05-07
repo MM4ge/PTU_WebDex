@@ -4,7 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
+import org.allenfulmer.ptuviewer.models.Ability;
 import org.allenfulmer.ptuviewer.models.Frequency;
+import org.allenfulmer.ptuviewer.models.Move;
 import org.allenfulmer.ptuviewer.models.PokeConstants;
 
 import javax.annotation.Generated;
@@ -65,5 +67,28 @@ public class MoveRoll20 {
         }
         this.range = origMove.getRange();
         this.effects = origMove.getEffect();
+    }
+
+    public MoveRoll20(Ability ability) {
+        this.name = ability.getName();
+        this.type = PokeConstants.ROLL_20_DEFAULT_TYPE;
+
+        this.freq = ability.getFrequency().getDisplayName();
+        if (ability.getFrequency().equals(Frequency.SEE_TEXT))
+            this.freq = Frequency.SPECIAL.getDisplayName();
+
+        this.db = 0;
+        this.ac = -1;
+        this.dType = Move.MoveClass.STATUS.getDisplayName();
+
+        // Free Action - get display name until first space + trigger
+        // just action if there's no trigger? maybe target
+        // trigger has priority, then target, then just full action etc if none else
+        String range = (ability.getTrigger().isBlank()) ? ability.getTarget() : ability.getTrigger();
+        String actionType = ability.getActionType().getDisplayName();
+        if (!range.isBlank())
+            actionType = ability.getActionType().getDisplayName().split(" ")[0] + ": ";
+        this.range = actionType + range;
+        this.effects = ability.getEffect();
     }
 }

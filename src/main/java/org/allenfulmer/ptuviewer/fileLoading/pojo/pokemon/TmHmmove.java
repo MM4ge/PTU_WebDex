@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class TmHmmove { // TODO: Consolidate all the 4 move types that have the same member vars into one
+public class TmHmmove { // Optimize: Consolidate all the 4 move types that have the same member vars into one
 
     @SerializedName("Name")
     @Expose

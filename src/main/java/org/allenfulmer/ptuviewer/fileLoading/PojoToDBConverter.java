@@ -75,6 +75,24 @@ public class PojoToDBConverter {
         return mapPoke;
     }
 
+    /**
+     * @param name The species name of the Pokemon.
+     * @param form The form of the Pokemon. Only used if the name matches more than 1 Pokemon.
+     * @return The matching PokemonSpecies with the given name or given name and form
+     * @throws NullPointerException Thrown if no Pokemon with the supplied name exist, or there isn't just 1 Pokemon
+     *                              with the given name and form.
+     */
+    public static PokemonSpecies getPokemonSpecies(String name, String form) {
+        List<PokemonSpecies> mapPokes = new ArrayList<>(getConvertedPokemonSpecies().values().stream().filter(
+                p -> name.equalsIgnoreCase(p.getSpeciesName())).toList());
+        if (mapPokes.size() > 1)
+            mapPokes.removeIf(p -> !form.equalsIgnoreCase(p.getForm()));
+        else if (mapPokes.size() != 1)
+            throw new NullPointerException("Pokemon Species with name " + name + " and form " + form +
+                    " not found in pokemonSpeciesMap");
+        return mapPokes.get(0);
+    }
+
     private static Set<BaseCapability> convertCapabilities(PokemonSpecies poke,
                                                            List<org.allenfulmer.ptuviewer.fileLoading.pojo.pokemon.Capability> pojoCapabilities) {
         Set<BaseCapability> capabilities = new TreeSet<>();
@@ -294,11 +312,11 @@ public class PojoToDBConverter {
 
             // Breeding Data + Habitats
             newPoke.setMaleChance((!p.getBreedingData().isHasGender()) ? null : p.getBreedingData().getMaleChance());
-            newPoke.setEggGroups(p.getBreedingData().getEggGroups().stream().map(EggGroup::getWithName).collect(Collectors.toList()));
-            newPoke.setHabitats(p.getEnvironment().getHabitats().stream().map(Habitat::getWithName).collect(Collectors.toList()));
+            newPoke.setEggGroups(p.getBreedingData().getEggGroups().stream().map(EggGroup::getWithName).toList());
+            newPoke.setHabitats(p.getEnvironment().getHabitats().stream().map(Habitat::getWithName).toList());
 
             // Types - List<Type>
-            newPoke.setTypesFromList(p.getTypes().stream().map(PojoToDBConverter::convertType).collect(Collectors.toList()));
+            newPoke.setTypesFromList(p.getTypes().stream().map(PojoToDBConverter::convertType).toList());
 
             // BaseAbilities - List<BaseAbility>
             p.getAbilities().forEach(a ->
@@ -343,8 +361,8 @@ public class PojoToDBConverter {
 
     public static Map<String, PokemonSpecies> populatePokemonMaps() {
         // Local variables left here for easy debugging in the debugger if necessary
-        Map<String, MovePojo> pojoMoves = JsonToPojoLoader.parsePojoMoves();
-        Map<String, Move> moves = moveMapBuilder(pojoMoves);
+//        Map<String, MovePojo> pojoMoves = JsonToPojoLoader.parsePojoMoves();
+//        Map<String, Move> moves = moveMapBuilder(pojoMoves);
 
         Map<String, AbilityPojo> pojoAbility = JsonToPojoLoader.parsePojoAbilities();
         Map<String, Ability> abilities = abilityMapBuilder(pojoAbility);
@@ -356,9 +374,9 @@ public class PojoToDBConverter {
             Move connection = a.getConnection();
             return (connection == null) ? null : connection.getDisplayName();
         }).filter(Objects::nonNull).collect(Collectors.toSet());
-        System.out.println(connections.stream().sorted().collect(Collectors.joining("\n")));
+        log.info(connections.stream().sorted().collect(Collectors.joining("\n")));
 
-        System.out.println("---Done---");
+        log.info("---Done---");
 
         return pokes;
     }

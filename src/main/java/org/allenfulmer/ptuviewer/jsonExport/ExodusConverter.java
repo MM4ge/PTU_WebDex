@@ -8,7 +8,7 @@ import org.allenfulmer.ptuviewer.generator.Pokemon;
 import org.allenfulmer.ptuviewer.generator.models.Nature;
 import org.allenfulmer.ptuviewer.jsonExport.exodus.PokemonExodus;
 import org.allenfulmer.ptuviewer.jsonExport.exodus.StatExodus;
-import org.allenfulmer.ptuviewer.jsonExport.roll20.PokemonRoll20;
+import org.allenfulmer.ptuviewer.jsonExport.roll20.Roll20Builder;
 import org.allenfulmer.ptuviewer.models.PokemonSpecies;
 import org.allenfulmer.ptuviewer.models.Stat;
 
@@ -31,7 +31,7 @@ public class ExodusConverter {
         log.info("Input the exodusJSON (un-beautified - as one line), then hit Enter:");
         String exodusJSON = input.nextLine();
         Pokemon p1 = convertFromExodus(exodusJSON);
-        log.info(gson.toJson(new PokemonRoll20(p1)));
+        log.info(gson.toJson(new Roll20Builder(p1).build()));
     }
 
     public static Pokemon convertFromExodus(String exodusJSON)
@@ -44,8 +44,7 @@ public class ExodusConverter {
         Map<String, PokemonSpecies> allPokes = PojoToDBConverter.getConvertedPokemonSpeciesMap();
         List<PokemonSpecies> speciesMatches = allPokes.values().stream()
                 .filter(p -> p.getSpeciesName().equalsIgnoreCase(e1.getPokedexEntry().getSpecies()))
-                .filter(p -> e1.getPokedexEntry().getForm().toUpperCase().startsWith(p.getForm().toUpperCase()))
-                .collect(Collectors.toList());
+                .filter(p -> e1.getPokedexEntry().getForm().toUpperCase().startsWith(p.getForm().toUpperCase())).toList();
 
         if(speciesMatches.isEmpty())
             throw new RuntimeException("Exodus Pokemon matched no species!");
@@ -67,7 +66,7 @@ public class ExodusConverter {
         p1.setNatureAndStats(Nature.getNature(e1.getNature()));
         p1.setGender(e1.getGender());
         p1.setLevel(e1.getLevel());
-        p1.setMoves(e1.getMoves().stream().map(m -> PojoToDBConverter.getMove(m.getName())).collect(Collectors.toList()));
+        p1.setMoves(e1.getMoves().stream().map(m -> PojoToDBConverter.getMove(m.getName())).toList());
         p1.setAbilities(e1.getAbilities().stream().map(a -> PojoToDBConverter.getAbility(a.getName())).collect(Collectors.toSet()));
 
         return p1;
