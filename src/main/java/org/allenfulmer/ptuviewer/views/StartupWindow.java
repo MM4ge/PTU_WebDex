@@ -1,5 +1,7 @@
 package org.allenfulmer.ptuviewer.views;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -10,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 
+@Slf4j
 public class StartupWindow {
     private JPanel panel1;
     private JButton button;
@@ -18,7 +21,7 @@ public class StartupWindow {
     public StartupWindow() {
         JFrame frame = new JFrame("PTU Viewer + Generator");
         frame.setContentPane(panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 //        frame.setSize(400,300);
 
         StyledDocument documentStyle = msg.getStyledDocument();
@@ -32,7 +35,7 @@ public class StartupWindow {
 
         try {
             File curr = new File("src/main/resources/static/assets/pokeball.png");
-            System.out.println(curr.getAbsolutePath());
+            log.info(curr.getAbsolutePath());
             frame.setIconImage(ImageIO.read(curr));
         } catch (IOException exc) {
             exc.printStackTrace();
@@ -42,7 +45,7 @@ public class StartupWindow {
             try {
                 Desktop.getDesktop().browse(URI.create("http://localhost:8081/"));
             } catch (IOException ex) {
-                throw new RuntimeException("Error in finding, running, or accessing the user's default browser!", ex);
+                throw new UnsupportedOperationException("Error in finding, running, or accessing the user's default browser!", ex);
             }
         });
     }

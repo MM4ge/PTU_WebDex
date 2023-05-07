@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
@@ -142,7 +141,7 @@ public class MoveController {
         // Add the page indexes to the model (the pg 1, 2, 3...)
         if (totalPages > 0) {
             model.addAttribute("pageNumbers",
-                    IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList()));
+                    IntStream.rangeClosed(1, totalPages).boxed().toList());
         }
         return RESULTS;
     }

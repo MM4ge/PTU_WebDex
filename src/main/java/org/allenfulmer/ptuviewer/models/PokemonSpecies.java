@@ -151,7 +151,7 @@ public class PokemonSpecies {
         {
             Matcher m = Pattern.compile("(.*) \\((.+)\\)", Pattern.MULTILINE).matcher(name);
             if(!m.find())
-                throw new RuntimeException("No name match found for species " + name + "!");
+                throw new IllegalArgumentException("No name match found for species " + name + "!");
             this.speciesName = m.group(1);
             this.form = m.group(2);
         }

@@ -38,7 +38,7 @@ public class PlaintextPokeParser {
 
     public PlaintextPokeParser() {
         this.data = Arrays.stream(TxtUtils.readAllFiles(TxtUtils.POKEMON_DIRECTORY).split("\r\n")).collect(Collectors.toCollection(ArrayDeque::new));
-        this.dexIds = generateDexMap(Arrays.stream(TxtUtils.readAllFiles(TxtUtils.DEX_ID_DIRECTORY).split("\r\n")).collect(Collectors.toList()));
+        this.dexIds = generateDexMap(Arrays.stream(TxtUtils.readAllFiles(TxtUtils.DEX_ID_DIRECTORY).split("\r\n")).toList());
     }
 
     public static void main(String[] args) {
@@ -173,7 +173,7 @@ public class PlaintextPokeParser {
             else
                 type = curr.substring(0, curr.indexOf(" ")).trim();
             return new Ability(name, type);
-        }).collect(Collectors.toList()));
+        }).toList());
     }
 
     private void setEvolutions() {
@@ -198,7 +198,7 @@ public class PlaintextPokeParser {
             } else
                 species = streamStr.substring(streamStr.indexOf(" - ") + 3).trim();
             return new EvolutionStage(stage, species, criteria);
-        }).collect(Collectors.toList()));
+        }).toList());
     }
 
     private void setSizeInfo() {
@@ -316,7 +316,7 @@ public class PlaintextPokeParser {
             skill.setSkillName(s.substring(0, nameValSplit).trim());
             skill.setDiceRank(s.substring(nameValSplit).trim());
             return skill;
-        }).collect(Collectors.toList()));
+        }).toList());
     }
 
     private void setLevelMoves() {
@@ -349,7 +349,7 @@ public class PlaintextPokeParser {
         poke.setTmHmMoves(Arrays.stream(movesStr.split(", ")).filter(s -> !s.isEmpty()).map(s -> {
             int idIndex = s.indexOf(" ");
             return new TmHmmove(s.substring(idIndex).trim(), null, s.substring(0, idIndex));
-        }).collect(Collectors.toList()));
+        }).toList());
     }
 
     private void setEggMoves() {
@@ -362,7 +362,7 @@ public class PlaintextPokeParser {
         // Baton Pass, Confuse Ray
         poke.setEggMoves(Arrays.stream(movesStr.split(", ")).filter(s -> !s.isEmpty()).map(s ->
                 new Eggmove(s.trim(), null, null)
-        ).collect(Collectors.toList()));
+        ).toList());
     }
 
     private void setTutorMoves() {
@@ -383,6 +383,6 @@ public class PlaintextPokeParser {
         poke.setTutorMoves(Arrays.stream(movesStr.split(", ")).filter(s -> !s.isEmpty()).map(s -> {
             boolean natural = s.endsWith(" (N)");
             return new Tutormove(s.replace(" (N)", "").trim(), null, null, natural);
-        }).collect(Collectors.toList()));
+        }).toList());
     }
 }

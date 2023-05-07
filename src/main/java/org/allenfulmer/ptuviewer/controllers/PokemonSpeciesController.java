@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Controller
@@ -52,7 +54,7 @@ public class PokemonSpeciesController {
         // Add the page indexes to the model (the pg 1, 2, 3...)
         if (totalPages > 0) {
             model.addAttribute("pageNumbers",
-                    IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList()));
+                    IntStream.rangeClosed(1, totalPages).boxed().toList());
         }
         return RESULTS;
     }
@@ -61,7 +63,7 @@ public class PokemonSpeciesController {
     public String pokemonSearchForm(Model model) {
         model.addAttribute("pokemonDTO", new PokemonSpeciesDTO());
         model.addAttribute("pokemonSpeciesNames", pokemonServ.getAllSpecies().stream()
-                .map(PokemonSpecies::getNameAndForm).collect(Collectors.toList()));
+                .map(PokemonSpecies::getNameAndForm).toList());
         return SEARCH;
     }
 
@@ -87,7 +89,7 @@ public class PokemonSpeciesController {
     public String pokemonGeneratorForm(Model model) {
         model.addAttribute("pokemonDTO", new PokemonGeneratorDTO());
         model.addAttribute("pokemonSpeciesNames", pokemonServ.getAllSpecies().stream()
-                .map(PokemonSpecies::getNameAndForm).collect(Collectors.toList()));
+                .map(PokemonSpecies::getNameAndForm).toList());
         return GENERATOR;
     }
 

@@ -3,10 +3,12 @@ package org.allenfulmer.ptuviewer.fileLoading;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import lombok.extern.slf4j.Slf4j;
 import org.allenfulmer.ptuviewer.fileLoading.pojo.ability.AbilityPojo;
 import org.allenfulmer.ptuviewer.fileLoading.pojo.move.MovePojo;
 import org.allenfulmer.ptuviewer.fileLoading.pojo.pokemon.Ability;
 import org.allenfulmer.ptuviewer.fileLoading.pojo.pokemon.PokemonSpeciesPojo;
+import org.allenfulmer.ptuviewer.fileLoading.pojo.pokemon.Skill;
 import org.allenfulmer.ptuviewer.models.Capability;
 import org.allenfulmer.ptuviewer.models.Type;
 
@@ -18,7 +20,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 public class JsonToPojoLoader {
     private static final String POKEDEX_FILEPATH = "src/main/resources/static/json/preAlola/pokedex.json";
     private static final String FULL_POKEDEX_FILEPATH = "src/main/resources/static/json/full_pokedex.json";
@@ -122,22 +124,21 @@ public class JsonToPojoLoader {
         Map<String, MovePojo> moves = parsePojoMoves();
         Map<String, AbilityPojo> abilities = parsePojoAbilities();
         Map<String, PokemonSpeciesPojo> pokes = parsePojoPokemon();
-        List<String> skills = pokes.values().stream().flatMap(p -> p.getSkills().stream()).map(s -> s.getSkillName()).distinct().collect(Collectors.toList());
-        skills.forEach(System.out::println);
+        List<String> skills = pokes.values().stream().flatMap(p -> p.getSkills().stream()).map(Skill::getSkillName).distinct().toList();
+        skills.forEach(log::info);
 
         String longy = moves.values().stream().map(MovePojo::getEffect).filter(Objects::nonNull).max(Comparator.comparingInt(String::length)).orElse("Nothing");
-        System.out.println("Len: " + longy.length() + " Content: " + longy);
+        log.info("Len: " + longy.length() + " Content: " + longy);
 
         Set<String> acs = moves.values().stream().map(MovePojo::getAc).collect(Collectors.toSet());
-        for(String curr : acs)
-            System.out.println(curr);
+        acs.forEach(log::info);
 
         Set<String> lunch = pokes.values().stream().filter(p ->
         {
-            List<String> abilityNames = p.getAbilities().stream().map(Ability::getName).collect(Collectors.toList());
+            List<String> abilityNames = p.getAbilities().stream().map(Ability::getName).toList();
             return abilityNames.contains("Lunchbox");
         }).map(PokemonSpeciesPojo::getSpecies).collect(Collectors.toSet());
-        lunch.forEach(System.out::println);
+        lunch.forEach(log::info);
 
 //        List<List<String>> habitats = pokes.values().stream().map(p -> p.getEnvironment().getHabitats()).collect(Collectors.toList());
 //        int largest = -1;

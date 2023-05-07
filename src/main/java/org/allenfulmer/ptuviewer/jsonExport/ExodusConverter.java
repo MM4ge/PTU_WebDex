@@ -47,9 +47,9 @@ public class ExodusConverter {
                 .filter(p -> e1.getPokedexEntry().getForm().toUpperCase().startsWith(p.getForm().toUpperCase())).toList();
 
         if(speciesMatches.isEmpty())
-            throw new RuntimeException("Exodus Pokemon matched no species!");
+            throw new IllegalArgumentException("Exodus Pokemon matched no species!");
         else if (speciesMatches.size() > 1)
-            throw new RuntimeException("Exodus Pokemon matched more than one DB Species!");
+            throw new IllegalArgumentException("Exodus Pokemon matched more than one DB Species!");
         p1.setSpecies(speciesMatches.get(0));
 
         Map<Stat.StatName, StatExodus> exodusStats = new EnumMap<>(Stat.StatName.class);

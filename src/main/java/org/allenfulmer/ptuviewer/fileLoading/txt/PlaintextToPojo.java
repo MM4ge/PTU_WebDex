@@ -60,10 +60,7 @@ public class PlaintextToPojo {
                 case ("Set-Up Effect"):
                     effect.insert(0, lineType + ": " + content);
                     break;
-                case ("Effect"):
-                case ("Note"):
-                case ("Special"):
-                case ("Resolution Effect"):
+                case "Effect", "Note", "Special", "Resolution Effect":
                     if (effect.length() > 0) {
                         effect.append("\n");
                         effect.append(lineType);
@@ -133,8 +130,7 @@ public class PlaintextToPojo {
                 case ("Special"):
                     effect.insert(0, lineType + ": " + content);
                     break;
-                case ("Effect"):
-                case ("Bonus"):
+                case "Effect", "Bonus":
                     if (effect.length() > 0) {
                         effect.append("\n");
                         effect.append(lineType);
@@ -142,8 +138,7 @@ public class PlaintextToPojo {
                     }
                     effect.append(content);
                     break;
-                case ("Note"):
-                case ("Replaces"): // Meta tag, shouldn't be put into the ability
+                case "Note", "Replaces": // Meta tag, shouldn't be put into the ability
                     break;
                 default:
                     throw new TxtUtils.InvalidInputException("Invalid line received, did something get out of sync? ("

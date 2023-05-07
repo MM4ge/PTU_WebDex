@@ -61,7 +61,7 @@ public class GeneratedPokemon extends Pokemon {
                 else if (i == 3)
                     log.info("---Weighted Batch---");
                 else
-                    throw new RuntimeException("Unidentified stat algorithm");
+                    throw new IllegalArgumentException("Unidentified stat algorithm");
 
                 for (int j = 0; j < 3; j++) {
                     GeneratedPokemon rand = new GeneratedPokemon(PojoToDBConverter.getPokemonSpecies(dexNum), level);
