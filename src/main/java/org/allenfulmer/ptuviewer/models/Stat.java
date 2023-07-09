@@ -5,6 +5,8 @@ import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.util.StringUtils;
 
+import java.util.Locale;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -45,13 +47,15 @@ public class Stat implements Comparable<Stat>, Displayable {
         allocated += inc;
     }
 
-    public void setNature(boolean minus) { // TODO: use poke constants
-        int amt = 2;
-        if (getName().equals(StatName.HP))
-            amt = 1;
+    public void setNature(boolean minus) {
+        int amt = (getName().equals(StatName.HP)) ? PokeConstants.NATURE_HP_CHANGE : PokeConstants.NATURE_OTHER_CHANGE;
         if (minus)
             amt = -amt;
         nature += amt;
+    }
+
+    public String getCapName() {
+        return name.getShortNameCaps();
     }
 
     @Override
@@ -97,6 +101,10 @@ public class Stat implements Comparable<Stat>, Displayable {
         StatName(String shortName, String displayName) {
             this.shortName = shortName;
             this.displayName = displayName;
+        }
+
+        public String getShortNameCaps() {
+            return this.shortName.toUpperCase(Locale.ROOT);
         }
     }
 }

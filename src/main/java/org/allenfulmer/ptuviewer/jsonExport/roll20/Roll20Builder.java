@@ -6,6 +6,7 @@ import org.allenfulmer.ptuviewer.generator.models.Nature;
 import org.allenfulmer.ptuviewer.models.*;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Roll20Builder {
@@ -16,6 +17,9 @@ public class Roll20Builder {
 
     private final StringBuilder changeNotesBuilder = new StringBuilder("Manual Changes Notes:\n");
     private boolean abilitiesAsMoves = false;
+    private boolean connectionInfoInMoves = false;
+
+    private static final Predicate<Ability> abilityMovesPred = a -> !a.getFrequency().equals(Frequency.SCENE) && !a.getFrequency().equals(Frequency.DAILY);
 
     private final Pokemon poke;
     private PokemonRoll20 rollPoke;
@@ -27,6 +31,11 @@ public class Roll20Builder {
 
     public Roll20Builder setAbilitiesAsMoves(boolean flag) {
         abilitiesAsMoves = flag;
+        return this;
+    }
+
+    public Roll20Builder setConnectionInfoInMoves(boolean flag) {
+        connectionInfoInMoves = flag;
         return this;
     }
 
@@ -60,6 +69,7 @@ public class Roll20Builder {
             notesBuilder.append(pokeNat.getLowerValue());
             notesBuilder.append(").\n");
         }
+        // FC: make weight random between the min/max instead of a range
         rollPoke.setHeight(species.getHeightCategoryMax());
         rollPoke.setWeightClass(species.getWeightClassMax());
 
@@ -162,12 +172,14 @@ public class Roll20Builder {
         List<Move> zeroDBStabMoves = new ArrayList<>(moves.size());
         List<Move> zeroDBAfterDBMoves = new ArrayList<>(moves.size());
         List<Move> sceneAndDailyMoves = new ArrayList<>(moves.size());
+        List<Move> connectionMoves = new ArrayList<>(moves.size());
 
         boolean anyPrevDB = false;
         for (Move curr : moves) {
             boolean sameType = types.contains(curr.getType());
             boolean attackingMove = (curr.getMoveClass() == Move.MoveClass.PHYSICAL || curr.getMoveClass() == Move.MoveClass.SPECIAL);
             //&& !curr.getDb().contains(PokeConstants.SEE_EFFECT_DB);
+            boolean connectedMove = connectionInfoInMoves && poke.getAbilities().stream().anyMatch(a -> curr.equals(a.getConnection()));
             boolean zeroDb = true;
             try {
                 zeroDb = Integer.parseInt(curr.getDb()) == 0;
@@ -196,13 +208,21 @@ public class Roll20Builder {
                 sceneAndDailyMoves.add(curr);
             }
 
-            convertedMoves.add(new MoveRoll20(curr, (sameType && attackingMove && !zeroDb)));
+            // Flag for manually adding the +2 STAB bonus since R20 doesn't have an import for that checkbox
+            boolean stab = sameType && attackingMove && !zeroDb;
+            if (connectedMove) {
+                connectionMoves.add(curr);
+                convertedMoves.add(new MoveRoll20(curr, stab, getConnectionText(curr)));
+            } else
+                convertedMoves.add(new MoveRoll20(curr, stab));
         }
 
         // Notes
         appendStabNotes(stabMoves, zeroDBStabMoves);
         appendZeroDBNotes(zeroDBAfterDBMoves);
         appendUseNotes(sceneAndDailyMoves);
+        if (connectionInfoInMoves)
+            appendConnectionNotes(connectionMoves);
 
         if (abilitiesAsMoves)
             convertAbilitiesToMoves(convertedMoves, anyPrevDB);
@@ -261,7 +281,7 @@ public class Roll20Builder {
             changeNotesBuilder.append(abilities.stream().map(Ability::getName)
                     .collect(Collectors.joining(", ", "", "\n")));
         }
-        abilities.removeIf(a -> !a.getFrequency().equals(Frequency.SCENE) && !a.getFrequency().equals(Frequency.DAILY));
+        abilities.removeIf(abilityMovesPred);
         if (!abilities.isEmpty()) {
             changeNotesBuilder.append((abilities.size() > 1) ? "These abilities have " : "An ability has ");
             changeNotesBuilder.append("the following number of uses: "); // Freq
@@ -322,6 +342,41 @@ public class Roll20Builder {
 
         changeNotesBuilder.append(zeroDBMoves.stream().map(Move::getName).collect(Collectors.joining(", ", "", ".\n")));
 
+    }
+
+    private void appendConnectionNotes(List<Move> connectionMoves) {
+        if (connectionMoves.isEmpty())
+            return;
+
+        if (connectionMoves.size() == 1)
+            changeNotesBuilder.append("A move has had any Connection ability effect text added to it's description: ");
+        else
+            changeNotesBuilder.append("Some moves have had their Connection abilities' effect text added to their descriptions: ");
+
+        changeNotesBuilder.append(connectionMoves.stream().map(Move::getName).collect(Collectors.joining(", ", "", ".\n")));
+    }
+
+    private String getConnectionText(Move curr) {
+        List<Ability> connections = new ArrayList<>(poke.getAbilities().stream().filter(a -> curr.equals(a.getConnection())).toList());
+        connections.removeIf(abilityMovesPred);
+        return connections.stream().map(a -> {
+                    StringBuilder ret = new StringBuilder();
+                    String effect = a.getEffect().substring(a.getEffect().indexOf(". ") + 2);
+                    String trigger = a.getTrigger();
+
+                    ret.append(a.getName());
+                    ret.append(": ");
+                    if (trigger != null && !trigger.isBlank()) {
+                        ret.append("When ");
+                        ret.append(trigger.toLowerCase(Locale.ROOT).charAt(0));
+                        ret.append(trigger.substring(1));
+                        ret.append(", ");
+                        effect = effect.toLowerCase(Locale.ROOT).charAt(0) + effect.substring(1);
+                    }
+                    ret.append(effect);
+                    return ret.toString();
+                }
+        ).collect(Collectors.joining("\n\n", "", ""));
     }
 
     private void convertSkills() {

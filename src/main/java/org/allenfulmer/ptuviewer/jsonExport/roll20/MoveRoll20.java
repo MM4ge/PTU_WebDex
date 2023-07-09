@@ -42,6 +42,10 @@ public class MoveRoll20 {
     private String effects;
 
     public MoveRoll20(org.allenfulmer.ptuviewer.models.Move origMove, boolean stab) {
+        this(origMove, stab, null);
+    }
+
+    public MoveRoll20(org.allenfulmer.ptuviewer.models.Move origMove, boolean stab, String effectText) {
         this.name = origMove.getName();
         this.type = origMove.getType().getDisplayName();
         this.dType = origMove.getMoveClass().getDisplayName();
@@ -67,6 +71,9 @@ public class MoveRoll20 {
         }
         this.range = origMove.getRange();
         this.effects = origMove.getEffect();
+
+        if (effectText != null && !effectText.trim().isBlank())
+            this.effects = this.effects + "\n\n" + effectText;
     }
 
     public MoveRoll20(Ability ability) {

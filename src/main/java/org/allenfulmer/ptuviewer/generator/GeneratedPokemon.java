@@ -23,6 +23,12 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GeneratedPokemon extends Pokemon {
     // TODO: combine weighted and batch random - make them flags that are or aren't added to the process?
+    // FC: add counter of # of generated pokemon and option to append that to end of pokeName to avoid
+    //  bug of two sheets with same pokename doing a thing
+    // FC: Set xp to random amount between current max range? Need ranges of exp in json- might be in where
+    //  i got the other json or plaintext from
+    //  could also have flag for random EXP or just 0 or what it should be for that level (normal levling scheme
+    //  instead of ours)
     public static void main(String[] args) {
         mainGenerate();
 //        testGenerate();
@@ -102,7 +108,7 @@ public class GeneratedPokemon extends Pokemon {
         Gson gson = new GsonBuilder()
                 .serializeNulls()
                 .create();
-        log.info(gson.toJson(new Roll20Builder(p1).setAbilitiesAsMoves(true).build()));
+        log.info(gson.toJson(new Roll20Builder(p1).setAbilitiesAsMoves(true).setConnectionInfoInMoves(true).build()));
         log.info("Done2");
     }
 
