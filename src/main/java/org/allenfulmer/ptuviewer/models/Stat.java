@@ -2,9 +2,11 @@ package org.allenfulmer.ptuviewer.models;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.allenfulmer.ptuviewer.util.PokeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Locale;
 
 @AllArgsConstructor
@@ -35,6 +37,13 @@ public class Stat implements Comparable<Stat>, Displayable {
         return base + nature;
     }
 
+    public String getHtmlBase() {
+        if(nature == 0)
+            return Integer.toString(getBase());
+        List<String> htmlTags = (nature > 0) ? PokeConstants.NATURE_HTML_RAISE : PokeConstants.NATURE_HTML_LOWER;
+        return PokeUtils.wrapHtml(Integer.toString(getBase()), htmlTags);
+    }
+
     public int getTrueBase() {
         return base;
     }
@@ -55,7 +64,7 @@ public class Stat implements Comparable<Stat>, Displayable {
     }
 
     public String getCapName() {
-        return name.getShortNameCaps();
+        return name.getCapName();
     }
 
     @Override
@@ -103,7 +112,7 @@ public class Stat implements Comparable<Stat>, Displayable {
             this.displayName = displayName;
         }
 
-        public String getShortNameCaps() {
+        public String getCapName() {
             return this.shortName.toUpperCase(Locale.ROOT);
         }
     }

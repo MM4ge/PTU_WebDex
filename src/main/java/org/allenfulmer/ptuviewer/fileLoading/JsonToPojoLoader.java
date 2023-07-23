@@ -29,11 +29,20 @@ public class JsonToPojoLoader {
     private static final String ABILITIES_FILEPATH = "src/main/resources/static/json/preAlola/abilities.json";
     private static final String FULL_ABILITIES_FILEPATH = "src/main/resources/static/json/full_abilities.json";
     private static final String CAPABILITIES_FILEPATH = "src/main/resources/static/json/capabilities.json";
+    private static final String EXPERIENCE_FILEPATH = "src/main/resources/static/json/experience.json";
 
     private JsonToPojoLoader() {
     }
 
     private static final Gson gson = new GsonBuilder().setLenient().create();
+
+    // FC: Experience system for loading pokemon with their base exp total instead of 0?
+    public static Map<Integer, Integer> parseExperience() {
+        Map<String, Integer> jsonExperience = gson.fromJson(readFromFile(EXPERIENCE_FILEPATH), new TypeToken<Map<String, Integer>>() {
+        }.getType());
+        return jsonExperience.entrySet().stream().collect(Collectors.toMap(
+                e -> Integer.parseInt(e.getKey()), Map.Entry::getValue));
+    }
 
     public static Map<String, Capability> parseCapabilities() {
         Map<String, String> jsonCapabilities = gson.fromJson(readFromFile(CAPABILITIES_FILEPATH), new TypeToken<Map<String, String>>() {

@@ -10,6 +10,7 @@ import org.allenfulmer.ptuviewer.models.Move;
 import org.allenfulmer.ptuviewer.models.PokeConstants;
 
 import javax.annotation.Generated;
+import java.util.Objects;
 
 @Generated("jsonschema2pojo")
 @Getter
@@ -91,11 +92,11 @@ public class MoveRoll20 {
         // Free Action - get display name until first space + trigger
         // just action if there's no trigger? maybe target
         // trigger has priority, then target, then just full action etc if none else
-        String range = (ability.getTrigger().isBlank()) ? ability.getTarget() : ability.getTrigger();
+        String range = (Objects.nonNull(ability.getTrigger()) && ability.getTrigger().isBlank()) ? ability.getTarget() : ability.getTrigger();
         String actionType = ability.getActionType().getDisplayName();
-        if (!range.isBlank())
+        if (Objects.nonNull(range) && !range.isBlank())
             actionType = ability.getActionType().getDisplayName().split(" ")[0] + ": ";
-        this.range = actionType + range;
+        this.range = (Objects.nonNull(range)) ? actionType : actionType + range;
         this.effects = ability.getEffect();
     }
 }

@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+<div th:replace="fragments/head :: head"/>
+<body>
+<!-- Responsive navbar-->
+<div th:replace="fragments/nav :: nav"/>
+<div class="h-100 d-flex align-items-center justify-content-center">
+    <div class="mb-3">
+        <h1>Pokemon Generator</h1>
+        <h6>Input the name of a Move to search for that Move specifically.</h6>
+        <h6>Input any other number of fields to search for Moves that fit all of them.</h6>
+        <span color="text-danger" th:if="${error != null}" th:text="${error}"/>
+    </div>
+</div>
+<div class="h-100 d-flex align-items-center justify-content-center">
+    <div class="Pokemon" th:if="${genPoke != null}">
+        <!--    Basic Info like Species, Nature, Level, etc.-->
+        <div>
+            <h3>Basic Info</h3>
+            <table>
+                <tbody>
+                <tr>
+                    <th scope="row">Species</th>
+                    <td> <!-- th:text="${stat.total}"> --> <!-- th:field="*{${statEntry.key.capName}}" -->
+                        <input class="form-short" th:value="${genPoke.species.speciesName}" size="6"
+                               type="text"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Form</th>
+                    <td> <!-- th:text="${stat.total}"> --> <!-- th:field="*{${statEntry.key.capName}}" -->
+                        <input class="form-short" th:value="${genPoke.species.form}" size="6"
+                               type="text"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Type</th>
+                    <td th:text="${genPoke.species.primaryType.displayName}"></td>
+                    <td th:if="${genPoke.species.secondaryType != null}"
+                        th:text="${genPoke.species.secondaryType.displayName}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Gender</th>
+                    <td th:text="${genPoke.gender}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Level</th>
+                    <td> <!-- th:text="${stat.total}"> --> <!-- th:field="*{${statEntry.key.capName}}" -->
+                        <input class="form-short" th:value="${genPoke.level}" size="6"
+                               type="text"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Nature</th>
+                    <td> <!-- th:text="${stat.total}"> --> <!-- th:field="*{${statEntry.key.capName}}" -->
+                        <input class="form-short" th:value="${genPoke.nature.displayName}" size="6"
+                               type="text"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--    Derived Stats like Max HP, Evasion, etc.-->
+        <div>
+            <h3>Derived Stats</h3>
+            <table>
+                <tbody>
+                <tr>
+                    <th scope="row">Max HP</th>
+                    <td th:text="${genPoke.maxHP}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Physical Evasion</th>
+                    <td th:text="${genPoke.physicalEvasion}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Special Evasion</th>
+                    <td th:text="${genPoke.specialEvasion}"></td>
+                </tr>
+                <tr>
+                    <th scope="row">Speed Evasion</th>
+                    <td th:text="${genPoke.speedEvasion}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--    Stats like HP, Atk, Def, etc.-->
+        <div>
+            <h3>Stats</h3>
+            <h6 th:if="${!genPoke.nature.isNeutral}">Nature changes applied (Bold ↑, Underline ↓)</h6>
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Stat</th>
+                    <th scope="col">Base</th>
+                    <th scope="col">Added</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="statEntry: ${genPoke.stats}">
+                    <th scope="row" th:text="${statEntry.key.capName}"></th>
+                    <td th:utext=${statEntry.value.htmlBase}></td>
+                    <td> <!-- th:text="${stat.total}"> --> <!-- th:field="*{${statEntry.key.capName}}" -->
+                        <input class="form-short" th:value="${statEntry.value.allocated}" size="6"
+                               type="text"/>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!--            <tr th:each="pokemon: ${pokemonPage.content}">-->
+            <!--                <th scope="row" th:text="${pokemon.pokedexID}"></th>-->
+            <!--                <td th:text="${pokemon.speciesName}"></td>-->
+        </div>
+
+        <!--    Capabilities like Overland, Power, Naturewalk, etc.-->
+        <div>
+            <h3>Capabilities</h3>
+            <table>
+                <tbody>
+                <tr th:each="cap: ${genPoke.species.baseCapabilities}">
+                    <td th:text="${cap.displayName}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--    Skills like Acrobatics, Stealth, Perception, etc.-->
+        <div>
+            <h3>Skills</h3>
+            <table>
+                <tbody>
+                <tr th:each="skill: ${genPoke.species.skills}">
+                    <td th:text="${skill.displayName}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!--    Moves-->
+        <!--        <div>-->
+        <!--            <h3>Moves</h3>-->
+        <!--            <table>-->
+        <!--                <thead>-->
+        <!--                <tr>-->
+        <!--                    <th scope="col">Move</th>-->
+        <!--                    <th scope="col">Type</th>-->
+        <!--                    <th scope="col">Class</th>-->
+        <!--                    <th scope="col">Freq</th>-->
+        <!--                    <th scope="col">AC</th>-->
+        <!--                    <th scope="col">DB</th>-->
+        <!--                </tr>-->
+        <!--                </thead>-->
+        <!--                <tbody>-->
+        <!--                <tr th:each="move,iter: ${genPoke.moves}">-->
+        <!--                    <td> &lt;!&ndash; th:field="*{move${iter.index}}" &ndash;&gt;-->
+        <!--                        <input class="form-short" th:value="${move.name}"-->
+        <!--                               type="text"/>-->
+        <!--                    </td>-->
+        <!--                    <td th:text="${move.type.displayName}"></td>-->
+        <!--                    <td th:text="${move.moveClass.displayName}"></td>-->
+        <!--                    <td th:text="${move.fullFreq}"></td>-->
+        <!--                    <td th:text="${move.ac}"></td>-->
+        <!--                    <div>Potato</div>-->
+        <!--                    <td th:utext="${move.htmlDB}"></td>-->
+        <!--                </tr>-->
+        <!--                </tbody>-->
+        <!--            </table>-->
+        <!--        </div>-->
+
+        <!--    Moves-->
+        <!--    Maybe have another div for the below- flex column, top is the field like Name or Type in smol text-->
+        <div class="d-flex flex-row justify-content-between">
+            <div class="d-flex flex-column">
+                <div><h3>Moves</h3></div>
+                <div class="d-flex flex-column" th:each="move,iter: ${genPoke.moves}">
+                    <div class="d-flex flex-row justify-content-between">
+                        <input class="form-short" th:value="${move.name}"
+                               type="text"/>
+                        <div th:text="${move.type.displayName}"></div>
+                        <div th:text="${move.moveClass.displayName}"></div>
+                        <div th:text="${move.fullFreq}"></div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between">
+                        <div th:text="${move.range}"></div>
+                        <div class="d-flex flex-row">
+                            <div th:if="${move.ac != null}">AC:</div>
+                            <div th:if="${move.ac != null}" th:text="${move.ac}"></div>
+                        </div>
+                        <div class="d-flex flex-row">
+                            <div th:if="${move.db != null}">DB:</div>
+                            <div th:if="${move.db != null}" th:utext="${move.htmlDB}"></div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row" th:if="${move.effect != null}">
+                        <div>Effect:</div>
+                        <div th:text="${move.effect}"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--
+
+            <div class="d-flex flex-column">
+                <div><h3>Moves</h3></div>
+                <div class="d-flex flex-row" th:each="move,iter: ${genPoke.moves}">
+                    <div></div>
+                    <div> th:field="*{move${iter.index}}"
+            <input class="form-short" th:value="${move.name}"
+                   type="text"/>
+        </div>
+        <div>
+            <div th:text="${move.type.displayName}"></div>
+        </div>
+        <div>
+            <div th:text="${move.moveClass.displayName}"></div>
+        </div>
+        <div>
+            <div th:text="${move.fullFreq}"></div>
+        </div>
+        <div class="d-flex flex-row">
+            <div th:if="${move.ac != null}">AC: </div>
+            <div th:if="${move.ac != null}" th:text="${move.ac}"></div>
+        </div>
+        <div class="d-flex flex-row">
+            <div th:if="${move.db != null}">DB: </div>
+            <div th:if="${move.db != null}" th:utext="${move.htmlDB}"></div>
+        </div>
+    </div>
+    </div>
+
+            -->
+
+
+            <!--    Abilities-->
+            <div>
+                <h3>Abilities</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th scope="col">Ability</th>
+                        <th scope="col">Freq</th>
+                        <th scope="col">Trigger</th>
+                        <th scope="col">Target</th>
+                        <!--                    <th scope="col">Effect</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="ability,iter: ${genPoke.abilities}">
+                        <td> <!-- th:field="*{ability${iter.index}}" -->
+                            <input class="form-short" th:value="${ability.name}" size="6"
+                                   type="text"/>
+                        </td>
+                        <td th:text="${ability.fullFreq}"></td>
+                        <td th:text="${ability.trigger}"></td>
+                        <td th:text="${ability.target}"></td>
+                        <!--                    <td th:text="${ability.effect}"></td>-->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer-->
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

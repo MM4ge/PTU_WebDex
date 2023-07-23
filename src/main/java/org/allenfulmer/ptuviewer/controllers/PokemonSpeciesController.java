@@ -32,7 +32,6 @@ public class PokemonSpeciesController {
     private static final String POKEMON = "pokemons";
     private static final String RESULTS = "pokemon_results";
     private static final String SEARCH = "pokemon_search";
-    private static final String GENERATOR = "pokemon_generator";
     PokemonSpeciesService pokemonServ;
 
     @Autowired
@@ -82,22 +81,5 @@ public class PokemonSpeciesController {
 
         model.addAttribute(POKEMON, pokemonServ.findPokemonByExample(new PokemonSpecies(pokemonDTO)));
         return RESULTS;
-    }
-
-    // TODO: Finish these
-    @GetMapping("/" + GENERATOR)
-    public String pokemonGeneratorForm(Model model) {
-        model.addAttribute("pokemonDTO", new PokemonGeneratorDTO());
-        model.addAttribute("pokemonSpeciesNames", pokemonServ.getAllSpecies().stream()
-                .map(PokemonSpecies::getNameAndForm).toList());
-        return GENERATOR;
-    }
-
-    @PostMapping("/" + GENERATOR)
-    public String showGenerated(@ModelAttribute PokemonGeneratorDTO pokemonDTO, Model model) {
-
-        List<PokemonSpecies> pokes = pokemonServ.findPokemonByExample(new PokemonSpecies(pokemonDTO));
-
-        return GENERATOR;
     }
 }

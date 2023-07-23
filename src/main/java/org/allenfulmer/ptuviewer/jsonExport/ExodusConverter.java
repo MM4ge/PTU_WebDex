@@ -31,7 +31,7 @@ public class ExodusConverter {
         log.info("Input the exodusJSON (un-beautified - as one line), then hit Enter:");
         String exodusJSON = input.nextLine();
         Pokemon p1 = convertFromExodus(exodusJSON);
-        log.info(gson.toJson(new Roll20Builder(p1).build()));
+        log.info(gson.toJson(new Roll20Builder(p1).setAbilitiesAsMoves(true).setConnectionInfoInMoves(true).build()));
     }
 
     public static Pokemon convertFromExodus(String exodusJSON) {
@@ -43,13 +43,17 @@ public class ExodusConverter {
         Map<String, PokemonSpecies> allPokes = PojoToDBConverter.getConvertedPokemonSpeciesMap();
         List<PokemonSpecies> speciesMatches = allPokes.values().stream()
                 .filter(p -> p.getSpeciesName().equalsIgnoreCase(e1.getPokedexEntry().getSpecies()))
-                .filter(p -> e1.getPokedexEntry().getForm().toUpperCase().startsWith(p.getForm().toUpperCase())).toList();
+                .filter(p -> e1.getPokedexEntry().getForm().isBlank() || e1.getPokedexEntry().getForm().toUpperCase().startsWith(p.getForm().toUpperCase())).toList();
 
         if (speciesMatches.isEmpty())
             throw new IllegalArgumentException("Exodus Pokemon matched no species!");
         else if (speciesMatches.size() > 1)
             throw new IllegalArgumentException("Exodus Pokemon matched more than one DB Species!");
         p1.setSpecies(speciesMatches.get(0));
+
+        // TODO: Exodus converter into R20 builder doubles-up on the Nature changes (so 13 default Atk Machamp w/
+        //  Atk+ Nature gets 17 Atk after conversion from Exodus into R20
+        // TODO: Discipline from the Machamp got Free Actionnull from ability -> move conversion
 
         Map<Stat.StatName, StatExodus> exodusStats = new EnumMap<>(Stat.StatName.class);
         exodusStats.put(Stat.StatName.HP, e1.getHp());
@@ -62,7 +66,7 @@ public class ExodusConverter {
                 e -> new Stat(e.getKey(), e.getValue().getBase(), 0, e.getValue().getLvlUp(), e.getValue().getAdd())
         )));
 
-        p1.setNatureAndStats(Nature.getNature(e1.getNature()));
+        p1.setNature(Nature.getNature(e1.getNature()));
         p1.setGender(e1.getGender());
         p1.setLevel(e1.getLevel());
         p1.setMoves(e1.getMoves().stream().map(m -> PojoToDBConverter.getMove(m.getName())).toList());

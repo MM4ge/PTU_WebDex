@@ -67,6 +67,20 @@ public class Ability implements Comparable<Ability>, Displayable {
         this.connection = abilityDTO.getConnection();
     }
 
+    public String getFullFreq() {
+        StringBuilder ret = new StringBuilder(frequency.getDisplayName());
+        if(getUses() > 0) {
+            ret.append(" x");
+            ret.append(getUses());
+        }
+        if(!Frequency.STATIC.equals(getFrequency()))
+        {
+            ret.append(" - ");
+            ret.append(getActionType().getDisplayName());
+        }
+        return ret.toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

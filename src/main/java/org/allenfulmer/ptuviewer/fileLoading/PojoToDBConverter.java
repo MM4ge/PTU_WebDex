@@ -360,9 +360,9 @@ public class PojoToDBConverter {
     }
 
     public static Map<String, PokemonSpecies> populatePokemonMaps() {
-        // Local variables left here for easy debugging in the debugger if necessary
-//        Map<String, MovePojo> pojoMoves = JsonToPojoLoader.parsePojoMoves();
-//        Map<String, Move> moves = moveMapBuilder(pojoMoves);
+        Map<String, MovePojo> pojoMoves = JsonToPojoLoader.parsePojoMoves();
+        Map<String, Move> moves = moveMapBuilder(pojoMoves);
+        log.info("Num of Moves: " + moves.size());
 
         Map<String, AbilityPojo> pojoAbility = JsonToPojoLoader.parsePojoAbilities();
         Map<String, Ability> abilities = abilityMapBuilder(pojoAbility);

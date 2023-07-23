@@ -3,6 +3,7 @@ package org.allenfulmer.ptuviewer.models;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.allenfulmer.ptuviewer.dto.MoveDTO;
+import org.allenfulmer.ptuviewer.util.PokeUtils;
 
 import javax.persistence.*;
 import java.util.*;
@@ -103,6 +104,18 @@ public class Move implements Displayable {
         this.moveClass = moveDTO.getMoveClass();
         this.range = moveDTO.getRange();
         this.effect = moveDTO.getEffect();
+    }
+
+    public String getFullFreq() {
+        String ret = frequency.getDisplayName();
+        if(getUses() > 0) {
+            ret += " x" + this.uses;
+        }
+        return ret;
+    }
+
+    public String getHtmlDB() {
+        return PokeUtils.wrapHtml(getDb(), PokeConstants.STAB_HTML_HIGHLIGHT);
     }
 
     @Override

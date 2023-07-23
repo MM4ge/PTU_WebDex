@@ -43,13 +43,18 @@ public class AppCommandLineRunner implements CommandLineRunner {
         insertPokemon();
         log.info("---Done with all loading---");
 
+//        printAll();
+
+        new StartupWindow();
+    }
+
+    private void printAll()
+    {
         capabilityRepo.findAll().forEach(c -> log.info(c.toString()));
         moveRepo.findAll().forEach(m -> log.info(m.toString()));
         abilityRepo.findAll().forEach(a -> log.info(a.toString()));
         pokemonRepo.findAll().forEach(p -> log.info(p.toString()));
         log.info("---Done logging DB objects---");
-
-        new StartupWindow();
     }
 
     private void insertCapabilities() {

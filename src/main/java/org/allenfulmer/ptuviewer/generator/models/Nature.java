@@ -92,6 +92,10 @@ public enum Nature {
         return PokeConstants.NORMAL_NATURE_CHANGE_VALUE;
     }
 
+    public boolean isNeutral() {
+        return this.getRaise().equals(this.getLower());
+    }
+
     public String getDisplayName() {
         return StringUtils.capitalize(this.name().toLowerCase());
     }

@@ -48,4 +48,25 @@ public class Pokemon {
         getStats().get(getNature().getRaise()).setNature(false);
         getStats().get(getNature().getLower()).setNature(true);
     }
+
+    // Pokémon Hit Points = Pokémon Level + (HP x3) + 10
+    public int getMaxHP() {
+        return getLevel() + (getStats().get(Stat.StatName.HP).getTotal() * 3) + 10;
+    }
+
+    public int getPhysicalEvasion() {
+        return getEvasion(getStats().get(Stat.StatName.DEFENSE));
+    }
+
+    public int getSpecialEvasion() {
+        return getEvasion(getStats().get(Stat.StatName.SPECIAL_DEFENSE));
+    }
+
+    public int getSpeedEvasion() {
+        return getEvasion(getStats().get(Stat.StatName.SPEED));
+    }
+
+    private int getEvasion(Stat stat) {
+        return Math.min(stat.getTotal() / 5, PokeConstants.EVASION_FROM_STATS_MAX);
+    }
 }
