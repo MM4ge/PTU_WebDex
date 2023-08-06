@@ -16,6 +16,8 @@ import java.util.Map;
 @NoArgsConstructor
 public class PokemonRoll20 {
 
+    // FC: Struggle -1 AC and +1 DB if Combat skill is at least 5
+
     @SerializedName("CharType")
     @Expose
     private Integer charType = 0;

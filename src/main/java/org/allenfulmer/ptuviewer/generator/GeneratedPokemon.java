@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.allenfulmer.ptuviewer.fileLoading.PojoToDBConverter;
+import org.allenfulmer.ptuviewer.generator.models.HtmlMove;
 import org.allenfulmer.ptuviewer.generator.models.Nature;
 import org.allenfulmer.ptuviewer.jsonExport.roll20.Roll20Builder;
 import org.allenfulmer.ptuviewer.models.*;
@@ -641,5 +642,59 @@ public class GeneratedPokemon extends Pokemon {
     private static boolean isMatchingMoveClass(Stat.StatName attackStat, Move move) {
         return (attackStat.equals(Stat.StatName.SPECIAL_ATTACK) && move.getMoveClass().equals(Move.MoveClass.SPECIAL))
                 || (attackStat.equals(Stat.StatName.ATTACK) && move.getMoveClass().equals(Move.MoveClass.PHYSICAL));
+    }
+
+    /*
+    ##############################################
+    ##############################################
+
+    HTML / Webpage Functions
+
+    ##############################################
+    ##############################################
+    */
+
+    public List<HtmlMove> getHtmlMoves() {
+        return getMoves().stream().map(m -> new HtmlMove(m, getSpecies().getTypes())).collect(Collectors.toList());
+    }
+
+    public boolean hasStab() {
+        for (Type curr : getSpecies().getTypes())
+            if (!getMovesOfType(getMoves(), curr).isEmpty())
+                return true;
+        return false;
+    }
+
+    public List<BaseCapability> getCapabilities() {
+        List<BaseCapability> ret = new ArrayList<>();
+        Map<String, BaseCapability> capabilities = getSpecies().getBaseCapabilities().stream().collect(
+                Collectors.toMap(BaseCapability::getFullName, c -> c));
+
+        // "Overland","Swim", (other movement in alpha),
+        // 'High Jump',"Long Jump","Power", (other caps in alpha)
+
+        // Overland + Swim (always first - both movement and vanilla)
+        ret.add(capabilities.remove("Overland"));
+        ret.add(capabilities.remove("Swim"));
+
+        // Non-vanilla movement capabilities
+        List<BaseCapability> movements = getSpecies().getBaseCapabilities().stream().filter(b ->
+                Capability.MOVEMENT_CAPABILITIES.contains(b.getFullName())).sorted().toList();
+        ret.addAll(movements);
+        movements.forEach(c -> capabilities.remove(c.getFullName()));
+
+        // Combine the Jumps into one Capability - long/high
+        int longJump = capabilities.remove("Long Jump").getRank();
+        int highJump = capabilities.remove("High Jump").getRank();
+        ret.add(new BaseCapability(longJump + "/" + highJump,
+                new Capability("Jump", ""), null));
+
+        // Power
+        ret.add(capabilities.remove("Power"));
+
+        // All non-movement and non-vanilla capabilities
+        ret.addAll(capabilities.values());
+
+        return ret;
     }
 }

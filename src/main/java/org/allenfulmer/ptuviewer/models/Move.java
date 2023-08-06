@@ -3,7 +3,6 @@ package org.allenfulmer.ptuviewer.models;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.allenfulmer.ptuviewer.dto.MoveDTO;
-import org.allenfulmer.ptuviewer.util.PokeUtils;
 
 import javax.persistence.*;
 import java.util.*;
@@ -77,10 +76,11 @@ public class Move implements Displayable {
         this.critsOn = critsOn;
     }
 
-    public Move(@NonNull String name, @NonNull Type type, @NonNull Frequency frequency, String ac, String db, @NonNull MoveClass moveClass, String range, String effect) {
+    public Move(@NonNull String name, @NonNull Type type, @NonNull Frequency frequency, int uses, String ac, String db, @NonNull MoveClass moveClass, String range, String effect) {
         this.name = name;
         this.type = type;
         this.frequency = frequency;
+        this.uses = uses;
         this.ac = ac;
         this.db = db;
         this.moveClass = moveClass;
@@ -108,14 +108,10 @@ public class Move implements Displayable {
 
     public String getFullFreq() {
         String ret = frequency.getDisplayName();
-        if(getUses() > 0) {
+        if (getUses() > 0) {
             ret += " x" + this.uses;
         }
         return ret;
-    }
-
-    public String getHtmlDB() {
-        return PokeUtils.wrapHtml(getDb(), PokeConstants.STAB_HTML_HIGHLIGHT);
     }
 
     @Override

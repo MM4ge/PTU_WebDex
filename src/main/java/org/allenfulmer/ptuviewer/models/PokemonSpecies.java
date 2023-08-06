@@ -164,6 +164,10 @@ public class PokemonSpecies {
         return ret;
     }
 
+    public String getTypeStr() {
+        return getTypes().stream().map(Type::getDisplayName).collect(Collectors.joining(" / "));
+    }
+
     public void setBaseStatsFromMap(Map<Stat.StatName, Integer> stats) {
         this.baseStats = stats;
         this.hp = stats.get(Stat.StatName.HP);

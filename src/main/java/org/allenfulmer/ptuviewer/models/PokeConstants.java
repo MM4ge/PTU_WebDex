@@ -1,6 +1,8 @@
 package org.allenfulmer.ptuviewer.models;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class PokeConstants {
     public static final int STAB = 2;
@@ -17,8 +19,10 @@ public class PokeConstants {
     public static final String SEE_EFFECT_DB = "See Effect";
     public static final List<String> STAB_HTML_HIGHLIGHT = Collections.unmodifiableList((List.of("b")));
     public static final List<String> NATURE_HTML_RAISE = STAB_HTML_HIGHLIGHT;
-    public static final List<String> NATURE_HTML_LOWER = Collections.unmodifiableList((List.of("u")));
+    public static final List<String> NATURE_HTML_LOWER = Collections.unmodifiableList((List.of("i")));
     public static final String ROLL_20_DEFAULT_TYPE = "Ability";
+
+    public static final String EMPTY_ATTRIBUTE_TEXT = "-";
 
     // TODO: Put a gson in here, use that in each object instead of replicating it
 

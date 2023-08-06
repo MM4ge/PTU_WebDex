@@ -4,26 +4,18 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.allenfulmer.ptuviewer.dto.PokemonGeneratorDTO;
-import org.allenfulmer.ptuviewer.dto.PokemonSpeciesDTO;
 import org.allenfulmer.ptuviewer.fileLoading.PojoToDBConverter;
 import org.allenfulmer.ptuviewer.generator.GeneratedPokemon;
 import org.allenfulmer.ptuviewer.models.PokemonSpecies;
 import org.allenfulmer.ptuviewer.services.PokemonSpeciesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.stream.IntStream;
 
 @Controller
 @Slf4j
@@ -51,6 +43,11 @@ public class GeneratorController {
 
     // FC: ability and move does like species does, but also uses JS and labels on the damn attributes
     //  to update the numbers immediately, also have dropdown effects
+    // FC: Help text on hover for form input fields
+    // FC: current move/ability is a flex row, then two flex columns - could be overall flex row and then
+    //  flex columns of each of the splits for stats and stuff that'd display on the pages
+    //  current way might have dead space at the bottom of a short portion since it can't start the next
+    //  until the other side of the page on that row is finished
     // TODO: Page for conversion alone
 
     @PostMapping("/" + GENERATOR)

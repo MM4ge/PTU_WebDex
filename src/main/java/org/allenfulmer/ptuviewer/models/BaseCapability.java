@@ -52,6 +52,14 @@ public class BaseCapability implements Comparable<BaseCapability>, Displayable {
         getPokemonSpecies().getBaseCapabilities().remove(this);
     }
 
+    public String getName() {
+        return getCapability().getName();
+    }
+
+    public String getExtraInfo() {
+        return (getRank() != -1) ? Integer.toString(getRank()) : getCriteria();
+    }
+
     /**
      * Specifically just to return "Naturewalk (X, Y)" as the name since it isn't *really* a criteria
      */
@@ -62,7 +70,7 @@ public class BaseCapability implements Comparable<BaseCapability>, Displayable {
     }
 
     public String getDisplayName() {
-        return getFullName() + ((rank > 0) ? " " + getRank() : "");
+        return getFullName() + ((rank >= 0) ? " " + getRank() : "");
     }
 
     @Override

@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -15,6 +16,8 @@ import java.util.Set;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Capability {
+
+    public static final List<String> MOVEMENT_CAPABILITIES = List.of("Sky", "Levitate", "Burrow", "Teleporter");
     @Id
     String name;
     @Column(length = 2047)
