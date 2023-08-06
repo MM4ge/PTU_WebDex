@@ -216,7 +216,6 @@ Effect: The Field becomes Weird, as if affected by
 the Move Psychic Terrain, for one full round.
 Ability: Queenly Majesty
 Scene x2 – Free Action
-Target: An Adjacent Foe
 Trigger: An adjacent foe uses a Priority Move or an
 Interrupt action
 Effect: Connection – Stomp. The user may attack the

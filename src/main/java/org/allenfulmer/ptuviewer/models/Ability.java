@@ -69,12 +69,11 @@ public class Ability implements Comparable<Ability>, Displayable {
 
     public String getFullFreq() {
         StringBuilder ret = new StringBuilder(frequency.getDisplayName());
-        if(getUses() > 0) {
+        if (getUses() > 1) {
             ret.append(" x");
             ret.append(getUses());
         }
-        if(!Frequency.STATIC.equals(getFrequency()))
-        {
+        if (!Frequency.STATIC.equals(getFrequency())) {
             ret.append(" - ");
             ret.append(getActionType().getDisplayName());
         }

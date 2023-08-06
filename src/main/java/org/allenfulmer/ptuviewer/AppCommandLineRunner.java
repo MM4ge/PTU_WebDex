@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @Slf4j
@@ -44,12 +45,26 @@ public class AppCommandLineRunner implements CommandLineRunner {
         log.info("---Done with all loading---");
 
 //        printAll();
+//        tempTestCode();
 
         new StartupWindow();
     }
 
-    private void printAll()
-    {
+    private void tempTestCode() {
+        AtomicInteger len = new AtomicInteger(-1);
+        AtomicInteger sum = new AtomicInteger();
+        abilityRepo.findAll().forEach(a -> {
+            if (a.getName() != null && a.getName().length() > len.get()) {
+                len.set(a.getName().length());
+            }
+            sum.addAndGet(a.getName().length());
+        });
+        log.info("Max Ability length: " + len);
+        log.info("Total Length:" + sum.get());
+        log.info("Average Length: " + ((float) sum.get()) / abilityRepo.count());
+    }
+
+    private void printAll() {
         capabilityRepo.findAll().forEach(c -> log.info(c.toString()));
         moveRepo.findAll().forEach(m -> log.info(m.toString()));
         abilityRepo.findAll().forEach(a -> log.info(a.toString()));

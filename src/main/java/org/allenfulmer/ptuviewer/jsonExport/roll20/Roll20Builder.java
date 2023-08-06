@@ -271,7 +271,7 @@ public class Roll20Builder {
 
     private void convertAbilitiesToMoves(List<MoveRoll20> convertedMoves, boolean anyPrevDB) {
         Set<Ability> abilities = new HashSet<>(poke.getAbilities());
-        abilities.removeIf(a -> a.getFrequency().equals(Frequency.STATIC));
+        abilities.removeIf(a -> Arrays.asList(Frequency.STATIC, Frequency.SEE_TEXT, Frequency.SPECIAL).contains(a.getFrequency()));
         convertedMoves.addAll(abilities.stream().map(MoveRoll20::new).toList());
 
         // Notes

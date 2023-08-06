@@ -18,9 +18,16 @@ public class PojoToDBConverter {
     public static final String ABILITY_DIVIDER = " - ";
     private static final String CONNECTION_HEADER = "Connection - ";
     private static Map<String, Capability> convertedCapabilities = null;
+    private static Map<Integer, Integer> convertedExperience = null;
     private static Map<String, Ability> convertedAbilities = null;
     private static Map<String, Move> convertedMoves = null;
     private static Map<String, PokemonSpecies> convertedPokemonSpecies = null;
+
+    public static Map<Integer, Integer> getConvertedExperience() {
+        if (convertedExperience == null)
+            convertedExperience = JsonToPojoLoader.parseExperience();
+        return Collections.unmodifiableMap(convertedExperience);
+    }
 
     /**
      * Small wrapper function to ensure Capabilities aren't parsed twice; once for the DB and once for Pokemon
@@ -87,7 +94,8 @@ public class PojoToDBConverter {
                 p -> name.equalsIgnoreCase(p.getSpeciesName())).toList());
         if (mapPokes.size() > 1)
             mapPokes.removeIf(p -> !form.equalsIgnoreCase(p.getForm()));
-        else if (mapPokes.size() != 1)
+
+        if (mapPokes.size() != 1)
             throw new NullPointerException("Pokemon Species with name " + name + " and form " + form +
                     " not found in pokemonSpeciesMap");
         return mapPokes.get(0);

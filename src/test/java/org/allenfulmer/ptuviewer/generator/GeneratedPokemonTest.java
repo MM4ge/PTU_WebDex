@@ -13,14 +13,12 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class GeneratedPokemonTest {
     private static final Map<String, Ability> convertedAbilities = PojoToDBConverter.abilityMapBuilder(JsonToPojoLoader.parsePojoAbilities());
     private static final Map<String, Move> convertedMoves = PojoToDBConverter.moveMapBuilder(JsonToPojoLoader.parsePojoMoves());
     private static final Map<String, PokemonSpecies> convertedPokemonSpecies = PojoToDBConverter.pokemonMapBuilder(JsonToPojoLoader.parsePojoPokemon());
-    private static final Random rand = new Random();
     private static final PokemonSpecies testPokeSpecies = convertedPokemonSpecies.get("104");
 
     @Test

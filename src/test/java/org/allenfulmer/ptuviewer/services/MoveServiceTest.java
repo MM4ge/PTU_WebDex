@@ -63,7 +63,7 @@ public class MoveServiceTest {
 
     @Test
     public void findWithExample() {
-        Move m5 = new Move("Test5", Type.FIRE, Frequency.SPECIAL, "", "",
+        Move m5 = new Move("Test5", Type.FIRE, Frequency.SPECIAL, 2, "", "",
                 Move.MoveClass.SPECIAL, "", "");
         moveService.saveOrUpdate(m5);
         Assert.assertTrue(moveService.doesMoveExist(m5.getName()));
