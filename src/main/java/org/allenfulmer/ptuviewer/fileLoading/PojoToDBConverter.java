@@ -557,6 +557,9 @@ public class PojoToDBConverter {
         return pokemon;
     }
 
+    // FC: Get EggMoves from first tier pokemon with past evo, get level moves from potential past pokemon - have
+    //  settings in generatedPokemon for choosing to do these things (maybe not egg moves, that's already as the
+    //  unique moves option)
     private static void evoMapParsing(Map<String, PokemonSpecies> pokeMap, Map<PokemonSpecies, List<EvolutionStage>> evoMap) {
         Map<String, PokemonSpecies> nameMap = generateNameMap(pokeMap);
 //        Pattern levelRegex = Pattern.compile("\\d+");

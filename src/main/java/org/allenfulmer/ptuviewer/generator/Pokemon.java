@@ -43,6 +43,10 @@ public class Pokemon {
         this.moves = new ArrayList<>();
     }
 
+    public Set<LevelMove> getCurrAndPrevLevelMoves() {
+        return getSpecies().getCurrAndPrevLevelMoves(getLevel());
+    }
+
     public void setNatureAndStats(Nature nature) {
         this.nature = nature;
         getStats().get(getNature().getRaise()).setNature(false);

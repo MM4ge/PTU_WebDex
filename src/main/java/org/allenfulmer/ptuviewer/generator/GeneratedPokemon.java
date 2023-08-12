@@ -138,6 +138,7 @@ public class GeneratedPokemon extends Pokemon {
     // TODO: set this in factory or constructor, same for Moves and Abilities
     private ObjIntConsumer<List<ManagedStat>> statChoiceAlg;
     private boolean removeOldest = true;
+    private boolean usePrevEvoLvlMoves = false;
     private double uniqueChance = 0.04;
     private double lowerAbilityTierChance = 0.33;
     private double primaryStatDifference = 1.5;
@@ -456,7 +457,7 @@ public class GeneratedPokemon extends Pokemon {
         getAbilities().stream().map(Ability::getConnection).filter(Objects::nonNull).forEach(getMoves()::add);
         if (PokeConstants.RANDOM_GEN.nextDouble() < uniqueChance) {
             Set<Move> specialMoves = new HashSet<>(getSpecies().getTutorMoves());
-            specialMoves.addAll(getSpecies().getEggMoves());
+            specialMoves.addAll(getSpecies().getEggMovesFromFirstStage());
             specialMoves.remove(null); // Safety in case EggMoves is empty
 
             List<Move> randChoice = new ArrayList<>(specialMoves);
@@ -466,7 +467,8 @@ public class GeneratedPokemon extends Pokemon {
         // if you add more than 1 n copy it?
         // Its AND not OR - eevee is grassland/forest but throwing arctic in there causes nothing to be returned
 
-        for (LevelMove currLevelMove : getSpecies().getLevelUpMoves()) {
+        Set<LevelMove> levelMoves = new TreeSet<>((usePrevEvoLvlMoves) ? getCurrAndPrevLevelMoves() : getSpecies().getLevelUpMoves());
+        for (LevelMove currLevelMove : levelMoves) {
             if (currLevelMove.getLevel() > getLevel())
                 break;
 
@@ -535,7 +537,8 @@ public class GeneratedPokemon extends Pokemon {
      * @return A List of moves that are eligible for removal (i.e. the removable list, minus any moves saved here).
      */
     private List<Move> saveNonLevelMoves(List<Move> removable, List<Move> safe) {
-        List<Move> leveledMoves = getSpecies().getLevelUpMoves().stream().filter(lm -> lm.getLevel() <= getLevel())
+        Set<LevelMove> levelSet = (usePrevEvoLvlMoves) ? getCurrAndPrevLevelMoves() : getSpecies().getLevelUpMoves();
+        List<Move> leveledMoves = levelSet.stream().filter(lm -> lm.getLevel() <= getLevel())
                 .map(LevelMove::getMove).toList();
         return removable.stream().filter(m -> !leveledMoves.contains(m)).toList();
     }

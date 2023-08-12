@@ -39,6 +39,9 @@ public class PokemonSpecies implements Comparable<PokemonSpecies>{
     // FC: Add generator option to use either the moves on the generated pokemon ONLY or the moves
     //  from previous evos as well as if they'd evolved to it
     String evolutions;
+    // TODO: Replace the above with one more Str for prevEvoCriteria and make functions / queries to dynamically get
+    //  full evo family information (join on prevEvoID = pokedexID) and get past poke from member var, curr from curr,
+    //  and future from query to make one whole evo family tree
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     PokemonSpecies prevEvo;
     int prevEvoLevel;
@@ -272,6 +275,23 @@ public class PokemonSpecies implements Comparable<PokemonSpecies>{
 
     public String getEggMovesString() {
         return generateStringFromMoves(getEggMoves());
+    }
+
+    public Set<LevelMove> getCurrAndPrevLevelMoves(int level) {
+        Set<LevelMove> currAndPrevLvlMoves = getLevelUpMoves().stream().filter(lm -> lm.getLevel() <= level).collect(Collectors.toSet());
+        if(getPrevEvo() == null)
+            return currAndPrevLvlMoves;
+        Set<LevelMove> prevLvlMoves = getPrevEvo().getCurrAndPrevLevelMoves(level);
+        // Levelmoves are hashed based on level, Move, and Species - Reduce to just Move to see if it already exists
+        Set<Move> currMoves = currAndPrevLvlMoves.stream().map(LevelMove::getMove).collect(Collectors.toSet());
+        currAndPrevLvlMoves.addAll(prevLvlMoves.stream().filter(lm -> !currMoves.contains(lm.getMove())).collect(Collectors.toSet()));
+        return currAndPrevLvlMoves;
+    }
+
+    public Set<Move> getEggMovesFromFirstStage() {
+        if(prevEvo == null)
+            return getEggMoves();
+        return prevEvo.getEggMovesFromFirstStage();
     }
 
     private String generateStringFromMoves(Set<Move> moves) {
