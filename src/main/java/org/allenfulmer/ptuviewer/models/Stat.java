@@ -41,7 +41,8 @@ public class Stat implements Comparable<Stat>, Displayable {
         if(nature == 0)
             return Integer.toString(getBase());
         List<String> htmlTags = (nature > 0) ? PokeConstants.NATURE_HTML_RAISE : PokeConstants.NATURE_HTML_LOWER;
-        return PokeUtils.wrapHtml(Integer.toString(getBase()), htmlTags);
+        return PokeUtils.wrapHtml(Integer.toString(getBase()), htmlTags) +
+                ((nature > 0) ? "↑" : "↓");
     }
 
     public int getTrueBase() {

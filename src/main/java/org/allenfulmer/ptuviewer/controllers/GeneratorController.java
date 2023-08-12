@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.allenfulmer.ptuviewer.dto.PokemonGeneratorDTO;
+import org.allenfulmer.ptuviewer.dto.PokemonSpeciesDTO;
 import org.allenfulmer.ptuviewer.fileLoading.PojoToDBConverter;
 import org.allenfulmer.ptuviewer.generator.GeneratedPokemon;
 import org.allenfulmer.ptuviewer.models.PokemonSpecies;
@@ -31,13 +32,30 @@ public class GeneratorController {
     }
 
     // TODO: Finish these
+    // TODO: going to need a Post version for when they want a poke / updated poke - post has split path if pokemon
+    //  is already generated or not
     @GetMapping("/" + GENERATOR)
+    public String pokemonGeneratorInitial(Model model) {
+        return pokemonGeneratorForm(model);
+//        return pokemonGeneratorForm(null, model);
+    }
+
+    @PostMapping("/" + GENERATOR)
     public String pokemonGeneratorForm(Model model) {
+//    public String pokemonGeneratorForm(@ModelAttribute PokemonGeneratorDTO pokemonDTO, Model model) {
         GeneratedPokemon p1 = new GeneratedPokemon(PojoToDBConverter.getPokemonSpecies("001"), 99);
         model.addAttribute("genPoke", GeneratedPokemon.mainGenerate2(p1));
-        model.addAttribute("pokemonDTO", new PokemonGeneratorDTO());
+        if(!model.containsAttribute("pokemonDTO")) {
+            System.out.println("hi");
+            model.addAttribute("pokemonDTO", new PokemonGeneratorDTO(p1));
+        }
+        else {
+            System.out.println(((PokemonGeneratorDTO) model.getAttribute("pokemonDTO")).getHp());
+        }
         model.addAttribute("pokemonSpeciesNames", pokemonServ.getAllSpecies().stream()
                 .map(PokemonSpecies::getNameAndForm).toList());
+        model.addAttribute("pokemonMoves", p1.getPossibleMoves());
+        model.addAttribute("pokemonAbilities", p1.getPossibleAbilities());
         return GENERATOR;
     }
 
@@ -50,11 +68,11 @@ public class GeneratorController {
     //  until the other side of the page on that row is finished
     // TODO: Page for conversion alone
 
-    @PostMapping("/" + GENERATOR)
-    public String showGenerated(@ModelAttribute PokemonGeneratorDTO pokemonDTO, Model model) {
-
-        List<PokemonSpecies> pokes = pokemonServ.findPokemonByExample(new PokemonSpecies(pokemonDTO));
-
-        return GENERATOR;
-    }
+//    @PostMapping("/" + GENERATOR)
+//    public String showGenerated(@ModelAttribute PokemonGeneratorDTO pokemonDTO, Model model) {
+//
+//        List<PokemonSpecies> pokes = pokemonServ.findPokemonByExample(new PokemonSpecies(pokemonDTO));
+//
+//        return GENERATOR;
+//    }
 }

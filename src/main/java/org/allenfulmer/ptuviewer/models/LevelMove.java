@@ -19,7 +19,7 @@ public class LevelMove implements Comparable<LevelMove>, Displayable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-
+    // FC: should use composite primary key (Evolution) instead of ID? see if any move-species-level duplicates
     @Column(name = "level")
     int level;
     @ManyToOne(fetch = FetchType.EAGER)

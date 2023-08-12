@@ -437,6 +437,9 @@ public class GeneratedPokemon extends Pokemon {
 
     // FC: save startegy for type coverage - remove moves that are the only attacking type of that type the poke has
     //  or like only allowing attacking moves of its own type or duplicated
+    // FC: move save strat for unique moves? how would even determine what a unique move is? like rotom heat getting
+    //  overheat, or dialga getting roar of time? Moves they get at Evo / Level 0? Moves not in their tutor / egg move
+    //  list?
     /*
     ##############################################
     ##############################################
@@ -487,6 +490,12 @@ public class GeneratedPokemon extends Pokemon {
         return moves == null || moves.isEmpty() ? null : moves.get(0);
     }
 
+    // FC: Move remover alg that removes least powered moves / least type coverage
+    //  powered would remove non-damaging and then just lowest DB (probable including STAB, but idk what do for
+    //  double- and five-strike. Type coverage would be non-damaging moves and then the thing that increases
+    //  the overall amount of damage dealt to any type combination the least (if pokemon already has elec move,
+    //  doesn't need a grass move to murder water types, but might need it to hit ground -- things that improve
+    //  0x effectiveness should be HEAVILY weighted for keeping around0
     private List<Move> chooseRemovableMoves() {
         List<Move> safeMoves = new ArrayList<>();
         List<Move> removableMoves = new ArrayList<>(getMoves());
@@ -655,7 +664,7 @@ public class GeneratedPokemon extends Pokemon {
     */
 
     public List<HtmlMove> getHtmlMoves() {
-        return getMoves().stream().map(m -> new HtmlMove(m, getSpecies().getTypes())).collect(Collectors.toList());
+        return getMoves().stream().map(m -> new HtmlMove(m, getSpecies().getTypes())).toList();
     }
 
     public boolean hasStab() {
@@ -668,20 +677,20 @@ public class GeneratedPokemon extends Pokemon {
     public List<BaseCapability> getCapabilities() {
         List<BaseCapability> ret = new ArrayList<>();
         Map<String, BaseCapability> capabilities = getSpecies().getBaseCapabilities().stream().collect(
-                Collectors.toMap(BaseCapability::getFullName, c -> c));
+                Collectors.toMap(BaseCapability::getName, bc -> bc));
 
-        // "Overland","Swim", (other movement in alpha),
-        // 'High Jump',"Long Jump","Power", (other caps in alpha)
+        // "Overland","Swim", (other movement in alphabetical order),
+        // 'High Jump',"Long Jump","Power"
 
         // Overland + Swim (always first - both movement and vanilla)
         ret.add(capabilities.remove("Overland"));
         ret.add(capabilities.remove("Swim"));
 
         // Non-vanilla movement capabilities
-        List<BaseCapability> movements = getSpecies().getBaseCapabilities().stream().filter(b ->
-                Capability.MOVEMENT_CAPABILITIES.contains(b.getFullName())).sorted().toList();
+        List<BaseCapability> movements = getSpecies().getBaseCapabilities().stream().filter(bc ->
+                Capability.MOVEMENT_CAPABILITIES.contains(bc.getName())).sorted().toList();
         ret.addAll(movements);
-        movements.forEach(c -> capabilities.remove(c.getFullName()));
+        movements.forEach(bc -> capabilities.remove(bc.getName()));
 
         // Combine the Jumps into one Capability - long/high
         int longJump = capabilities.remove("Long Jump").getRank();
@@ -692,9 +701,34 @@ public class GeneratedPokemon extends Pokemon {
         // Power
         ret.add(capabilities.remove("Power"));
 
+        // If there is Naturewalk, strip its parentheses
+        BaseCapability nature = capabilities.remove("Naturewalk");
+        if(Objects.nonNull(nature)) {
+            String criteria = nature.getCriteria();
+            ret.add(new BaseCapability(criteria.substring(1, criteria.length()-1), nature.getCapability(), null));
+        }
+
         // All non-movement and non-vanilla capabilities
         ret.addAll(capabilities.values());
 
         return ret;
+    }
+
+    public Stat getStat(String name) {
+        return getStats().get(Stat.StatName.valueOf(name.toUpperCase()));
+    }
+
+    public List<String> getPossibleAbilities() {
+        return getSpecies().getBaseAbilities().stream().filter(ba -> ba.getAbilityType().getLevel() <= this.getLevel()).
+                map(BaseAbility::getAbility).map(Ability::getName).filter(s -> !s.isBlank()).toList();
+    }
+
+    public List<String> getPossibleMoves() {
+        Set<Move> moves = getSpecies().getLevelUpMoves().stream().filter(lm -> lm.getLevel() <= this.getLevel()).
+                map(LevelMove::getMove).collect(Collectors.toSet());
+        moves.addAll(getSpecies().getTmHmMoves());
+        moves.addAll(getSpecies().getEggMoves());
+        moves.addAll(getSpecies().getTutorMoves());
+        return moves.stream().map(Move::getName).filter(s -> !s.isBlank()).toList();
     }
 }

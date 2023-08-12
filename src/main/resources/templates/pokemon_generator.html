@@ -2,6 +2,10 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <div th:replace="fragments/head :: head"/>
 <body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <!-- Responsive navbar-->
 <div th:replace="fragments/nav :: nav"/>
 
@@ -13,232 +17,291 @@
         <span color="text-danger" th:if="${error != null}" th:text="${error}"/>
     </div>
 </div>
-
-<!-- Pokemon -->
-<div class="h-100 flex-row d-flex flex-wrap align-items-center justify-content-center" th:if="${genPoke != null}">
-    <!--    <div th:if="${genPoke != null}">-->
-    <!-- Basic Info like Species, Nature, Level, etc.-->
-    <div class="d-flex flex-column border border-dark m-1 p-1">
-        <div class="px-1"><h3 class="py-0">Basic Info</h3></div>
-        <div class="d-flex flex-row justify-content-between">
-            <!-- Species -->
-            <div class="d-flex flex-column">
-                <p class="weight-light m-0" style="font-size: small"><i>Species:</i></p>
-                <input class="form-short" th:value="${genPoke.species.speciesName}" size="8"
-                       type="text"/>
-            </div>
-            <div class="mx-1">
-            </div>
-            <!-- Form -->
-            <div class="d-flex flex-column">
-                <p class="weight-light m-0" style="font-size: small"><i>Form:</i></p>
-                <input class="form-short" th:value="${genPoke.species.form}" size="8"
-                       type="text"/>
-            </div>
-        </div>
-
-        <!-- Type -->
-        <div class="d-flex flex-row justify-content-between">
-            <p class="weight-light m-0" style="font-size: small"><i>Type:</i></p>
-            <div th:text="${genPoke.species.typeStr}"></div>
-        </div>
-        <div class="d-flex flex-row justify-content-between">
-            <p class="weight-light m-0" style="font-size: small"><i>Gender:</i></p>
-            <div th:text="${genPoke.gender}"></div>
-        </div>
-        <div class="d-flex flex-column">
-            <p class="weight-light m-0" style="font-size: small"><i>Level:</i></p>
-            <input class="form-short" th:value="${genPoke.level}" size="6"
-                   type="text"/>
-        </div>
-        <div class="d-flex flex-column">
-            <p class="weight-light m-0" style="font-size: small"><i>Nature:</i></p>
-            <input class="form-short" th:value="${genPoke.nature.displayName}" size="6"
-                   type="text"/>
-        </div>
+<!-- FC: combo JS stat total changing and ability searching - search new move / ability from whole list
+        (maybe only from moves / abilites the poke can get) and update dynamically -->
+<!-- FC: need button to add a blank move / ability
+-->
+<form action="#" class="m-3 p-3 border border-dark" method="post" th:action="@{/pokemon_generator}" th:object="${pokemonDTO}">
+    <div class="flex-row d-flex flex-wrap align-items-center justify-content-center">
+        <input type="submit" value="Submit"/>
+        <input type="reset" value="Reset"/>
     </div>
-
-    <!--    Stats like HP, Atk, Def, etc.-->
-    <!-- TODO: Stat Total and JS to change it when Added is changed -->
-    <!--        <div class="d-flex flex-row border border-dark m-1 p-1">-->
-    <div class="d-flex flex-column border border-dark m-1 p-1">
-        <div class="d-flex flex-row justify-content-between">
-            <div class="px-1"><h3 class="py-0">Stats</h3></div>
-            <p class="weight-light mx-1 my-0 text-center" style="font-size: small" th:if="${!genPoke.nature.isNeutral}">
-                <i>Nature changes applied<br>(Bold ↑, Italic ↓)</i>
-            </p>
-        </div>
-        <table class="table table-striped table-sm m-0">
-            <thead>
-            <tr>
-                <th scope="col">Stat</th>
-                <th scope="col">Base</th>
-                <th scope="col">Added</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="statEntry: ${genPoke.stats}">
-                <th scope="row" th:text="${statEntry.key.capName}"></th>
-                <td th:utext=${statEntry.value.htmlBase}></td>
-                <td> <!-- th:text="${stat.total}"> --> <!-- th:field="*{${statEntry.key.capName}}" -->
-                    <input class="form-short" th:value="${statEntry.value.allocated}" size="1"
+    <!-- Generated Pokemon -->
+    <div class="h-100 flex-row d-flex flex-wrap align-items-center justify-content-center" th:if="${genPoke != null}">
+        <!--    <div th:if="${genPoke != null}">-->
+        <!-- Basic Info like Species, Nature, Level, etc.-->
+        <div class="d-flex flex-column border border-dark m-1 p-1">
+            <div class="px-1"><h3 class="py-0">Basic Info</h3></div>
+            <div class="d-flex flex-row justify-content-between">
+                <!-- Species -->
+                <div class="d-flex flex-column">
+                    <p class="weight-light m-0" style="font-size: small"><i>Species:</i></p>
+                    <input class="form-short" th:value="${genPoke.species.speciesName}" size="8"
                            type="text"/>
+                </div>
+                <div class="mx-1">
+                </div>
+                <!-- Form -->
+                <div class="d-flex flex-column">
+                    <p class="weight-light m-0" style="font-size: small"><i>Form:</i></p>
+                    <input class="form-short" th:value="${genPoke.species.form}" size="8"
+                           type="text"/>
+                </div>
+            </div>
 
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <!--            <tr th:each="pokemon: ${pokemonPage.content}">-->
-        <!--                <th scope="row" th:text="${pokemon.pokedexID}"></th>-->
-        <!--                <td th:text="${pokemon.speciesName}"></td>-->
-    </div>
+            <!-- Type -->
+            <div class="d-flex flex-row justify-content-between">
+                <p class="weight-light m-0" style="font-size: small"><i>Type:</i></p>
+                <div th:text="${genPoke.species.typeStr}"></div>
+            </div>
+            <div class="d-flex flex-row justify-content-between">
+                <p class="weight-light m-0" style="font-size: small"><i>Gender:</i></p>
+                <div th:text="${genPoke.gender}"></div>
+            </div>
+            <div class="d-flex flex-column">
+                <p class="weight-light m-0" style="font-size: small"><i>Level:</i></p>
+                <input class="form-short" th:value="${genPoke.level}" size="6"
+                       type="text"/>
+            </div>
+            <div class="d-flex flex-column">
+                <p class="weight-light m-0" style="font-size: small"><i>Nature:</i></p>
+                <input class="form-short" th:value="${genPoke.nature.displayName}" size="6"
+                       type="text"/>
+            </div>
+        </div>
 
-        <!--    Derived Stats like Max HP, Evasion, etc.-->
-        <div>
-            <h3>Derived Stats</h3>
-            <table>
-                <tbody>
+        <!--    Stats like HP, Atk, Def, etc.-->
+        <!-- TODO: Stat Total and JS to change it when Added is changed -->
+        <!--        <div class="d-flex flex-row border border-dark m-1 p-1">-->
+        <div class="d-flex flex-column border border-dark m-1 p-1">
+            <div class="d-flex flex-row justify-content-between">
+                <div class="px-1"><h3 class="py-0">Stats</h3></div>
+                <p class="weight-light mx-1 my-0 text-center" style="font-size: small"
+                   th:if="${!genPoke.nature.isNeutral}">
+                    <i>Nature changes applied<br>(Bold ↑, Italic ↓)</i>
+                    <!-- FC: Place arrows directly right after num instead? Like 3↑ 5↓-->
+                </p>
+            </div>
+            <table class="table table-striped table-sm m-0">
+                <thead>
                 <tr>
-                    <th scope="row">Max HP</th>
+                    <th class="pt-0" scope="col">Stat</th>
+                    <th class="pt-0" scope="col">Base</th>
+                    <th class="pt-0" scope="col">Added</th>
+                    <th class="pt-0" scope="col">Total</th>
+                    <!--                <th scope="col">Derived</th>-->
+                    <th class="pt-0" scope="col">Max/Evd</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- HP -->
+                <tr th:with="stat=${genPoke.getStat('HP')}">
+                    <th th:text="${stat.capName}"></th>
+                    <td th:utext="${stat.htmlBase}"></td>
+                    <td>
+                        <input class="form-short" th:field="*{hp}" size="1"
+                               type="text"/>
+                    </td>
+                    <td th:text="${stat.total}"></td>
                     <td th:text="${genPoke.maxHP}"></td>
                 </tr>
-                <tr>
-                    <th scope="row">Physical Evasion</th>
+                <!-- Atk -->
+                <tr th:with="stat=${genPoke.getStat('ATTACK')}">
+                    <th th:text="${stat.capName}"></th>
+                    <td th:utext="${stat.htmlBase}"></td>
+                    <td>
+                        <input class="form-short" th:field="*{atk}" size="1"
+                               type="text"/>
+                    </td>
+                    <td th:text="${stat.total}"></td>
+                </tr>
+                <!-- Def -->
+                <tr th:with="stat=${genPoke.getStat('DEFENSE')}">
+                    <th th:text="${stat.capName}"></th>
+                    <td th:utext="${stat.htmlBase}"></td>
+                    <td>
+                        <input class="form-short" th:field="*{def}" size="1"
+                               type="text"/>
+                    </td>
+                    <td th:text="${stat.total}"></td>
                     <td th:text="${genPoke.physicalEvasion}"></td>
                 </tr>
-                <tr>
-                    <th scope="row">Special Evasion</th>
+                <!-- SpAtk -->
+                <tr th:with="stat=${genPoke.getStat('SPECIAL_ATTACK')}">
+                    <th th:text="${stat.capName}"></th>
+                    <td th:utext="${stat.htmlBase}"></td>
+                    <td>
+                        <input class="form-short" th:field="*{spAtk}" size="1"
+                               type="text"/>
+                    </td>
+                    <td th:text="${stat.total}"></td>
+                </tr>
+                <!-- SpDef -->
+                <tr th:with="stat=${genPoke.getStat('SPECIAL_DEFENSE')}">
+                    <th th:text="${stat.capName}"></th>
+                    <td th:utext="${stat.htmlBase}"></td>
+                    <td>
+                        <input class="form-short" th:field="*{spDef}" size="1"
+                               type="text"/>
+                    </td>
+                    <td th:text="${stat.total}"></td>
                     <td th:text="${genPoke.specialEvasion}"></td>
                 </tr>
-                <tr>
-                    <th scope="row">Speed Evasion</th>
+                <!-- Speed -->
+                <tr th:with="stat=${genPoke.getStat('SPEED')}">
+                    <th th:text="${stat.capName}"></th>
+                    <td th:utext="${stat.htmlBase}"></td>
+                    <td>
+                        <input class="form-short" th:field="*{speed}" size="1"
+                               type="text"/>
+                    </td>
+                    <td th:text="${stat.total}"></td>
                     <td th:text="${genPoke.speedEvasion}"></td>
                 </tr>
                 </tbody>
             </table>
-            <!--        </div>-->
         </div>
 
         <!--    Capabilities like Overland, Power, Naturewalk, etc.-->
-    <div class="border border-dark m-1 p-1">
-        <h3>Capabilities</h3>
-        <table class="table table-striped table-sm m-0">
-            <tbody>
-            <tr th:each="cap: ${genPoke.capabilities}">
-                <td th:text="${cap.name}"></td>
-                <td class="text text-wrap" th:text="${cap.extraInfo}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-        <!--    Skills like Acrobatics, Stealth, Perception, etc.-->
-        <div>
-            <h3>Skills</h3>
-            <table>
+        <div class="d-flex flex-column border border-dark m-1 p-1">
+            <div class="px-1"><h3 class="py-0">Capabilities</h3></div>
+            <table class="table table-striped table-sm m-0">
                 <tbody>
-                <tr th:each="skill: ${genPoke.species.skills}">
-                    <td th:text="${skill.displayName}"></td>
+                <tr th:each="cap: ${genPoke.capabilities}">
+                    <td th:text="${cap.name}"></td>
+                    <td class="text text-wrap" th:text="${cap.extraInfo}"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
-    <div class="d-flex flex-row justify-content-between">
-        <!-- Moves -->
-        <div class="d-flex flex-column border border-dark m-1">
-            <div class="d-flex flex-row justify-content-between">
-                <div class="px-1"><h3 class="py-0">Moves</h3></div>
-                <p class="weight-light mx-1 my-0" style="font-size: small" th:if="${genPoke.hasStab}">
-                    <i>Bold DB's have STAB applied</i>
-                </p>
-            </div>
-            <div class="border border-dark rounded m-1 p-2" th:each="move,iter: ${genPoke.htmlMoves}">
-                <!-- Name, Move Class, Frequency -->
-                <div class="d-flex flex-row justify-content-between border-bottom">
-                    <div class="d-flex flex-column">
-                        <p class="weight-light m-0" style="font-size: small"><i>Name:</i></p>
-                        <input class="form-short rounded" th:value="${move.name}"
-                               type="text"/>
-                    </div>
-                    <div class="d-flex flex-column">
-                        <p class="weight-light m-0" style="font-size: small"><i>Class:</i></p>
-                        <div th:text="${move.moveClass.displayName}"></div>
-                    </div>
-                    <div class="d-flex flex-column">
-                        <p class="weight-light m-0" style="font-size: small"><i>Frequency:</i></p>
-                        <div th:text="${move.fullFreq}"></div>
-                    </div>
-                </div>
-
-                <!-- Display Name, Range, AC, DB -->
-                <div class="d-flex flex-row justify-content-between">
-                    <div class="d-flex flex-column">
-                        <p class="weight-light m-0" style="font-size: small"><i>Type:</i></p>
-                        <div th:text="${move.type.displayName}"></div>
-                    </div>
-                    <div class="d-flex flex-column">
-                        <p class="weight-light m-0" style="font-size: small"><i>Range:</i></p>
-                        <div th:text="${move.range}"></div>
-                    </div>
-                    <div class="d-flex flex-column">
-                        <p class="weight-light m-0" style="font-size: small"><i>AC:</i></p>
-                        <div th:text="${move.ac}"></div>
-                    </div>
-                    <div class="d-flex flex-column">
-                        <p class="weight-light m-0" style="font-size: small"><i>DB:</i></p>
-                        <div th:utext="${move.db}"></div>
-                    </div>
-                </div>
-
-                <!-- Effect -->
-                <div class="d-flex flex-column border-top" th:if="${move.effect != null}">
-                    <p class="weight-light m-0" style="font-size: small"><i>Effect:</i></p>
-                    <div th:text="${move.effect}"></div>
-                </div>
-            </div>
+        <!--    Skills like Acrobatics, Stealth, Perception, etc.-->
+        <div class="d-flex flex-column border border-dark m-1 p-1">
+            <div class="px-1"><h3 class="py-0">Skills</h3></div>
+            <table class="table table-striped table-sm m-0">
+                <tbody>
+                <tr th:each="skill: ${genPoke.species.skills}">
+                    <td th:text="${skill.skillName.shortName}"></td>
+                    <td th:text="${skill.skillValue}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
 
-        <!-- Abilities -->
-        <div class="d-flex border border-dark m-1 flex-column">
-            <div class="px-1"><h3>Abilities</h3></div>
-            <!-- Name -->
-            <div class="d-flex border border-dark rounded m-1 p-2 flex-column"
-                 th:each="ability,iter: ${genPoke.abilities}">
+        <div class="d-flex flex-row justify-content-between">
+            <!-- Moves -->
+            <div class="d-flex flex-column border border-dark m-1">
                 <div class="d-flex flex-row justify-content-between">
-                    <div class="d-flex flex-column">
-                        <p class="weight-light m-0" style="font-size: small"><i>Name:</i></p>
-                        <input class="form-short rounded" th:value="${ability.name}"
-                               type="text"/>
+                    <div class="px-1"><h3 class="py-0">Moves</h3></div>
+                    <p class="weight-light mx-1 my-0" style="font-size: small" th:if="${genPoke.hasStab}">
+                        <i>Bold DB's have STAB applied</i>
+                    </p>
+                </div>
+                <div class="border border-dark rounded m-1 p-2" th:each="move,iter: *{moves}">
+                    <!-- Name, Move Class, Frequency -->
+                    <div class="d-flex flex-row justify-content-between border-bottom">
+                        <div class="d-flex flex-column">
+                            <p class="weight-light m-0" style="font-size: small"><i>Name:</i></p>
+                            <script th:inline="javascript">
+                var move_list = /*[[${pokemonMoves}]]*/'noValue';
+                $(document).ready(function() {
+                $("#move[[__${iter.index}__]]").autocomplete({
+                    minLength : 0,
+                    source : move_list,
+                    })
+                });
+                            </script>
+                            <input class="form-short rounded" th:id="move__${iter.index}__" th:value="*{moves[__${iter.index}__].name}"
+                                   type="text"/>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <p class="weight-light m-0" style="font-size: small"><i>Class:</i></p>
+                            <div th:text="${move.moveClass.displayName}"></div>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <p class="weight-light m-0" style="font-size: small"><i>Frequency:</i></p>
+                            <div th:text="${move.fullFreq}"></div>
+                        </div>
                     </div>
-                    <div class="d-flex flex-column">
-                        <p class="weight-light m-0" style="font-size: small"><i>Frequency:</i></p>
-                        <div th:text="${ability.fullFreq}"></div>
+
+                    <!-- Display Name, Range, AC, DB -->
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-column">
+                            <p class="weight-light m-0" style="font-size: small"><i>Type:</i></p>
+                            <div th:text="${move.type.displayName}"></div>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <p class="weight-light m-0" style="font-size: small"><i>Range:</i></p>
+                            <div th:text="${move.range}"></div>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <p class="weight-light m-0" style="font-size: small"><i>AC:</i></p>
+                            <div th:text="${move.ac}"></div>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <p class="weight-light m-0" style="font-size: small"><i>DB:</i></p>
+                            <div th:utext="${move.db}"></div>
+                        </div>
+                    </div>
+
+                    <!-- Effect -->
+                    <div class="d-flex flex-column border-top" th:if="${move.effect != null}">
+                        <p class="weight-light m-0" style="font-size: small"><i>Effect:</i></p>
+                        <div th:text="${move.effect}"></div>
                     </div>
                 </div>
-                <!-- Target / Trigger -->
-                <div class="d-flex flex-row justify-content-between" th:if="${ability.target != null ||
+            </div>
+
+            <!-- Abilities -->
+            <div class="d-flex border border-dark m-1 flex-column">
+                <div class="px-1"><h3>Abilities</h3></div>
+                <!-- Name -->
+                <div class="d-flex border border-dark rounded m-1 p-2 flex-column"
+                     th:each="ability,iter: *{abilities}">
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-column">
+                            <p class="weight-light m-0" style="font-size: small"><i>Name:</i></p>
+                            <script th:inline="javascript">
+                var ability_list = /*[[${pokemonAbilities}]]*/'noValue';
+                $(document).ready(function() {
+                $("#ability[[__${iter.index}__]]").autocomplete({
+                    minLength : 0,
+                    source : ability_list,
+                    })
+                });
+                            </script>
+                            <input class="form-short rounded" th:id="ability__${iter.index}__" th:value="*{abilities[__${iter.index}__].name}"
+                                   type="text"/>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <p class="weight-light m-0" style="font-size: small"><i>Frequency:</i></p>
+                            <div th:text="${ability.fullFreq}"></div>
+                        </div>
+                    </div>
+                    <!-- Target / Trigger -->
+                    <div class="d-flex flex-row justify-content-between" th:if="${ability.target != null ||
                             ability.trigger != null}">
-                    <div class="d-flex flex-column" th:if="${ability.target != null}">
-                        <p class="weight-light m-0" style="font-size: small"><i>Target:</i></p>
-                        <div th:text="${ability.target}"></div>
+                        <div class="d-flex flex-column" th:if="${ability.target != null}">
+                            <p class="weight-light m-0" style="font-size: small"><i>Target:</i></p>
+                            <div th:text="${ability.target}"></div>
+                        </div>
+                        <div class="d-flex flex-column" th:if="${ability.trigger != null}">
+                            <p class="weight-light m-0" style="font-size: small"><i>Trigger:</i></p>
+                            <div th:text="${ability.trigger}"></div>
+                        </div>
                     </div>
-                    <div class="d-flex flex-column" th:if="${ability.trigger != null}">
-                        <p class="weight-light m-0" style="font-size: small"><i>Trigger:</i></p>
-                        <div th:text="${ability.trigger}"></div>
+                    <!-- Effect -->
+                    <div class="d-flex flex-column border-top">
+                        <p class="weight-light m-0" style="font-size: small"><i>Effect:</i></p>
+                        <div th:text="${ability.effect}"></div>
                     </div>
+                    <!--                    <td th:text="${ability.effect}"></td>-->
                 </div>
-                <!-- Effect -->
-                <div class="d-flex flex-column border-top">
-                    <p class="weight-light m-0" style="font-size: small"><i>Effect:</i></p>
-                    <div th:text="${ability.effect}"></div>
-                </div>
-                <!--                    <td th:text="${ability.effect}"></td>-->
             </div>
         </div>
+        <!--    </div>-->
     </div>
-    <!--    </div>-->
-</div>
+</form>
 
 <!-- Footer-->
 <div th:replace="fragments/footer :: footer"/>

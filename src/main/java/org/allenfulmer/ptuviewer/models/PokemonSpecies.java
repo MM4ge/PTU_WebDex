@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.allenfulmer.ptuviewer.dto.PokemonGeneratorDTO;
 import org.allenfulmer.ptuviewer.dto.PokemonSpeciesDTO;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.*;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Entity
-public class PokemonSpecies {
+public class PokemonSpecies implements Comparable<PokemonSpecies>{
     /*
 
         Informational-Only Variables (Form, Weight, etc.)
@@ -29,7 +30,18 @@ public class PokemonSpecies {
     String speciesName;
     @Column(length = 63)
     String form;
+    // TODO: Make this into an actual obj - use for determining moves for autofil generation
+    //  can have moves in the large list shown by where they came from - like Bulbasaur Egg or
+    //  Ivysaur Lv40 or Pikachu Tutor, etc - make sure all level moves from prev can be learned
+    //  although pokemon CAN cheat and be a lower level than they should need to be to evolve
+    //  in that case it's prob fine to just treat them as their own level but prev evo or maybe
+    //  one level before so they can evolve at that level
+    // FC: Add generator option to use either the moves on the generated pokemon ONLY or the moves
+    //  from previous evos as well as if they'd evolved to it
     String evolutions;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    PokemonSpecies prevEvo;
+    int prevEvoLevel;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemonSpecies", fetch = FetchType.EAGER)
     Set<BaseCapability> baseCapabilities = new TreeSet<>();
@@ -278,6 +290,15 @@ public class PokemonSpecies {
     @Override
     public int hashCode() {
         return Objects.hash(getPokedexID(), getSpeciesName(), getForm());
+    }
+
+    @Override
+    public int compareTo(@NotNull PokemonSpecies o) {
+        int ret = getPokedexID().compareTo(o.getPokedexID());
+        if (ret == 0)
+            ret = (getSpeciesName().compareTo(o.getSpeciesName()) != 0) ? getSpeciesName().compareTo(o.getSpeciesName())
+                    : getForm().compareTo(o.getForm());
+        return ret;
     }
 
     @Override

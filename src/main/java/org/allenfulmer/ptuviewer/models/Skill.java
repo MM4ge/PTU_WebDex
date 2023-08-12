@@ -39,6 +39,15 @@ public class Skill implements Comparable<Skill>, Displayable {
         this(SkillName.convertName(name), rank, bonus, pokemon);
     }
 
+    public String getSkillValue() {
+        StringBuilder ret = new StringBuilder(rank + "d6");
+        if (bonus != 0) {
+            ret.append((bonus > 0) ? "+" : "");
+            ret.append(bonus);
+        }
+        return ret.toString();
+    }
+
     @Override
     public int compareTo(@NotNull Skill o) {
         int ret = skillName.compareTo(o.getSkillName());
@@ -69,12 +78,7 @@ public class Skill implements Comparable<Skill>, Displayable {
 
     @Override
     public String toString() {
-        StringBuilder ret = new StringBuilder(skillName.getShortName() + " " + rank + "d6");
-        if (bonus != 0) {
-            ret.append((bonus > 0) ? "+" : "");
-            ret.append(bonus);
-        }
-        return ret.toString();
+         return skillName.getShortName() + " " + getSkillValue();
     }
 
     @Getter
