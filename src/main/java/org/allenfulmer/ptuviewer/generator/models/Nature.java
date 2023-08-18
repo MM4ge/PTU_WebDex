@@ -100,8 +100,12 @@ public enum Nature {
         return StringUtils.capitalize(this.name().toLowerCase());
     }
 
-    @Override
-    public String toString() {
-        return this.name() + ": " + raise + "↑, " + lower + "↓";
+    public String nameAndStats() {
+        if(this == NATURES)
+            return getDisplayName();
+        return getDisplayName() + ": " + StringUtils.capitalize(raise.getShortName()) + "↑, " +
+                StringUtils.capitalize(lower.getShortName()) + "↓";
     }
+
+    // toString not overridden with the above due to Thymeleaf / Spring expecting the default enum toString to bind with
 }

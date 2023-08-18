@@ -43,6 +43,7 @@ public class AppCommandLineRunner implements CommandLineRunner {
         insertAbilities();
         insertPokemon();
         log.info("---Done with all loading---");
+        log.info("Memory used: " + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 
 //        printAll();
 //        tempTestCode();

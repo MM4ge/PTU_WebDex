@@ -1,5 +1,8 @@
 package org.allenfulmer.ptuviewer.generator.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.allenfulmer.ptuviewer.models.Move;
 import org.allenfulmer.ptuviewer.models.PokeConstants;
 import org.allenfulmer.ptuviewer.models.Type;
@@ -8,9 +11,12 @@ import org.allenfulmer.ptuviewer.util.PokeUtils;
 import java.util.List;
 import java.util.Objects;
 
+@Setter
+@Getter
+@NoArgsConstructor
 public class HtmlMove extends Move {
-    private final boolean stab;
-    private final String htmlDb;
+    private boolean stab;
+    private String htmlDb;
 
     public HtmlMove(Move m, List<Type> types) {
         super(m.getName(), m.getType(), m.getFrequency(), m.getUses(), m.getAc(), m.getDb(), m.getMoveClass(), m.getRange(), m.getEffect());

@@ -3,6 +3,7 @@ package org.allenfulmer.ptuviewer.models;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.allenfulmer.ptuviewer.dto.MoveDTO;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.*;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "moves")
-public class Move implements Displayable {
+public class Move implements Displayable, Comparable<Move> {
     @Id
     @NonNull
     String name;
@@ -148,6 +149,11 @@ public class Move implements Displayable {
     @Override
     public String getDisplayName() {
         return name;
+    }
+
+    @Override
+    public int compareTo(@NotNull Move o) {
+        return getName().compareTo(o.getName());
     }
 
     // should prob consolidate them out of the converter if that's my convention

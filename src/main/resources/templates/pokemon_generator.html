@@ -21,7 +21,7 @@
         (maybe only from moves / abilites the poke can get) and update dynamically -->
 <!-- FC: need button to add a blank move / ability
 -->
-<form action="#" class="m-3 p-3 border border-dark" method="post" th:action="@{/pokemon_generator}" th:object="${pokemonDTO}">
+<form action="#" class="m-3 p-3 border border-dark" method="post" th:action="@{/pokemon_generator}" th:object="${pokemonGeneratorDTO}">
     <div class="flex-row d-flex flex-wrap align-items-center justify-content-center">
         <input type="submit" value="Submit"/>
         <input type="reset" value="Reset"/>
@@ -36,7 +36,7 @@
                 <!-- Species -->
                 <div class="d-flex flex-column">
                     <p class="weight-light m-0" style="font-size: small"><i>Species:</i></p>
-                    <input class="form-short" th:value="${genPoke.species.speciesName}" size="8"
+                    <input class="form-short" th:field="*{pokeName}" th:value="${genPoke.species.speciesName}" size="8"
                            type="text"/>
                 </div>
                 <div class="mx-1">
@@ -44,7 +44,7 @@
                 <!-- Form -->
                 <div class="d-flex flex-column">
                     <p class="weight-light m-0" style="font-size: small"><i>Form:</i></p>
-                    <input class="form-short" th:value="${genPoke.species.form}" size="8"
+                    <input class="form-short" th:field="*{pokeForm}" th:value="${genPoke.species.form}" size="8"
                            type="text"/>
                 </div>
             </div>
@@ -56,17 +56,21 @@
             </div>
             <div class="d-flex flex-row justify-content-between">
                 <p class="weight-light m-0" style="font-size: small"><i>Gender:</i></p>
-                <div th:text="${genPoke.gender}"></div>
+                <input class="form-short" th:field="*{gender}" th:value="${genPoke.gender}" size="8" type="text"/>
             </div>
             <div class="d-flex flex-column">
                 <p class="weight-light m-0" style="font-size: small"><i>Level:</i></p>
-                <input class="form-short" th:value="${genPoke.level}" size="6"
+                <input class="form-short" th:field="*{level}" th:value="${genPoke.level}" size="6"
                        type="text"/>
             </div>
             <div class="d-flex flex-column">
                 <p class="weight-light m-0" style="font-size: small"><i>Nature:</i></p>
-                <input class="form-short" th:value="${genPoke.nature.displayName}" size="6"
-                       type="text"/>
+                <select name="nature" th:field="*{nature}">
+<!--                    <option th:each="natureOpt : ${T(org.allenfulmer.ptuviewer.generator.models.Nature).values()}"-->
+<!--                            th:text="${natureOpt.displayName}" th:value="${natureOpt}"></option>-->
+                    <option th:each="natureOpt : ${T(org.allenfulmer.ptuviewer.generator.models.Nature).values()}"
+                            th:text="${natureOpt.nameAndStats}" th:value="${natureOpt}"></option>
+                </select>
             </div>
         </div>
 
@@ -188,6 +192,7 @@
             </table>
         </div>
 
+        <!--    Moves + Abilities -->
         <div class="d-flex flex-row justify-content-between">
             <!-- Moves -->
             <div class="d-flex flex-column border border-dark m-1">
@@ -211,7 +216,7 @@
                     })
                 });
                             </script>
-                            <input class="form-short rounded" th:id="move__${iter.index}__" th:value="*{moves[__${iter.index}__].name}"
+                            <input class="form-short rounded" th:id="move__${iter.index}__" th:field="*{moves[__${iter.index}__].name}"
                                    type="text"/>
                         </div>
                         <div class="d-flex flex-column">
@@ -270,7 +275,7 @@
                     })
                 });
                             </script>
-                            <input class="form-short rounded" th:id="ability__${iter.index}__" th:value="*{abilities[__${iter.index}__].name}"
+                            <input class="form-short rounded" th:id="ability__${iter.index}__" th:field="*{abilities[__${iter.index}__].name}"
                                    type="text"/>
                         </div>
                         <div class="d-flex flex-column">

@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 import org.allenfulmer.ptuviewer.dto.PokemonGeneratorDTO;
 import org.allenfulmer.ptuviewer.dto.PokemonSpeciesDTO;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.*;
@@ -120,18 +121,34 @@ public class PokemonSpecies implements Comparable<PokemonSpecies>{
     Set<LevelMove> levelUpMoves = new TreeSet<>();
 
     @Transient
-    //@ManyToMany(fetch = FetchType.EAGER)//, mappedBy = "tmHmMoves")
+//    @ManyToMany(fetch = FetchType.LAZY)//, mappedBy = "tmHmMoves")
+//    @JoinTable(name = "tm_hm_moves")
     Set<Move> tmHmMoves;
 
     @Transient
-//    @ManyToMany(fetch = FetchType.EAGER)
+//    @ManyToMany(fetch = FetchType.LAZY)
 //    @JoinTable(name = "tutor_moves")
     Set<Move> tutorMoves;
 
     @Transient
-//    @ManyToMany(fetch = FetchType.EAGER)
+//    @ManyToMany(fetch = FetchType.LAZY)
 //    @JoinTable(name = "egg_moves")
     Set<Move> eggMoves;
+//
+//    @Transactional
+//    public Set<Move> getTmHmMoves() {
+//        return new TreeSet<>(tmHmMoves);
+//    }
+//
+//    @Transactional
+//    public Set<Move> getTutorMoves() {
+//        return new TreeSet<>(tutorMoves);
+//    }
+//
+//    @Transactional
+//    public Set<Move> getEggMoves() {
+//        return new TreeSet<>(eggMoves);
+//    }
 
     public PokemonSpecies(String pokedexID, String speciesName, String form) {
         this.pokedexID = pokedexID;
@@ -176,6 +193,19 @@ public class PokemonSpecies implements Comparable<PokemonSpecies>{
         String ret = this.getSpeciesName();
         if (!this.getForm().equalsIgnoreCase(PokeConstants.NON_REGIONAL_FORM))
             ret += " (" + this.getForm() + ")";
+        return ret;
+    }
+
+    public List<Type> getTypes() {
+        if(types != null)
+            return types;
+
+        List<Type> ret = new ArrayList<>();
+        ret.add(getPrimaryType());
+        if(getSecondaryType() != null)
+            ret.add(getSecondaryType());
+
+        types = ret;
         return ret;
     }
 

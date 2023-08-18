@@ -52,6 +52,10 @@ public class PokemonSpeciesService {
         return pokemonRepo.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
+    public PokemonSpecies findByNameAndForm(String speciesName, String form) {
+        return pokemonRepo.findBySpeciesNameAndForm(speciesName, form).orElseThrow();
+    }
+
     public List<PokemonSpecies> findPokemonByExample(PokemonSpecies pokemon) {
         // The Pokemon we're receiving potentially has default values in it from the enums
         pokemon.setPrimaryType(pokemon.getPrimaryType() == Type.TYPES ? null : pokemon.getPrimaryType());

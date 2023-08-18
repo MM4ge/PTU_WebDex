@@ -13,10 +13,8 @@ import org.allenfulmer.ptuviewer.models.Move;
 import org.allenfulmer.ptuviewer.models.Stat;
 import org.allenfulmer.ptuviewer.models.Type;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -58,6 +56,7 @@ public class PokemonGeneratorDTO {
     // Info from the generated Pokemon that can be edited by User
     String pokeName;
     String pokeForm;
+    String gender;
     int level;
     Nature nature;
 
@@ -68,7 +67,8 @@ public class PokemonGeneratorDTO {
     int spDef;
     int speed;
 
-    List<HtmlMove> moves;
+//    List<HtmlMove> htmlMoves;
+    List<Move> moves;
     List<Ability> abilities;
 
     public PokemonGeneratorDTO(GeneratedPokemon poke) {
@@ -76,6 +76,7 @@ public class PokemonGeneratorDTO {
         this.pokeForm = poke.getSpecies().getForm();
         this.level = poke.getLevel();
         this.nature = poke.getNature();
+        this.gender = poke.getGender();
 
         Map<Stat.StatName, Stat> stats = poke.getStats();
         this.hp = stats.get(Stat.StatName.HP).getAllocated();
@@ -85,7 +86,7 @@ public class PokemonGeneratorDTO {
         this.spDef = stats.get(Stat.StatName.SPECIAL_DEFENSE).getAllocated();
         this.speed = stats.get(Stat.StatName.SPEED).getAllocated();
 
-        this.moves = poke.getMoves().stream().map(m -> new HtmlMove(m, poke.getSpecies().getTypes())).toList();
+        this.moves = poke.getMoves();//.stream().map(m -> new HtmlMove(m, poke.getSpecies().getTypes())).toList();
         this.abilities = poke.getAbilities().stream().toList();
     }
 }

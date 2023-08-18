@@ -4,10 +4,11 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.allenfulmer.ptuviewer.dto.PokemonGeneratorDTO;
-import org.allenfulmer.ptuviewer.dto.PokemonSpeciesDTO;
 import org.allenfulmer.ptuviewer.fileLoading.PojoToDBConverter;
 import org.allenfulmer.ptuviewer.generator.GeneratedPokemon;
 import org.allenfulmer.ptuviewer.models.PokemonSpecies;
+import org.allenfulmer.ptuviewer.services.AbilityService;
+import org.allenfulmer.ptuviewer.services.MoveService;
 import org.allenfulmer.ptuviewer.services.PokemonSpeciesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @Controller
 @Slf4j
@@ -24,11 +25,16 @@ import java.util.List;
 public class GeneratorController {
 
     private static final String GENERATOR = "pokemon_generator";
+    private static final String GEN_DTO = "pokemonGeneratorDTO";
     PokemonSpeciesService pokemonServ;
+    AbilityService abilityServ;
+    MoveService moveServ;
 
     @Autowired
-    GeneratorController(PokemonSpeciesService pokemonServ) {
+    GeneratorController(PokemonSpeciesService pokemonServ, AbilityService abilityServ, MoveService moveServ) {
         this.pokemonServ = pokemonServ;
+        this.abilityServ = abilityServ;
+        this.moveServ = moveServ;
     }
 
     // TODO: Finish these
@@ -36,26 +42,43 @@ public class GeneratorController {
     //  is already generated or not
     @GetMapping("/" + GENERATOR)
     public String pokemonGeneratorInitial(Model model) {
-        return pokemonGeneratorForm(model);
-//        return pokemonGeneratorForm(null, model);
-    }
-
-    @PostMapping("/" + GENERATOR)
-    public String pokemonGeneratorForm(Model model) {
-//    public String pokemonGeneratorForm(@ModelAttribute PokemonGeneratorDTO pokemonDTO, Model model) {
         GeneratedPokemon p1 = new GeneratedPokemon(PojoToDBConverter.getPokemonSpecies("001"), 99);
         model.addAttribute("genPoke", GeneratedPokemon.mainGenerate2(p1));
-        if(!model.containsAttribute("pokemonDTO")) {
-            System.out.println("hi");
-            model.addAttribute("pokemonDTO", new PokemonGeneratorDTO(p1));
-        }
-        else {
-            System.out.println(((PokemonGeneratorDTO) model.getAttribute("pokemonDTO")).getHp());
-        }
+        model.addAttribute(GEN_DTO, new PokemonGeneratorDTO(p1));
+
         model.addAttribute("pokemonSpeciesNames", pokemonServ.getAllSpecies().stream()
                 .map(PokemonSpecies::getNameAndForm).toList());
         model.addAttribute("pokemonMoves", p1.getPossibleMoves());
         model.addAttribute("pokemonAbilities", p1.getPossibleAbilities());
+        return GENERATOR;
+    }
+
+    @PostMapping("/" + GENERATOR)
+//    public String pokemonGeneratorForm(Model model) {
+    public String pokemonGeneratorForm(@ModelAttribute PokemonGeneratorDTO pokemonGeneratorDTO, Model model) {
+        log.info("-----Starting POST version of Pokemon Generation-----");
+        if (!model.containsAttribute(GEN_DTO))
+            throw new IllegalArgumentException("Gen_DTO doesn't even exist in the model");
+        else if (model.getAttribute(GEN_DTO) == null)
+            throw new IllegalArgumentException("Gen_DTO exists, but is null");
+
+        PokemonGeneratorDTO pokeDTO = ((PokemonGeneratorDTO) model.getAttribute(GEN_DTO));
+        PokemonSpecies species = pokemonServ.findByNameAndForm(pokeDTO.getPokeName(), pokeDTO.getPokeForm());
+        GeneratedPokemon genPoke = new GeneratedPokemon(species, pokeDTO);
+        genPoke.setAbilities(abilityServ.findAllByName(pokeDTO.getAbilities()));
+        pokeDTO.setAbilities(new ArrayList<>(genPoke.getAbilities()));
+        genPoke.setMoves(moveServ.findAllByName(pokeDTO.getMoves()));
+        pokeDTO.setMoves(genPoke.getMoves());
+//        genPoke.setMoves(moveServ.findAllByName(pokeDTO.getHtmlMoves()));
+        model.addAttribute("genPoke", genPoke);
+        log.info("Test: " + ((PokemonGeneratorDTO) model.getAttribute(GEN_DTO)).getHp());
+        log.info("-----POST version of Pokemon Generation Finished-----");
+
+//        model.addAttribute("pokemonSpeciesNames", pokemonServ.getAllSpecies().stream()
+//                .map(PokemonSpecies::getNameAndForm).toList());
+//        model.addAttribute("pokemonMoves", genPoke.getPossibleMoves());
+//        model.addAttribute("pokemonAbilities", genPoke.getPossibleAbilities());
+
         return GENERATOR;
     }
 

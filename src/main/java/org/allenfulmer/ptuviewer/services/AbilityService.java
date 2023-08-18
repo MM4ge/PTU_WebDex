@@ -13,9 +13,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -41,6 +39,12 @@ public class AbilityService {
     @Transactional(rollbackOn = {NoSuchElementException.class})
     public Ability findByName(String name) {
         return abilityRepo.findById(name).orElseThrow(NoSuchElementException::new);
+    }
+
+    public Set<Ability> findAllByName(List<Ability> abilityNames) {
+        return new HashSet<>(abilityRepo.findAllById(abilityNames.stream().map(Ability::getName).toList()));
+//        return abilityRepo.findAllById(abilityNames.stream().map(Ability::getName).toList());
+        // TODO: List instead of Set; Set will "randomize" the order between refreshes on the website
     }
 
     @Transactional(rollbackOn = {IllegalArgumentException.class})

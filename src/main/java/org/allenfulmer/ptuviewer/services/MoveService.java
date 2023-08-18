@@ -3,6 +3,7 @@ package org.allenfulmer.ptuviewer.services;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.allenfulmer.ptuviewer.generator.models.HtmlMove;
 import org.allenfulmer.ptuviewer.models.*;
 import org.allenfulmer.ptuviewer.repositories.AbilityRepository;
 import org.allenfulmer.ptuviewer.repositories.LevelMoveRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -52,6 +54,12 @@ public class MoveService {
 
     public List<Move> findAllSorted() {
         return moveRepo.findAll(Sort.by("type").ascending().and(Sort.by("name").ascending()));
+    }
+
+    public List<Move> findAllByName(List<Move> moveNames) {
+//        return moveRepo.findAllById(moveNames.stream().map(Move::getName).toList());
+        List<Move> moves = moveRepo.findAllById(moveNames.stream().map(Move::getName).toList());
+        return moves;
     }
 
     @Transactional(rollbackOn = {IllegalArgumentException.class})

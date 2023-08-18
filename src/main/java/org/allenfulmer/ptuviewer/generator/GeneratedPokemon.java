@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.allenfulmer.ptuviewer.dto.PokemonGeneratorDTO;
 import org.allenfulmer.ptuviewer.fileLoading.PojoToDBConverter;
 import org.allenfulmer.ptuviewer.generator.models.HtmlMove;
 import org.allenfulmer.ptuviewer.generator.models.Nature;
@@ -130,6 +131,10 @@ public class GeneratedPokemon extends Pokemon {
         super(species, level, nature);
         moveSavingStrategies.add(this::saveConnectionMoves);
         statChoiceAlg = statAlgs.get(PokeConstants.RANDOM_GEN.nextInt(statAlgs.size()));
+    }
+
+    public GeneratedPokemon(PokemonSpecies species, PokemonGeneratorDTO pokeDTO) {
+        super(species, pokeDTO);
     }
 
     private List<Stat.StatName> exemptStats = new ArrayList<>(); // TODO: Default this to block HP in WEBPAGE, not here
@@ -667,7 +672,9 @@ public class GeneratedPokemon extends Pokemon {
     */
 
     public List<HtmlMove> getHtmlMoves() {
-        return getMoves().stream().map(m -> new HtmlMove(m, getSpecies().getTypes())).toList();
+//        return getMoves().stream().map(m -> new HtmlMove(m, getSpecies().getTypes())).toList();
+        List<HtmlMove> moves = getMoves().stream().map(m -> new HtmlMove(m, getSpecies().getTypes())).toList();
+        return moves;
     }
 
     public boolean hasStab() {
