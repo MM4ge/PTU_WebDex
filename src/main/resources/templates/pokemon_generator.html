@@ -1,13 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
-<div th:replace="fragments/head :: head"/>
+<div th:replace="~{fragments/head :: head}"/>
 <body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet"
       href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<!--<link rel="stylesheet" href="../static/js/generator.js">-->
+<!--<script defer src="../static/js/generator.js"></script>-->
+<!--<script type="text/javascript" src="../static/js/generator.js"></script>-->
+<!--<script type="text/javascript" src="src/main/resources/static/js/generator.js"></script>-->
+<script defer type="text/javascript" th:src="@{/js/generator.js}"></script>
 <!-- Responsive navbar-->
-<div th:replace="fragments/nav :: nav"/>
+<div th:replace="~{fragments/nav :: nav}"/>
 
 <div class="h-100 d-flex align-items-center justify-content-center">
     <div class="mb-3">
@@ -21,31 +26,32 @@
         (maybe only from moves / abilites the poke can get) and update dynamically -->
 <!-- FC: need button to add a blank move / ability
 -->
-<form action="#" class="m-3 p-3 border border-dark" method="post" th:action="@{/pokemon_generator}" th:object="${pokemonGeneratorDTO}">
+<form action="#" class="m-3 p-3 border border-dark" method="post" th:action="@{/pokemon_generator}" th:object="${pokemonGeneratorDTO}" onSubmit="return false;">
     <div class="flex-row d-flex flex-wrap align-items-center justify-content-center">
         <input type="submit" value="Submit"/>
         <input type="reset" value="Reset"/>
     </div>
     <!-- Generated Pokemon -->
-    <div class="h-100 flex-row d-flex flex-wrap align-items-center justify-content-center" th:if="${genPoke != null}">
+    <div id="genPokeElem" class="h-100 flex-row d-flex flex-wrap align-items-center justify-content-center"
+         th:if="${genPoke != null}">
         <!--    <div th:if="${genPoke != null}">-->
         <!-- Basic Info like Species, Nature, Level, etc.-->
-        <div class="d-flex flex-column border border-dark m-1 p-1">
+        <div id="pokeOuterElem" class="d-flex flex-column border border-dark m-1 p-1">
             <div class="px-1"><h3 class="py-0">Basic Info</h3></div>
-            <div class="d-flex flex-row justify-content-between">
+            <div id="pokeInnerElem" class="d-flex flex-row justify-content-between">
                 <!-- Species -->
                 <div class="d-flex flex-column">
                     <p class="weight-light m-0" style="font-size: small"><i>Species:</i></p>
-                    <input class="form-short" th:field="*{pokeName}" th:value="${genPoke.species.speciesName}" size="8"
-                           type="text"/>
+                    <input id="pokeName" class="form-short" th:field="*{pokeName}" th:value="${genPoke.species.speciesName}"
+                           size="8" type="text"/>
                 </div>
                 <div class="mx-1">
                 </div>
                 <!-- Form -->
                 <div class="d-flex flex-column">
                     <p class="weight-light m-0" style="font-size: small"><i>Form:</i></p>
-                    <input class="form-short" th:field="*{pokeForm}" th:value="${genPoke.species.form}" size="8"
-                           type="text"/>
+                    <input id="pokeForm" class="form-short" th:field="*{pokeForm}" th:value="${genPoke.species.form}"
+                           size="8" type="text"/>
                 </div>
             </div>
 
@@ -60,7 +66,7 @@
             </div>
             <div class="d-flex flex-column">
                 <p class="weight-light m-0" style="font-size: small"><i>Level:</i></p>
-                <input class="form-short" th:field="*{level}" th:value="${genPoke.level}" size="6"
+                <input id="pokeLevel" class="form-short" th:field="*{level}" th:value="${genPoke.level}" size="6"
                        type="text"/>
             </div>
             <div class="d-flex flex-column">
@@ -195,9 +201,12 @@
         <!--    Moves + Abilities -->
         <div class="d-flex flex-row justify-content-between">
             <!-- Moves -->
-            <div class="d-flex flex-column border border-dark m-1">
+            <div id="Moves" class="d-flex flex-column border border-dark m-1">
                 <div class="d-flex flex-row justify-content-between">
                     <div class="px-1"><h3 class="py-0">Moves</h3></div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <button th:onclick="alertThing([[${genPoke.species.speciesName}]])">Add Blank Move</button>
+                    </div>
                     <p class="weight-light mx-1 my-0" style="font-size: small" th:if="${genPoke.hasStab}">
                         <i>Bold DB's have STAB applied</i>
                     </p>
@@ -207,17 +216,7 @@
                     <div class="d-flex flex-row justify-content-between border-bottom">
                         <div class="d-flex flex-column">
                             <p class="weight-light m-0" style="font-size: small"><i>Name:</i></p>
-                            <script th:inline="javascript">
-                var move_list = /*[[${pokemonMoves}]]*/'noValue';
-                $(document).ready(function() {
-                $("#move[[__${iter.index}__]]").autocomplete({
-                    minLength : 0,
-                    source : move_list,
-                    })
-                });
-                            </script>
-                            <input class="form-short rounded" th:id="move__${iter.index}__" th:field="*{moves[__${iter.index}__].name}"
-                                   type="text"/>
+                            <input class="form-short rounded" th:id="move__${iter.index}__" th:field="*{moves[__${iter.index}__].name}" type="text"/>
                         </div>
                         <div class="d-flex flex-column">
                             <p class="weight-light m-0" style="font-size: small"><i>Class:</i></p>
@@ -250,7 +249,7 @@
                     </div>
 
                     <!-- Effect -->
-                    <div class="d-flex flex-column border-top" th:if="${move.effect != null}">
+                    <div class="d-flex flex-column border-top" th:if="${move.hasEffect}">
                         <p class="weight-light m-0" style="font-size: small"><i>Effect:</i></p>
                         <div th:text="${move.effect}"></div>
                     </div>
@@ -267,13 +266,13 @@
                         <div class="d-flex flex-column">
                             <p class="weight-light m-0" style="font-size: small"><i>Name:</i></p>
                             <script th:inline="javascript">
-                var ability_list = /*[[${pokemonAbilities}]]*/'noValue';
-                $(document).ready(function() {
-                $("#ability[[__${iter.index}__]]").autocomplete({
-                    minLength : 0,
-                    source : ability_list,
-                    })
-                });
+                                var ability_list = /*[[${pokemonAbilities}]]*/'noValue';
+                                $(document).ready(function() {
+                                $("#ability[[__${iter.index}__]]").autocomplete({
+                                    minLength : 0,
+                                    source : ability_list,
+                                    })
+                                });
                             </script>
                             <input class="form-short rounded" th:id="ability__${iter.index}__" th:field="*{abilities[__${iter.index}__].name}"
                                    type="text"/>
@@ -309,6 +308,6 @@
 </form>
 
 <!-- Footer-->
-<div th:replace="fragments/footer :: footer"/>
+<div th:replace="~{fragments/footer :: footer}"/>
 </body>
 </html>

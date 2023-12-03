@@ -730,15 +730,35 @@ public class GeneratedPokemon extends Pokemon {
 
     public List<String> getPossibleAbilities() {
         return getSpecies().getBaseAbilities().stream().filter(ba -> ba.getAbilityType().getLevel() <= this.getLevel()).
-                map(BaseAbility::getAbility).map(Ability::getName).filter(s -> !s.isBlank()).toList();
+            map(ba -> ba.getAbility().getName() + " (" + ba.getAbilityType().getDisplayName() + ")").toList();
+//                map(BaseAbility::getAbility).map(Ability::getName).filter(s -> !s.isBlank()).toList();
     }
 
     public List<String> getPossibleMoves() {
-        Set<Move> moves = getSpecies().getLevelUpMoves().stream().filter(lm -> lm.getLevel() <= this.getLevel()).
-                map(LevelMove::getMove).collect(Collectors.toSet());
-        moves.addAll(getSpecies().getTmHmMoves());
-        moves.addAll(getSpecies().getEggMoves());
-        moves.addAll(getSpecies().getTutorMoves());
-        return moves.stream().map(Move::getName).filter(s -> !s.isBlank()).toList();
+        Map<Move, List<String>> moveStrMap = new LinkedHashMap<>();
+        getSpecies().getLevelUpMoves().stream().filter(lm -> lm.getLevel() <= this.getLevel()).sorted().
+//                map(LevelMove::getMove).distinct().
+                forEach(lm -> {
+                    List<String> sources = new ArrayList<>();
+                    sources.add("Lv" + lm.getLevel());
+                    moveStrMap.put(lm.getMove(), sources);
+                });
+        getSpecies().getTmHmMoves().forEach(m -> {
+            List<String> sources = moveStrMap.containsKey(m) ? moveStrMap.get(m) : new ArrayList<>();
+            sources.add("TM");
+            moveStrMap.put(m, sources);
+        });
+        getSpecies().getEggMoves().forEach(m -> {
+            List<String> sources = moveStrMap.containsKey(m) ? moveStrMap.get(m) : new ArrayList<>();
+            sources.add("Egg");
+            moveStrMap.put(m, sources);
+        });
+        getSpecies().getTutorMoves().forEach(m -> {
+            List<String> sources = moveStrMap.containsKey(m) ? moveStrMap.get(m) : new ArrayList<>();
+            sources.add("Tutor");
+            moveStrMap.put(m, sources);
+        });
+        return moveStrMap.entrySet().stream().map(e -> e.getKey().getName() +
+                e.getValue().stream().collect(Collectors.joining(", "," (",")"))).toList();
     }
 }

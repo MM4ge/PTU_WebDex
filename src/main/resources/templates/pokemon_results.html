@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
-<div th:replace="fragments/head :: head"/>
+<div th:replace="~{fragments/head :: head}"/>
 <body>
 <!-- Responsive navbar-->
-<div th:replace="fragments/nav :: nav"/>
+<div th:replace="~{fragments/nav :: nav}"/>
 <div class="h-100 d-flex align-items-center justify-content-center">
     <div class="col-lg-10">
         <h1 class="text-black text-center">Selected Pokemon</h1>
@@ -113,6 +113,6 @@
     </div>
 </div>
 <!-- Footer-->
-<div th:replace="fragments/footer :: footer"/>
+<div th:replace="~{fragments/footer :: footer}"/>
 </body>
 </html>

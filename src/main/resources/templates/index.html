@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="fragments/head :: head"/>
+<div th:replace="~{fragments/head :: head}"/>
 <body>
 <!-- Responsive navbar-->
-<div th:replace="fragments/nav :: nav"/>
+<div th:replace="~{fragments/nav :: nav}"/>
 
 <!-- Page content-->
 <div class="container">
@@ -15,6 +15,6 @@
     </div>
 </div>
 <!-- Footer-->
-<div th:replace="fragments/footer :: footer"/>
+<div th:replace="~{fragments/footer :: footer}"/>
 </body>
 </html>
