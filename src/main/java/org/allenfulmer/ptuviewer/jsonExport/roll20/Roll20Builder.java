@@ -134,6 +134,8 @@ public class Roll20Builder {
         return rollPoke;
     }
 
+    // TODO: Add note for +1 DB -1 AC on Struggle for Combat 5+
+
     private void convertAbilities() //Set<Ability> origAbilities)
     { // poke.getAbilities()
         List<Ability> abilities = new ArrayList<>(poke.getAbilities());
@@ -267,6 +269,26 @@ public class Roll20Builder {
             rollPoke.setMove19(convertedMoves.get(18));
         if (convertedMoves.size() > 19)
             rollPoke.setMove20(convertedMoves.get(19));
+        if (convertedMoves.size() > 20)
+            rollPoke.setMove21(convertedMoves.get(20));
+        if (convertedMoves.size() > 21)
+            rollPoke.setMove22(convertedMoves.get(21));
+        if (convertedMoves.size() > 22)
+            rollPoke.setMove23(convertedMoves.get(22));
+        if (convertedMoves.size() > 23)
+            rollPoke.setMove24(convertedMoves.get(23));
+        if (convertedMoves.size() > 24)
+            rollPoke.setMove25(convertedMoves.get(24));
+        if (convertedMoves.size() > 25)
+            rollPoke.setMove26(convertedMoves.get(25));
+        if (convertedMoves.size() > 26)
+            rollPoke.setMove27(convertedMoves.get(26));
+        if (convertedMoves.size() > 27)
+            rollPoke.setMove28(convertedMoves.get(27));
+        if (convertedMoves.size() > 28)
+            rollPoke.setMove29(convertedMoves.get(28));
+        if (convertedMoves.size() > 29)
+            rollPoke.setMove30(convertedMoves.get(29));
     }
 
     private void convertAbilitiesToMoves(List<MoveRoll20> convertedMoves, boolean anyPrevDB) {

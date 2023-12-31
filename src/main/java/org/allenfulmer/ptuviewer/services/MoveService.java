@@ -1,9 +1,9 @@
 package org.allenfulmer.ptuviewer.services;
 
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.allenfulmer.ptuviewer.generator.models.HtmlMove;
 import org.allenfulmer.ptuviewer.models.*;
 import org.allenfulmer.ptuviewer.repositories.AbilityRepository;
 import org.allenfulmer.ptuviewer.repositories.LevelMoveRepository;
@@ -13,9 +13,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j

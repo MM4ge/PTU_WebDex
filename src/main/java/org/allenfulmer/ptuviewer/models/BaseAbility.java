@@ -1,12 +1,12 @@
 package org.allenfulmer.ptuviewer.models;
 
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.*;
 import java.util.Objects;
 
 @Setter
@@ -27,7 +27,7 @@ public class BaseAbility implements Comparable<BaseAbility>, Displayable {
     @ManyToOne(fetch = FetchType.EAGER)
     @NonNull
     Ability ability;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @NonNull
     PokemonSpecies pokemonSpecies;
 

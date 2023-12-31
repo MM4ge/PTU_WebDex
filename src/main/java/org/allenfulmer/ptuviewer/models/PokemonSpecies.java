@@ -1,13 +1,12 @@
 package org.allenfulmer.ptuviewer.models;
 
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.allenfulmer.ptuviewer.dto.PokemonGeneratorDTO;
 import org.allenfulmer.ptuviewer.dto.PokemonSpeciesDTO;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,9 +42,10 @@ public class PokemonSpecies implements Comparable<PokemonSpecies>{
     // TODO: Replace the above with one more Str for prevEvoCriteria and make functions / queries to dynamically get
     //  full evo family information (join on prevEvoID = pokedexID) and get past poke from member var, curr from curr,
     //  and future from query to make one whole evo family tree
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     PokemonSpecies prevEvo;
     int prevEvoLevel;
+    // todo: criteria and evo tree builder like pokemap for global future evo lookup
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemonSpecies", fetch = FetchType.EAGER)
     Set<BaseCapability> baseCapabilities = new TreeSet<>();
@@ -120,19 +120,22 @@ public class PokemonSpecies implements Comparable<PokemonSpecies>{
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemonSpecies", fetch = FetchType.EAGER)
     Set<LevelMove> levelUpMoves = new TreeSet<>();
 
-    @Transient
-//    @ManyToMany(fetch = FetchType.LAZY)//, mappedBy = "tmHmMoves")
-//    @JoinTable(name = "tm_hm_moves")
+    //    @Transient
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tm_hm_moves")
+    @ToString.Exclude
     Set<Move> tmHmMoves;
 
-    @Transient
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "tutor_moves")
+    //    @Transient
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tutor_moves")
+    @ToString.Exclude
     Set<Move> tutorMoves;
 
-    @Transient
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "egg_moves")
+    //    @Transient
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "egg_moves")
+    @ToString.Exclude
     Set<Move> eggMoves;
 //
 //    @Transactional

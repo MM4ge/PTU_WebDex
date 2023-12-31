@@ -637,6 +637,36 @@ public class PojoToDBConverter {
 
     public static void main(String[] args) {
         populatePokemonMaps();
+        log.info("Total count:" + convertedMoves.size() + convertedAbilities.size() + convertedPokemonSpecies.size());
+        testCode();
+    }
+
+    public static void testCode() {
+        convertedPokemonSpecies.values().stream().sorted((p1, p2) -> {
+            Integer total1 = p1.getBaseStats().values().stream().mapToInt(Integer::intValue).sum();
+            return total1.compareTo(p2.getBaseStats().values().stream().mapToInt(Integer::intValue).sum());
+        }).forEach(p -> System.out.println(p.getSpeciesName() + ": " +
+                p.getBaseStats().values().stream().mapToInt(Integer::intValue).sum()));
+
+        int[] stats = new int[6];
+        for (int i = 0; i < 6; i++)
+            stats[i] = 1;
+        for (int i = 0; i < 57; i++) {
+            stats[PokeConstants.RANDOM_GEN.nextInt(6)]++;
+        }
+        log.info("   HP: " + stats[0]);
+        log.info("  Atk: " + stats[1]);
+        log.info("  Def: " + stats[2]);
+        log.info("SpAtk: " + stats[3]);
+        log.info("SpDef: " + stats[4]);
+        log.info("Speed: " + stats[5]);
+
+        for (int i = 0; i < 7; i++) {
+            log.info(convertedMoves.values().stream().toList().get(PokeConstants.RANDOM_GEN.nextInt(convertedMoves.size())).toString());
+        }
+        for (int i = 0; i < 4; i++) {
+            log.info(convertedAbilities.values().stream().toList().get(PokeConstants.RANDOM_GEN.nextInt(convertedAbilities.size())).toString());
+        }
     }
 
     public static Map<String, PokemonSpecies> populatePokemonMaps() {

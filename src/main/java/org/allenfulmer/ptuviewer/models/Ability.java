@@ -1,11 +1,12 @@
 package org.allenfulmer.ptuviewer.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.allenfulmer.ptuviewer.dto.AbilityDTO;
 import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -32,11 +33,12 @@ public class Ability implements Comparable<Ability>, Displayable {
     String target = "";
     @Column(length = 1023)
     String effect = "";
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)//(cascade = CascadeType.ALL)
     @JoinColumn(name = "connection_move")
     Move connection = null;
-
-    @OneToMany(mappedBy = "ability")//, fetch = FetchType.EAGER)
+    @JsonIgnore
+    @OneToMany(mappedBy = "ability", fetch = FetchType.LAZY)//, fetch = FetchType.EAGER)
     Set<BaseAbility> baseAbilities = new HashSet<>();
 
     public Ability(@NonNull String name, @NonNull Frequency frequency, int uses, ActionType actionType, ActionType.Priority priority, String trigger, String target, @NonNull String effect, Move connection) {

@@ -1,16 +1,15 @@
 package org.allenfulmer.ptuviewer.models;
 
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -24,7 +23,7 @@ public class Capability {
     String description;
 
     @ToString.Exclude
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "capability")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "capability")
     Set<BaseCapability> baseCapabilities = new HashSet<>();
 
     public Capability(String name, String description) {

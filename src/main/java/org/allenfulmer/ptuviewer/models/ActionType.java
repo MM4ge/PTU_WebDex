@@ -1,6 +1,6 @@
 package org.allenfulmer.ptuviewer.models;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-@Getter
 public enum ActionType {
     ACTION_TYPE("Action Types"),
     FREE_ACTION("Free Action"), SWIFT_ACTION("Swift Action"), SHIFT_ACTION("Shift Action"),
@@ -31,9 +30,15 @@ public enum ActionType {
         return nameMap.get(name);
     }
 
+    @JsonValue
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
     public enum Priority {
         PRIORITY, INTERRUPT, REACTION;
 
+        @JsonValue
         public String getDisplayName() {
             return StringUtils.capitalize(this.name().toLowerCase());
         }

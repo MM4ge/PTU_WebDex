@@ -1,9 +1,9 @@
 package org.allenfulmer.ptuviewer.models;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.*;
 import java.util.*;
 
 @Entity
@@ -24,7 +24,7 @@ public class Skill implements Comparable<Skill>, Displayable {
     @Column(name = "bonus")
     int bonus = 0;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @NonNull
     PokemonSpecies pokemonSpecies;
 

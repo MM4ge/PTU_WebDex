@@ -1,6 +1,6 @@
 package org.allenfulmer.ptuviewer.jsonExport.exodus;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 @Generated("jsonschema2pojo")
 public class LevelUpMovesExodus {

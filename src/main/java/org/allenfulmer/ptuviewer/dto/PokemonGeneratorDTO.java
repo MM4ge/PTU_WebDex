@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.allenfulmer.ptuviewer.generator.GeneratedPokemon;
-import org.allenfulmer.ptuviewer.generator.models.HtmlMove;
 import org.allenfulmer.ptuviewer.generator.models.Nature;
 import org.allenfulmer.ptuviewer.models.Ability;
 import org.allenfulmer.ptuviewer.models.Move;

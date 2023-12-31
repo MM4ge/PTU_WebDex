@@ -1,11 +1,14 @@
 package org.allenfulmer.ptuviewer.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.allenfulmer.ptuviewer.dto.MoveDTO;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.util.StringUtils;
 
-import javax.persistence.*;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -43,23 +46,28 @@ public class Move implements Displayable, Comparable<Move> {
     ContestEffect contestEffect;
     @Transient
     String critsOn;
+    @JsonIgnore
     @ToString.Exclude
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "move")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "move")
     Set<LevelMove> levelMoves = new HashSet<>();
+    @JsonIgnore
     @ToString.Exclude
     @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER, mappedBy = "connection")
     Set<Ability> connections = new HashSet<>();
+    @JsonIgnore
     @ToString.Exclude
-    @Transient
-    //@ManyToMany(mappedBy = "tmHmMoves")
+//    @Transient
+    @ManyToMany(mappedBy = "tmHmMoves", fetch = FetchType.LAZY)
     Set<PokemonSpecies> tmHmMoves = new HashSet<>();
+    @JsonIgnore
     @ToString.Exclude
-    @Transient
-    //@ManyToMany(mappedBy = "tutorMoves")
+//    @Transient
+    @ManyToMany(mappedBy = "tutorMoves", fetch = FetchType.LAZY)
     Set<PokemonSpecies> tutorMoves = new HashSet<>();
+    @JsonIgnore
     @ToString.Exclude
-    @Transient
-    //@ManyToMany(mappedBy = "eggMoves")
+//    @Transient
+    @ManyToMany(mappedBy = "eggMoves", fetch = FetchType.LAZY)
     Set<PokemonSpecies> eggMoves = new HashSet<>();
 
     public Move(@NonNull String name, @NonNull Type type, @NonNull Frequency frequency, int uses, String ac, String db, @NonNull MoveClass moveClass, String range, String effect, ContestType contestType, ContestEffect contestEffect, String critsOn) {
@@ -105,6 +113,10 @@ public class Move implements Displayable, Comparable<Move> {
         this.moveClass = moveDTO.getMoveClass();
         this.range = moveDTO.getRange();
         this.effect = moveDTO.getEffect();
+    }
+
+    public boolean hasEffect() {
+        return getEffect() != null && !getEffect().isBlank();
     }
 
     public String getFullFreq() {
@@ -157,7 +169,6 @@ public class Move implements Displayable, Comparable<Move> {
     }
 
     // should prob consolidate them out of the converter if that's my convention
-    @Getter
     public enum MoveClass implements Displayable {
         MOVE_CLASSES("Move Class"),
         PHYSICAL("Physical"), SPECIAL("Special"),
@@ -172,14 +183,24 @@ public class Move implements Displayable, Comparable<Move> {
         public static MoveClass getWithName(String str) {
             return MoveClass.valueOf(str.toUpperCase());
         }
+
+        @JsonValue
+        public String getDisplayName() {
+            return this.displayName;
+        }
     }
 
-    public enum ContestType {
+    public enum ContestType implements Displayable {
         BEAUTY, COOL, CUTE, SMART, TOUGH;
+
+        @JsonValue
+        public String getDisplayName() {
+            return StringUtils.capitalize(this.name().toLowerCase());
+        }
     }
 
     @Getter
-    public enum ContestEffect {
+    public enum ContestEffect implements Displayable {
         ATTENTION_GRABBER("Attention Grabber"), BIG_SHOW("Big Show"), CATCHING_UP("Catching Up"),
         DESPERATION("Desperation"), DOUBLE_TIME("Double Time"), EXCITEMENT("Excitement"),
         EXHAUSTING_ACT("Exhausting Act"), GAMBLE("Gamble"), GET_READY("Get Ready!"),
@@ -202,6 +223,11 @@ public class Move implements Displayable, Comparable<Move> {
                         ContestEffect::getName, Function.identity()));
             }
             return contestEffectMap.get(name);
+        }
+
+        @JsonValue
+        public String getDisplayName() {
+            return this.name;
         }
     }
 }

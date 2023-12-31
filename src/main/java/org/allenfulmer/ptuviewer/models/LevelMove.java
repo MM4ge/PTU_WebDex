@@ -1,11 +1,11 @@
 package org.allenfulmer.ptuviewer.models;
 
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.*;
 import java.util.Objects;
 
 @Setter
@@ -25,7 +25,7 @@ public class LevelMove implements Comparable<LevelMove>, Displayable {
     @ManyToOne(fetch = FetchType.EAGER)
     @NonNull
     Move move;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @NonNull
     PokemonSpecies pokemonSpecies;
 

@@ -2,6 +2,7 @@ package org.allenfulmer.ptuviewer.jsonExport.roll20;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import jakarta.annotation.Generated;
 import lombok.Getter;
 import lombok.Setter;
 import org.allenfulmer.ptuviewer.models.Ability;
@@ -10,7 +11,6 @@ import org.allenfulmer.ptuviewer.models.Move;
 import org.allenfulmer.ptuviewer.models.PokeConstants;
 import org.allenfulmer.ptuviewer.util.PokeUtils;
 
-import javax.annotation.Generated;
 import java.util.Objects;
 
 @Generated("jsonschema2pojo")

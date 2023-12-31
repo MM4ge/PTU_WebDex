@@ -1,13 +1,12 @@
 package org.allenfulmer.ptuviewer.models;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-@Getter
 public enum Frequency {
     FREQUENCIES("Frequency"),
     AT_WILL("At-Will"), EOT("EOT"), SCENE("Scene"), DAILY("Daily"),
@@ -26,5 +25,10 @@ public enum Frequency {
             nameMap = Collections.unmodifiableMap(map);
         }
         return nameMap.get(name);
+    }
+
+    @JsonValue
+    public String getDisplayName() {
+        return this.displayName;
     }
 }

@@ -3,11 +3,11 @@ package org.allenfulmer.ptuviewer.jsonExport.roll20;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import jakarta.annotation.Generated;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.annotation.Generated;
 import java.util.Map;
 
 @Generated("jsonschema2pojo")
@@ -253,6 +253,36 @@ public class PokemonRoll20 {
     @SerializedName("Move20")
     @Expose
     private MoveRoll20 move20;
+    @SerializedName("Move21")
+    @Expose
+    private MoveRoll20 move21;
+    @SerializedName("Move22")
+    @Expose
+    private MoveRoll20 move22;
+    @SerializedName("Move23")
+    @Expose
+    private MoveRoll20 move23;
+    @SerializedName("Move24")
+    @Expose
+    private MoveRoll20 move24;
+    @SerializedName("Move25")
+    @Expose
+    private MoveRoll20 move25;
+    @SerializedName("Move26")
+    @Expose
+    private MoveRoll20 move26;
+    @SerializedName("Move27")
+    @Expose
+    private MoveRoll20 move27;
+    @SerializedName("Move28")
+    @Expose
+    private MoveRoll20 move28;
+    @SerializedName("Move29")
+    @Expose
+    private MoveRoll20 move29;
+    @SerializedName("Move30")
+    @Expose
+    private MoveRoll20 move30;
     @SerializedName("Struggle_Type")
     @Expose
     private String struggleType = "Normal";

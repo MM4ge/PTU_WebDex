@@ -1,16 +1,17 @@
 package org.allenfulmer.ptuviewer.models;
 
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
+//@Transactional
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BaseCapability implements Comparable<BaseCapability>, Displayable {
     @Id
@@ -23,7 +24,7 @@ public class BaseCapability implements Comparable<BaseCapability>, Displayable {
     @ManyToOne(fetch = FetchType.EAGER)
     @NonNull
     Capability capability;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @NonNull
     PokemonSpecies pokemonSpecies;
 
@@ -44,8 +45,8 @@ public class BaseCapability implements Comparable<BaseCapability>, Displayable {
         this.criteria = criteria;
         this.capability = capability;
         this.pokemonSpecies = pokemon;
-        if (capability != null)
-            capability.getBaseCapabilities().add(this);
+//        if (capability != null)
+//            capability.getBaseCapabilities().add(this);
     }
 
     public void removeSelfFromPokemon() {

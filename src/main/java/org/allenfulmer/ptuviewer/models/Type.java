@@ -1,9 +1,8 @@
 package org.allenfulmer.ptuviewer.models;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.util.StringUtils;
 
-@Getter
 public enum Type {
     TYPES("Type"),
     BUG, DARK, DRAGON, ELECTRIC, FAIRY, FIGHTING, FIRE, FLYING, GHOST,
@@ -17,5 +16,10 @@ public enum Type {
 
     private Type(String displayName) {
         this.displayName = displayName;
+    }
+
+    @JsonValue
+    public String getDisplayName() {
+        return this.displayName;
     }
 }

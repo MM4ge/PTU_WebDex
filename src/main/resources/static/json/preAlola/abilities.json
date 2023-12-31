@@ -1561,7 +1561,7 @@
     "Trigger": "The user is hit by a damaging attack",
     "Effect": "The user may make an AC4 Physical Attack against an adjacent target. If the attack hits, the target loses Hit Points equal to 1/3rd of the damage taken by the user from the attack that triggered Weeble."
   },
-  "Weird power": {
+  "Weird Power": {
     "Freq": "Static",
     "Effect": "If the user's Attack is higher than its Special Attack, the user may add its Attack Stat to its Special Damage Rolls. If their Special Attack is higher, they user may add its Special Attack Stat to its Physical Damage Rolls. This does not stack with Mixed Power."
   },

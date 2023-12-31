@@ -2,8 +2,7 @@ package org.allenfulmer.ptuviewer.jsonExport.exodus;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 @Generated("jsonschema2pojo")
 public class StatExodus {

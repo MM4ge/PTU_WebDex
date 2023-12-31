@@ -2,10 +2,9 @@ package org.allenfulmer.ptuviewer.jsonExport.roll20;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import jakarta.annotation.Generated;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.annotation.Generated;
 
 @Generated("jsonschema2pojo")
 @Getter
