@@ -49,24 +49,37 @@ public class PojoToDBConverter {
     }
     //TODO: all 4 of the aboves, move functionality out of command line runner and ensure null saftey for maps so they
     // don't have to be done in order or else everything explodes
-
     public static Map<String, PokemonSpecies> getConvertedPokemonSpeciesMap() {
         return Collections.unmodifiableMap(getConvertedPokemonSpecies());
     }
 
-    public static Ability getAbility(String name) {
+    private static Map<String, Move> getConvertedMoves() {
+        if (convertedMoves == null)
+            convertedMoves = moveMapBuilder(JsonToPojoLoader.parsePojoMoves());
+        return convertedMoves;
+    }
+    public static Map<String, Move> getConvertedMovesMap() {
+        return Collections.unmodifiableMap(getConvertedMoves());
+    }
+
+    private static Map<String, Ability> getConvertedAbilities() {
         if (convertedAbilities == null)
             convertedAbilities = abilityMapBuilder(JsonToPojoLoader.parsePojoAbilities());
-        Ability mapAbility = convertedAbilities.get(name);
+        return convertedAbilities;
+    }
+    public static Map<String, Ability> getConvertedAbilitiesMap() {
+        return Collections.unmodifiableMap(getConvertedAbilities());
+    }
+
+    public static Ability getAbility(String name) {
+        Ability mapAbility = getConvertedAbilities().get(name);
         if (mapAbility == null)
             throw new NullPointerException("Ability named " + name + " not found in abilityMap");
         return mapAbility;
     }
 
     public static Move getMove(String name) {
-        if (convertedMoves == null)
-            convertedMoves = moveMapBuilder(JsonToPojoLoader.parsePojoMoves());
-        Move mapMove = convertedMoves.get(name);
+        Move mapMove = getConvertedMoves().get(name);
         if (mapMove == null)
             throw new NullPointerException("Move named " + name + " not found in moveMap");
         return mapMove;
