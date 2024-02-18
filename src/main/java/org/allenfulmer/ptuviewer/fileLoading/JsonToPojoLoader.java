@@ -44,10 +44,16 @@ public class JsonToPojoLoader {
                 e -> Integer.parseInt(e.getKey()), Map.Entry::getValue));
     }
 
-    public static Map<String, Capability> parseCapabilities() {
+    public static Map<String, Capability> parseCapabilities(boolean keepHyphens) {
         Map<String, String> jsonCapabilities = gson.fromJson(readFromFile(CAPABILITIES_FILEPATH), new TypeToken<Map<String, String>>() {
         }.getType());
-        return jsonCapabilities.entrySet().stream().map(e -> new Capability(e.getKey(), e.getValue()))
+        return jsonCapabilities.entrySet().stream().map(e -> {
+                    if (keepHyphens)
+                        return new Capability(e.getKey(), e.getValue());
+                    // TODO: Figure out how to differentiate between intentional hyphens between two full words
+                    //  and hyphens to split one word into two - require English dictionary?
+                    throw new RuntimeException("Ability to remove Hyphens not yet implemented!");
+                })
                 .collect(Collectors.toMap(Capability::getName, c -> c));
     }
 

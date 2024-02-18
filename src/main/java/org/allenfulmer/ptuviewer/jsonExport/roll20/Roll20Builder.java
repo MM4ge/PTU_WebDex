@@ -12,13 +12,20 @@ import java.util.stream.Collectors;
 public class Roll20Builder {
     private final StringBuilder notesBuilder = new StringBuilder("""
             General Generator / Converter Notes:
-            If the Sheet has weird things (like a move having another's effect), make a new character sheet and re-import the same JSON from the Import page. If it still exists, tell Mage about the error and give him the JSON.
+            If the Sheet has weird things (like a move having another's effect or missing entirely), make a new character sheet and re-import the same JSON from the Import page. If it still exists, tell Mage about the error and give him the JSON.
             """);
 
     private final StringBuilder changeNotesBuilder = new StringBuilder("Manual Changes Notes:\n");
     private boolean abilitiesAsMoves = false;
     private boolean connectionInfoInMoves = false;
+    private boolean autoNumberNames = false;
 
+    // FC: Add additional flag for adding formes abbreviations on the ends of names so this doesn't increment for
+    //  different form versions (i.e. Meowth (Standard) and Meowth (Galarian) would end up as Meowth 1 and Meowth 2
+    //  even if they aren't exactly the same species
+    // FC: This won't work for a web-hosted version, but is fine for local-only. Change how builder works later if
+    //  counting is offered to the web version as this will cause different web users' counts to interfere.
+    private static Map<String, Integer> autoNumberNamesMap;
     private static final Predicate<Ability> abilityMovesPred = a -> !a.getFrequency().equals(Frequency.SCENE) && !a.getFrequency().equals(Frequency.DAILY);
 
     private final Pokemon poke;
@@ -39,16 +46,32 @@ public class Roll20Builder {
         return this;
     }
 
+    public Roll20Builder setAutoNumberNames(boolean flag) {
+        autoNumberNames = false;
+        return this;
+    }
+
     public PokemonRoll20 build() {
         rollPoke = new PokemonRoll20();
 
         PokemonSpecies species = poke.getSpecies();
         List<Type> types = species.getTypes();
         String speciesName = species.getSpeciesName();
-        rollPoke.setNickname(speciesName);
         if (species.getForm() != null && !species.getForm().isEmpty() && !species.getForm().equalsIgnoreCase("Standard"))
             speciesName += " (" + species.getForm() + ")";
         rollPoke.setSpecies(speciesName);
+        // Add counter to end of nickname if autoNumber flag is set - Meowth (1), Meowth (2), etc.
+        if(autoNumberNames) {
+            if(autoNumberNamesMap == null)
+                autoNumberNamesMap = new HashMap<>();
+            Map<String, Integer> namesMap = autoNumberNamesMap;
+
+            int count = namesMap.getOrDefault(speciesName, 0);
+            namesMap.put(speciesName, ++count);
+            rollPoke.setNickname(speciesName + " (" + count + ")");
+        }
+        else
+            rollPoke.setNickname(speciesName);
 
         rollPoke.setType1(types.get(0).getDisplayName());
         if (types.size() > 1)
@@ -123,6 +146,14 @@ public class Roll20Builder {
         // Skills
         convertSkills();
 
+        // Combat at Expert or higher causes Struggle to lose 1 AC and gain 1 DB
+        if (rollPoke.getCombat() >= 5) {
+            rollPoke.setStruggleAC(3);
+            rollPoke.setStruggleDB(5);
+            notesBuilder.append("Struggle's -1 AC / +1 DB for having Combat at Expert or higher already applied.");
+            notesBuilder.append("\n");
+        }
+
         // Notes
         if (changeNotesBuilder.length() > 23) {
             notesBuilder.append("\n");
@@ -133,8 +164,6 @@ public class Roll20Builder {
 
         return rollPoke;
     }
-
-    // TODO: Add note for +1 DB -1 AC on Struggle for Combat 5+
 
     private void convertAbilities() //Set<Ability> origAbilities)
     { // poke.getAbilities()
@@ -380,21 +409,26 @@ public class Roll20Builder {
 
     private String getConnectionText(Move curr) {
         List<Ability> connections = new ArrayList<>(poke.getAbilities().stream().filter(a -> curr.equals(a.getConnection())).toList());
-        connections.removeIf(abilityMovesPred);
+        // If Abilities are also placed in Moves, then there'll already be something in the Moves section to remind
+        //  the user of the Connection ability, so no need to double up on it by adding it to Move effect text too.
+        if(abilitiesAsMoves)
+            connections.removeIf(abilityMovesPred.negate());
+
         return connections.stream().map(a -> {
                     StringBuilder ret = new StringBuilder();
                     String effect = a.getEffect().substring(a.getEffect().indexOf(". ") + 2);
                     String trigger = a.getTrigger();
 
                     ret.append(a.getName());
-                    ret.append(": ");
-                    if (trigger != null && !trigger.isBlank()) {
-                        ret.append("When ");
-                        ret.append(trigger.toLowerCase(Locale.ROOT).charAt(0));
-                        ret.append(trigger.substring(1));
-                        ret.append(", ");
-                        effect = effect.toLowerCase(Locale.ROOT).charAt(0) + effect.substring(1);
+                    if (trigger != null && !trigger.isBlank() &&
+                            !trigger.matches("^The user ((\\buses\\b)|(\\bhits\\b)).*(" + curr.getName() + ").?$")) {
+                        ret.append("\n");
+                        ret.append("Trigger: ");
+                        ret.append(trigger);
+                        ret.append("\n");
+                        ret.append("Effect");
                     }
+                    ret.append(": ");
                     ret.append(effect);
                     return ret.toString();
                 }

@@ -17,6 +17,7 @@ public class PokeConstants {
     public static final int EVASION_FROM_STATS_MAX = 6;
     public static final String NON_REGIONAL_FORM = "Standard";
     public static final String SEE_EFFECT_DB = "See Effect";
+    public static final String SETUP_MOVE_HEADER = "Set-Up Effect:";
     public static final List<String> STAB_HTML_HIGHLIGHT = Collections.unmodifiableList((List.of("b")));
     public static final List<String> NATURE_HTML_RAISE = STAB_HTML_HIGHLIGHT;
     public static final List<String> NATURE_HTML_LOWER = Collections.unmodifiableList((List.of("i")));

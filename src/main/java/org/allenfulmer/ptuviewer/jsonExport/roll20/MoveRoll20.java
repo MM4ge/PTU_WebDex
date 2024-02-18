@@ -63,8 +63,12 @@ public class MoveRoll20 {
         this.range = origMove.getRange();
         this.effects = origMove.getEffect();
 
-        if (effectText != null && !effectText.trim().isBlank())
-            this.effects = this.effects + "\n\n" + effectText;
+        if (effectText != null && !effectText.trim().isBlank()) {
+            if (this.effects == null || this.effects.isBlank())
+                this.effects = effectText;
+            else
+                this.effects = this.effects + "\n\n" + effectText;
+        }
     }
 
     public MoveRoll20(Ability ability) {

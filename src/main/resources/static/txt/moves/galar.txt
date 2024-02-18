@@ -1,3 +1,16 @@
+Move: Skitter Smack
+Type: Bug
+Frequency: EOT
+AC: 2
+Damage Base 7: 2d6+10 / 17
+Class: Physical
+Range: Melee, 1 Target, Dash, Full Action
+Effect: The user Shifts up to its Overland Capability,
+ignoring Attacks of Opportunity, before attacking
+with Skitter Smack. On a hit, the target’s Special
+Attack is lowered 1 CS.
+Contest Type: Smart
+Contest Effect: Reliable
 Move: False Surrender
 Type: Dark
 Frequency: EOT
@@ -8,6 +21,18 @@ Range: Melee, 1 Target
 Effect: False Surrender cannot miss.
 Contest Type: Smart
 Contest Effect: Reliable
+Move: Fiery Wrath
+Type: Dark
+Frequency: EOT
+AC: 2
+Damage Base 9: 2d10+10 / 21
+Class: Special
+Range: 6, 1 Target
+Effect: Fiery Wrath Flinches the target on a 17+. Once
+per Scene, Fiery Wrath may instead be used as a Fire-
+Type Move.
+Contest Type: Tough
+Contest Effect: Inversed Appeal
 Move: Jaw Lock
 Type: Dark
 Frequency: Scene x2
@@ -19,6 +44,19 @@ Effect: You may perform a Grapple Maneuver against
 the target as a Free Action.
 Contest Type: Tough
 Contest Effect: Sabotage
+Move: Lash Out
+Type: Dark
+Frequency: EOT
+AC: 2
+Damage Base 8: 2d6+8 / 19
+Class: Physical
+Range: Melee, 1 Target
+Effect: If the user has lost CS from a source other than
+itself since the end of its last turn, Lash Out is instead
+DB 15 (4d10 + 20 / 45). Any given foe may be the
+target of this increased damage only once per Scene.
+Contest Type: Smart
+Contest Effect: Reliable
 Move: Obstruct
 Type: Dark
 Frequency: Scene
@@ -33,6 +71,18 @@ attack was Melee ranged, the attacker’s Defense is
 lowered by 2 Combat Stages.
 Contest Type: Smart
 Contest Effect: Inversed Appeal
+Move: Wicked Blow
+Type: Dark
+Frequency: EOT
+AC: 2
+Damage Base 8: 2d6+8 / 19
+Class: Physical
+Range: Melee, 1 Target, Push
+Effect: If Wicked Blow hits, it is a Critical Hit. The
+target is Pushed 6 meters minus their Weight Class.
+On a roll of 15+, the target is also Tripped.
+Contest Type: Tough
+Contest Effect: Steady Performance
 Move: Breaking Swipe
 Type: Dragon
 Frequency: EOT
@@ -64,6 +114,17 @@ Class: Physical
 Range: 6, 1 Target, Double Strike; or 6, 2 Targets
 Contest Type: Smart
 Contest Effect: Double Time
+Move: Dragon Energy
+Type: Dragon
+Frequency: Daily x2
+AC: 2
+Damage Base 15: 4d10+20 / 45
+Class: Special
+Range: Cone 3 or Line 8
+Effect: For each 10% of HP the user is missing, Dragon
+Energy’s Damage Base is reduced by 1.
+Contest Type: Cool
+Contest Effect: Seen Nothing Yet
 Move: Dynamax Cannon
 Type: Dragon
 Frequency: Scene x2
@@ -85,6 +146,17 @@ Class: Special
 Range: Line 6, Smite, Exhaust
 Contest Type: Cool
 Contest Effect: Seen Nothing Yet
+Move: Scale Shot
+Type: Dragon
+Frequency: EOT
+AC: 4
+Damage Base 3: 1d6+5 / 9
+Class: Physical
+Range: 6, 1 Target, Five Strike
+Effect: The user’s Speed is raised 1 CS, and the user’s
+Defense is lowered 1 CS.
+Contest Type: Tough
+Contest Effect: Desperation
 Move: Aura Wheel
 Type: Electric
 Frequency: Scene x2
@@ -130,6 +202,32 @@ Class: Special
 Range: Cone 2, Sonic
 Contest Type: Cool
 Contest Effect: Attention Grabber
+Move: Rising Voltage
+Type: Electric
+Frequency: Scene x2
+AC: 2
+Damage Base 7: 2d6+10 / 17
+Class: Special
+Range: Burst 2, Groundsource, Spirit Surge
+Effect: After Rising Voltage is resolved, you may
+create Electric Terrain in a Blast 7, centered on the
+user, that lasts for 5 turns. Any creatures in those
+spaces are affected as if by the Field Move Electric
+Terrain, rather than any other Field Move. This Effect
+may trigger only once per Scene.
+Contest Type: Cool
+Contest Effect: Attention Grabber
+Move: Thunder Cage
+Type: Electric
+Frequency: Daily x2
+AC: 4
+Damage Base 8: 2d8+10 / 19
+Class: Special
+Range: 8, Ranged Blast 2, Spirit Surge
+Effect: The targets are trapped in a Vortex. The DC to
+escape the Vortex is increased by 3.
+Contest Type: Smart
+Contest Effect: Sabotage
 Move: Decorate
 Type: Fairy
 Frequency: Scene
@@ -140,6 +238,23 @@ Effect: The target gains +2 CS in both Attack and
 Special Attack.
 Contest Type: Beauty
 Contest Effect: Reflective Appeal
+Move: Misty Explosion
+Type: Fairy
+Frequency: Daily
+AC: 2
+Damage Base 10: 3d8+10 / 24
+Class: Special
+Range: Burst 3, Friendly, Smite
+Effect: The user’s Hit Points are set to -50% of their
+full Hit Point value. This Hit Point loss cannot be
+prevented or reduced in any way. After Misty
+Explosion is resolved, create Misty Terrain in a Blast
+7, centered on the user, that lasts for 5 turns. Any
+creatures in those spaces are affected as if by the
+Field Move Misty Terrain, rather than any other Field
+Move.
+Contest Type: Cute
+Contest Effect: Sabotage
 Move: Spirit Break
 Type: Fairy
 Frequency: EOT
@@ -171,6 +286,16 @@ Effect: The user’s Defense Stat is added to the
 damage roll instead of the Attack Stat.
 Contest Type: Tough
 Contest Effect: Gamble
+Move: Coaching
+Type: Fighting
+Frequency: EOT
+AC: None
+Class: Status
+Range: Burst 1
+Effect: The user and any allies in the Burst have their
+Attack and Defense raised by 1 CS.
+Contest Type: Tough
+Contest Effect: Get Ready
 Move: Meteor Assault
 Type: Fighting
 Frequency: Daily x2
@@ -206,6 +331,31 @@ target is Trapped and loses 1 CS in Defense and
 Special Defense at the end of each of their turns.
 Contest Type: Tough
 Contest Effect: Sabotage
+Move: Thunderous Kick
+Type: Fighting
+Frequency: EOT
+AC: 2
+Damage Base 9: 2d10+10 / 21
+Class: Physical
+Range: Melee, 1 Target
+Effect: All legal targets hit lose 1 Defense Combat
+Stage. Once per Scene, Thunderous Kick may instead
+be used as an Electric-Type Move.
+Contest Type: Tough
+Contest Effect: Good Show
+Move: Burning Jealousy
+Type: Fire
+Frequency: EOT
+AC: 2
+Damage Base 7: 2d6+10 / 17
+Class: Special
+Range: Burst 1, Spirit Surge
+Effect: After Burning Jealousy has resolved, the user
+may choose to Burn foes within 5m that have had any
+CS raised since the beginning of that foe’s last turn.
+This Effect may trigger only once per Scene.
+Contest Type: Smart
+Contest Effect: Sabotage
 Move: Pyro Ball
 Type: Fire
 Frequency: Scene x2
@@ -216,6 +366,42 @@ Range: 6, 1 Target, Smite
 Effect: The target is Burned on 19+.
 Contest Type: Cool
 Contest Effect: Attention Grabber
+Move: Dual Wingbeat
+Type: Flying
+Frequency: EOT
+AC: 2
+Damage Base 4: 1d8+6 / 11
+Class: Physical
+Range: Melee, 1 Target, Double Strike
+Contest Type: Cool
+Contest Effect: Reliable
+Move: Astral Barrage
+Type: Ghost
+Frequency: Daily
+AC: 2
+Damage Base 12: 3d12+10 / 30
+Class: Special
+Range: 8, Ranged Blast 2, Smite, Friendly
+Effect: Legal targets hit by Astral Barrage are Slowed
+for one full round.
+Contest Type: Smart
+Contest Effect: Unsettling
+Move: Poltergeist
+Type: Ghost
+Frequency: Scene
+AC: 4
+Damage Base 11: 2d6+10 / 17
+Class: Physical
+Range: 8, Ranged Blast 3, Smite
+Effect: If a target is holding a Held Item or Main or Off-
+Hand item, they must either drop it immediately or
+lose a Tick of Hit Points. This may only cause a target
+to lose at most one Tick of Hit Points, no matter how
+many items they were holding. On each of the target’s
+subsequent turns, if it is still holding the item(s) in
+question it loses a Tick of Hit Points.
+Contest Type: Smart
+Contest Effect: Unsettling
 Move: Apple Acid
 Type: Grass
 Frequency: EOT
@@ -246,6 +432,23 @@ Range: 4, 1 Target
 Effect: The target’s Speed is lowered by 1 CS.
 Contest Type: Smart
 Contest Effect: Big Show
+Move: Grassy Glide
+Type: Grass
+Frequency: EOT
+AC: 2
+Damage Base 7: 2d6+10 / 17
+Class: Physical
+Range: Melee, Pass, Spirit Surge
+Effect: If the user is on Grassy Terrain, Grassy Glide
+may be used with Priority. After Grassy Glide has been
+resolved, the user may choose to create Grassy
+Terrain in the spaces Passed over (including those it
+started and ended in), that lasts for 5 turns. Any
+creatures in those spaces are affected as if by the
+Field Move Grassy Terrain, rather than any other Field
+Move.
+Contest Type: Smart
+Contest Effect: Unsettling
 Move: Grav Apple
 Type: Grass
 Frequency: EOT
@@ -256,6 +459,18 @@ Range: 6, 1 Target
 Effect: The target’s Defense is lowered by 1 CS.
 Contest Type: Smart
 Contest Effect: Excitement
+Move: Jungle Healing
+Type: Grass
+Frequency: Daily x2
+AC: None
+Class: Status
+Range: Burst 1
+Effect: The user and any allies in the burst regain Hit
+Points equal to 1/4 of their Maximum Hit Point Value,
+and are cured of any Persistent or Volatile Status
+Conditions.
+Contest Type: Smart
+Contest Effect: Reflective Appeal
 Move: Snap Trap
 Type: Grass
 Frequency: Scene x2
@@ -267,6 +482,46 @@ Effect: The target is trapped in a Vortex. The DC to
 escape the Vortex is increased by 3.
 Contest Type: Smart
 Contest Effect: Sabotage
+Move: Scorching Sands
+Type: Ground
+Frequency: Scene x2
+AC: 2
+Damage Base 7: 2d6+10 / 17
+Class: Special
+Range: 5, 1 Target
+Effect: Scorching Sands Burns the target on 15+.
+Contest Type: Smart
+Contest Effect: Steady Performance
+Move: Glacial Lance
+Type: Ice
+Frequency: Daily
+AC: 2
+Damage Base 13: 4d10+10 / 35
+Class: Physical
+Range: Line 8, Smite
+Effect: Legal targets hit by Glacial Lance are Stuck and
+Trapped until the end of their next turn.
+Contest Type: Smart
+Contest Effect: Special Attention
+Move: Triple Axel
+Type: Ice
+Frequency: EOT
+AC: 4
+Damage Base 6: 2d6+8 / 15
+Class: Physical
+Range: Melee, 1 Target
+Effect: After attacking with Triple Axel, hit or miss, the
+user may Disengage 2m and attack a different target
+with Triple Axel. This effect may be repeated a second
+time, targeting a creature that has not been targeted
+by either prior attack. Before making each attack roll,
+the user can elect to give up triggering all remaining
+additional shifts and attacks. Triple Axel gains +1
+Accuracy and +1 DB for each attack that is given up.
+Triple Axel always benefits from the Technician
+Ability.
+Contest Type: Cool
+Contest Effect: Special Attention
 Move: Court Change
 Type: Normal
 Frequency: Daily
@@ -322,7 +577,7 @@ Food Buffs, regardless of any conditions that need to
 be met, gaining its benefit if applicable. If a Buff is
 consumed, the user’s Defense CS is raised by 2.
 Contest Type: Cute
-Contest Effect: Get Ready
+Contest Effect: Get Ready!
 Move: Teatime
 Type: Normal
 Frequency: Scene
@@ -334,6 +589,89 @@ immediately consume one of their Food Buffs,
 regardless of if the conditions to do so are met.
 Contest Type: Cute
 Contest Effect: Safe Option
+Move: Terrain Pulse
+Type: Normal
+Frequency: EOT
+AC: 2
+Damage Base 5: 3d12+10 / 30
+Class: Special
+Range: Close Blast 3
+Effect: If the user is under the effects of a Terrain,
+Terrain Pulse has a Damage Base of 10 (3d8+10 / 24).
+In addition, Terrain Pulse becomes the Type that
+corresponds with the Move that creates that Terrain.
+(For example, if in Misty Terrain, it would become
+Fairy Type.) If the user is under the effects of multiple
+Terrains, choose one to affect this Move.
+Contest Type: Cool
+Contest Effect: Reflective Appeal
+Move: Corrosive Gas
+Type: Poison
+Frequency: EOT
+AC: 2
+Class: Status
+Range: Burst 1
+Effect: Targets hit have their current Held Item(s)
+unable to be used for the remainder of the Scene. In
+addition, Steel-Type targets hit lose their immunity to
+Poison until they Faint or Take A Breather; Poison
+instead counts as neutral against Steel.
+Contest Type: Smart
+Contest Effect: Sabotage
+Move: Shell Side Arm
+Type: Poison
+Frequency: EOT
+AC: 2
+Damage Base 9: 2d10+10 / 21
+Class: Special
+Range: 6, 1 Target
+Effect: This attack uses the highest of the user’s
+Attack or Special Attack Stat, though this does not
+change the Class of the Move. In addition, if the
+target’s Defense is lower than its Special Defense, this
+attack targets Defense, becoming a Physical Move.
+The target is poisoned on a 17+.
+Contest Type: Smart
+Contest Effect: Seen Nothing Yet
+Move: Eerie Spell
+Type: Psychic
+Frequency: EOT
+AC: 2
+Damage Base 8: 2d8+10 / 19
+Class: Special
+Range: 6, 1 Target
+Effect: The user may choose to Disable the target’s
+last Move used. This effect may only be activated
+once per Scene.
+Contest Type: Smart
+Contest Effect: Sabotage
+Move: Expanding Force
+Type: Psychic
+Frequency: EOT
+AC: 2
+Damage Base 8: 2d8+10 / 19
+Class: Special
+Range: Burst 1, Spirit Surge
+Effect: After Expanding Force is resolved, you may
+create Psychic Terrain in a Blast 7, centered on the
+user, that lasts for 5 turns. Any creatures in those
+spaces are affected as if by the Field Move Psychic
+Terrain, rather than any other Field Move. This Effect
+may trigger only once per Scene.
+Contest Type: Smart
+Contest Effect: Sabotage
+Move: Freezing Glare
+Type: Psychic
+Frequency: EOT
+AC: 2
+Damage Base 9: 2d10+10 / 21
+Class: Special
+Range: 6, 1 Target
+Effect: Freezing Glare Freezes the target on a 19+.
+Once per Scene, Freezing Glare may instead be used
+as an Ice-Type Move.
+Contest Type: Beauty
+Contest Effect: Unsettling
 Move: Magic Powder
 Type: Psychic
 Frequency: Daily
@@ -344,6 +682,19 @@ Effect: The target gains the Psychic Type in addition
 to its other Types for 5 turns.
 Contest Type: Smart
 Contest Effect: Safe Option
+Move: Meteor Beam
+Type: Rock
+Frequency: Scene x2
+AC: 4
+Damage Base 12: 3d12+10 / 30
+Class: Special
+Range: Cone 3, Set-Up
+Set-Up Effect: The user’s Special Attack is raised by +1
+Combat Stage.
+Resolution Effect: The user attacks with Meteor
+Beam.
+Contest Type: Tough
+Contest Effect: Special Attention
 Move: Tar Shot
 Type: Rock
 Frequency: Scene
@@ -380,7 +731,7 @@ Effect: The DB of Behemoth Blade increases by +2 for
 each positive CS the target has, to a maximum of DB
 20.
 Contest Type: Cool
-Contest Effect: Good Show
+Contest Effect: Good Show!
 Move: Double Iron Bash
 Type: Steel
 Frequency: Scene x2
@@ -413,6 +764,21 @@ their full Hit Point value. This Hit Point loss cannot be
 prevented or reduced in any way.
 Contest Type: Smart
 Contest Effect: Big Show
+Move: Steel Roller
+Type: Steel
+Frequency: Daily x2
+AC: 2
+Damage Base 13: 4d10+10 / 35
+Class: Physical
+Range: Melee, Pass, Dash, Smite, Spirit Surge
+Effect: Legal targets hit by Steel Roller are Tripped on
+a roll of 15+. Any Hazards in spaces Passed through or
+adjacent to those spaces are removed (they are
+removed before they can affect the user). If the user
+moves through an area of Terrain, or a Field-range
+Terrain is active, those effects immediately end.
+Contest Type: Tough
+Contest Effect: Steady Performance
 Move: Fishious Rend
 Type: Water
 Frequency: Scene x2
@@ -425,6 +791,20 @@ have not yet acted this round, Fishious Rend deals +10
 damage.
 Contest Type: Cool
 Contest Effect: Catching Up
+Move: Flip Turn
+Type: Water
+Frequency: At-Will
+AC: 2
+Damage Base 6: 2d6+8 / 15
+Class: Physical
+Range: Melee, 1 Target, Dash
+Effect: If Flip Turn successfully hits its target, the user
+deals damage and then immediately is returned to its
+Poké Ball in the same turn. A New Pokémon may
+immediately be sent out. Using Flip Turn lets a
+Trapped user be recalled.
+Contest Type: Cool
+Contest Effect: Inversed Appeal
 Move: Life Dew
 Type: Water
 Frequency: Daily x2
@@ -448,3 +828,23 @@ or Features be activated to change this Move’s target.
 Any of those existing effects (such as Follow Me) fail.
 Contest Type: Beauty
 Contest Effect: Reliable
+Move: Surging Strikes
+Type: Water
+Frequency: EOT
+AC: 2
+Damage Base 3: 1d6+5 / 9
+Class: Physical
+Range: Melee, 1 Target
+Effect: If Surging Strikes hits, it is a Critical Hit. After
+attacking with Surging Strikes, hit or miss, the user
+may Shift 2m, ignoring Attacks of Opportunity from
+their target. It may then make an additional attack
+with this Move on a different target. This effect may
+be repeated a second time, the third attack targeting
+a creature that has not yet been targeted by either
+prior attack. Before making each attack roll, the user
+can elect to give up triggering all remaining additional
+shifts and attacks. Surging Strikes gains +3 DB for each
+attack that is given up.
+Contest Type: Cool
+Contest Effect: Special Attention

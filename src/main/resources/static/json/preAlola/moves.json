@@ -18,7 +18,7 @@
     "db": "6",
     "damageClass": "Physical",
     "range": "Melee, 1 Target",
-    "effect": "If the target has a stored Digestion/Food Buff or has traded in a Digestion/Food Buff this Scene, the user may gain the effects of the Digestion/Food Buff. This does no count towards the Usual limit on the user's Digestion/Food Buffs.",
+    "effect": "If the target has a stored Digestion/Food Buff or has traded in a Digestion/Food Buff this Scene, the user may gain the effects of the Digestion/Food Buff. This does not count towards the Usual limit on the user's Digestion/Food Buffs.",
     "contestType": "Tough",
     "contestEffect": "Attention Grabber",
     "critsOn": 20,
@@ -6752,7 +6752,7 @@
     "freq": "At-Will",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "The user becomes Curled Up. While Curled Up, the user becomes immune to Critical Hits and gains 10 Damage Reduction. However, while Curled Up, the user is Slowed and their Accuracy is lowered by -4. The user may stop being Curled Up as a Swift Action. If the user has Rollout or Ice Ball in their Move List, they do not become Slowed while Curled Up. Furthermore, when using the Moves Rollout or Ice Ball while Curled Up, the user gains a +10 bonus to the damage rolls of those Moves and does not suffer Accuracy Penalties from being Curled Up.",
+    "effect": "The user’s Defense is raised 1 Combat Stage and they become Curled Up until the end of the Scene or they are Recalled or Take a Breather. When using the Moves Rollout or Ice Ball while Curled Up, the user gains a +10 bonus to the damage rolls of those Moves.",
     "contestType": "Cute",
     "contestEffect": "Sabotage",
     "triggers": [

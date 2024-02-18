@@ -37,7 +37,7 @@ public class PojoToDBConverter {
      */
     public static Map<String, Capability> getConvertedCapabilities() {
         if (convertedCapabilities == null)
-            convertedCapabilities = JsonToPojoLoader.parseCapabilities();
+            convertedCapabilities = JsonToPojoLoader.parseCapabilities(true);
         return Collections.unmodifiableMap(convertedCapabilities);
     }
 
@@ -469,6 +469,9 @@ public class PojoToDBConverter {
             }
 
             Move.ContestEffect contestEffect = Move.ContestEffect.getContestEffect(m.getContestEffect());
+            // Some moves have the exclamation mark cut off of their contest effect, check for that as well
+            if (contestEffect == null)
+                contestEffect = Move.ContestEffect.getContestEffect(m.getContestEffect() + "!");
 
             moves.put(name, new Move(name, type, pojoFreq.getFreq(), pojoFreq.getUses(), m.getAc(), m.getDb(),
                     moveClass, m.getRange(), m.getEffect(), contestType, contestEffect, m.getCritsOn()));

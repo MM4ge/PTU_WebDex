@@ -33,6 +33,16 @@ public class Ability implements Comparable<Ability>, Displayable {
     String target = "";
     @Column(length = 1023)
     String effect = "";
+    // FC: add list for secondary/tertiary connection moves - Bone Lord is connection with Bonemerang, but gives bonuses
+    //  for bonemerang, bone club, and bone rush
+    //  Don't search in the ability text? For the triggering ones, it seems like the other moves are in the trigger
+    //  condition as well
+    // FC: the above could be extended further to search through Ability text for Move names and attach them to a list
+    //  that will add the ability text to the move referenced, instead of just connection abilities. This could be
+    //  expanded further, but that gets dangerous with how much scope that adds - now when Aqua Bullet mentions changing
+    //  Water moves, the program has to either A: scan for the word Water-Move, understand that it means the user's water
+    //  moves, and apply the ability text in there, or B: have backing data for each ability that shows what / how it
+    //  changes.
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)//(cascade = CascadeType.ALL)
     @JoinColumn(name = "connection_move")
@@ -75,7 +85,7 @@ public class Ability implements Comparable<Ability>, Displayable {
             ret.append(" x");
             ret.append(getUses());
         }
-        if (!Frequency.STATIC.equals(getFrequency())) {
+        if (getActionType() != null) {
             ret.append(" - ");
             ret.append(getActionType().getDisplayName());
         }

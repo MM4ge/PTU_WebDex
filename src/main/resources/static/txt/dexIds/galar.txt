@@ -92,8 +92,25 @@
 555:GZ Darmanitan Galar, Zen Mode
 562:G Yamask Galar
 618:G Stunfisk Galar
+079:G Slowpoke Galar
+080:G Slowbro Galar
+199:G Slowking Galar
 888 Zacian Hero Of Many Battles Forme
 888:C Zacian Crowned Sword Forme
 889 Zamazenta Hero Of Many Battles Forme
 889:C Zamazenta Crowned Shield Forme
 890 Eternatus
+891 Kubfu
+892 Urshifu Single Strike Form
+892:R Urshifu Rapid Strike Form
+893 Zarude
+144:G Articuno Galar
+145:G Zapdos Galar
+146:G Moltres Galar
+894 Regieleki
+895 Regidrago
+896 Glastrier
+897 Spectrier
+898 Calyrex
+898:I Calyrex Ice Rider
+898:S Calyrex Shadow Rider

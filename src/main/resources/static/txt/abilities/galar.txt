@@ -24,16 +24,38 @@ Trigger: A Pokémon is Released onto the battlefield
 Effect: The user may move up to their speed as a
 Free Action. They must end this movement closer to
 the triggering Pokémon.
+Ability: Chilling Neigh
+At-Will – Free Action
+Trigger: The user causes a foe to Faint with a
+damaging attack
+Effect: The user’s Attack is raised by 1 Combat Stage.
+In addition, all foes within 3m of the user take a -2
+penalty to evasion for one full round.
 Ability: Cotton Down
 Scene – Free Action, Reaction
 Trigger: The user is hit by an attack
 Effect: All Pokémon in a Burst 1 around the user
 have their speed lowered by 1 CS, and are Slowed
 for one full round.
+Ability: Curious Medicine
+Scene – Swift Action
+Effect: All allies within 2m of the user have their CS
+reset to their default values.
+Special: The user may instead trigger this as a Free
+Action Reaction when entering the field.
 Ability: Dauntless Shield
 Static
 Effect: The user’s default Defense Combat Stages are
 increased by +1.
+Ability: Dragon’s Maw
+Scene x2 – Free Action
+Trigger: The user hits with a damaging Dragon-Type
+Move
+Effect: One target hit by the attack becomes one
+stage more vulnerable to the attack (applied after all
+other modifiers). Immune targets are treated as
+initially double-resistant for the purposes of this
+Ability, and may be damaged normally.
 Ability: Flavorful Aroma
 At-Will – Free Action
 Trigger: The user uses Aromatic Mist
@@ -50,6 +72,13 @@ Scene, they may only use Moves that they have
 already used in this Scene before triggering this
 Ability (the triggering Move is included in those
 usable).
+Ability: Grim Neigh
+At-Will – Free Action
+Trigger: The user causes a foe to Faint with a
+damaging attack
+Effect: The user’s Special Attack is raised by 1
+Combat Stage. In addition, all foes within 3m of the
+user take a -2 penalty to Accuracy for one full round.
 Ability: Gulp Missile
 Scene x2 – Free Action
 Trigger: The user uses Stockpile, Surf, or Dive
@@ -112,12 +141,12 @@ around the user, and Defensive abilities do not
 function in that area (the user is unaffected by this).
 If the user uses Poison Gas, Smog, Clear Smog, or
 Strange Steam, targets hit by those Moves may not
-trigger Abilities or benefit from Defensive abilities
+trigger Abilities or benefit from Defensive Abilities
 for one full round.
 Ability: Pastel Veil
 Static
-Effect: The user and allies within 3 meters are
-immune to Poison. Defensive.
+Effect: The user and allies within 3 meters cannot be
+Poisoned or Badly Poisoned. Defensive
 Ability: Perish Body
 Daily – Standard Action, Reaction
 Trigger: The user is hit with a Melee attack
@@ -147,6 +176,17 @@ Effect: The user gains +2 DB to moves that have the
 Sonic keyword.
 Bonus: The user resists moves with the Sonic
 keyword one step further. Defensive.
+Ability: Quick Draw
+Scene – Free Action, Interrupt
+Trigger: A foe uses a Move, and the user has not
+acted this round
+Effect: The user immediately uses a Move on the
+triggering foe as a Standard Action Interrupt (this
+Move must still obey Frequency and Range). If this
+Move hits, the foe also gains a -2 penalty to their
+attack roll for the triggering attack, unless the foe
+cannot Flinch.
+Bonus: The user cannot be Flinched. Defensive.
 Ability: Ripen
 Static
 Effect: Any numeric benefits of Berry Food Buffs the
@@ -162,7 +202,7 @@ Scene – Free Action, Reaction
 Trigger: The user is damaged by an attack from a foe
 within 2m
 Effect: Connection – Sand Attack. The user attacks
-the triggering foe with Sand Attack.
+the triggering foe with Sand Attack as a Free Action.
 Ability: Screen Cleaner
 Daily – Standard Action
 Effect: All Blessings on the field, both ally and
@@ -173,6 +213,16 @@ Blocking Hazards are treated instead as Slow Terrain
 for the purposes of movement only (the user may
 still not target through them), and are destroyed if
 moved through.
+Ability: Splendorous Rider
+Scene x2 – Swift Action
+Effect: The user may pick a Move from their Mount’s
+known Moves that they do not already know. For the
+rest of the user’s Turn, they may use that Move as
+though it was one of their own Moves. Note that this
+does not remove any frequency limitations – a Daily
+Move that the Mount knows may not be used more
+than once.
+This Ability may not be copied or transferred.
 Ability: Stalwart
 Scene – Free Action, Reaction
 Trigger: The user receives Massive Damage
@@ -190,6 +240,19 @@ Weather
 Effect: Connection – Smokescreen. The user may use
 Smokescreen as a Free Action, ignoring frequency,
 centered on the user.
+Ability: Transistor
+Scene x2 – Free Action
+Trigger: The user hits with a damaging Electric-Type
+Move
+Effect: One target hit by the attack becomes one
+stage more vulnerable to the attack (applied after all
+other modifiers). Immune targets are treated as
+initially double-resistant for the purposes of this
+Ability, and may be damaged normally.
+Ability: Unseen Fist
+Static
+Effect: Reactions, Interrupts, and Blessings may not
+be activated in response to the user’s Melee Attacks.
 Ability: Wandering Spirit
 Scene – Free Action, Reaction
 Trigger: The user is hit by a Melee attack
