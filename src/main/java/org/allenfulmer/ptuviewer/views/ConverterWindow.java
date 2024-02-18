@@ -15,49 +15,27 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Serial;
 
 public class ConverterWindow extends JFrame implements WindowListener {
 
-    public record ConverterSettings(boolean numberNames, boolean abilityMoves, boolean connectionText) { }
+    public record ConverterSettings(boolean numberNames, boolean abilityMoves, boolean connectionText) {
+    }
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    private static final String SETTINGS_FILEPATH = "settings.json";
-
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() ->
-            {
-                ConverterWindow frame;
-                try {
-                    frame = new ConverterWindow();
-                    frame.setVisible(true);
-                    frame.startup();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        );
-    }
-
-    private void startup() {
-        PojoToDBConverter.getConvertedCapabilities();
-        this.roll20JSON.setText("Capabilities Loaded!\n");
-        PojoToDBConverter.getConvertedMovesMap();
-        this.roll20JSON.append("Moves Loaded!\n");
-        PojoToDBConverter.getConvertedAbilitiesMap();
-        this.roll20JSON.append("Abilities Loaded!\n");
-        PojoToDBConverter.getConvertedPokemonSpeciesMap();
-        this.roll20JSON.append("All Loading Done!\n");
-    }
-
     private static final Gson gson = new GsonBuilder().serializeNulls().disableHtmlEscaping().setLenient().create();
-
-    private static final String DESCRIPTION_TEXT = "Converts PokeExodus JSON (the popup text when generating a Pokemon or the contents of the \"Save to Computer\" file) to Roll20 JSON (for the Import page).\r\n\r\nPaste PokeExodus JSON in the top box, click the Convert button, copy Roll20 JSON, paste into a Roll20 character sheet's Import page, and hit Import.";
+    private static final String SETTINGS_FILEPATH = "settings.json";
+    private static final String DESCRIPTION_TEXT = """
+            Converts PokeExodus JSON (the popup text when generating a Pokemon or the contents of the "Save to \
+            Computer" file) to Roll20 JSON (for the Import page).
+            
+            Paste PokeExodus JSON in the top box, click the Convert button, copy Roll20 JSON, paste into a Roll20 \
+            character sheet's Import page, and hit Import.
+            """;
 
     private JTextArea exodusJSON;
     private JTextArea roll20JSON;
@@ -189,6 +167,35 @@ public class ConverterWindow extends JFrame implements WindowListener {
         contentPane.setLayout(glContentPane);
     }
 
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() ->
+                {
+                    ConverterWindow frame;
+                    try {
+                        frame = new ConverterWindow();
+                        frame.setVisible(true);
+                        frame.startup();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+    }
+
+    private void startup() {
+        PojoToDBConverter.getConvertedCapabilities();
+        this.roll20JSON.setText("Capabilities Loaded!\n");
+        PojoToDBConverter.getConvertedMovesMap();
+        this.roll20JSON.append("Moves Loaded!\n");
+        PojoToDBConverter.getConvertedAbilitiesMap();
+        this.roll20JSON.append("Abilities Loaded!\n");
+        PojoToDBConverter.getConvertedPokemonSpeciesMap();
+        this.roll20JSON.append("All Loading Done!\n");
+    }
+
     public void convertJSON(ActionEvent e) {
         try {
             Pokemon p1 = ExodusConverter.convertFromExodus(this.exodusJSON.getText());
@@ -233,6 +240,5 @@ public class ConverterWindow extends JFrame implements WindowListener {
     public void windowIconified(WindowEvent e) {
         // Unnecessary
     }
-
 }
 
