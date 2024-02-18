@@ -39,6 +39,9 @@ public class ConverterWindow extends JFrame implements WindowListener {
 
     private JTextArea exodusJSON;
     private JTextArea roll20JSON;
+    private JCheckBox connectionText;
+    private JCheckBox numberNames;
+    private JCheckBox abilitiesAsMoves;
 
     /**
      * Create the frame.
@@ -129,17 +132,20 @@ public class ConverterWindow extends JFrame implements WindowListener {
         checkboxPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
         ToolTipManager.sharedInstance().setDismissDelay(30000);
 
-        JCheckBox numberNames = new JCheckBox("#'d Names");
-        numberNames.setToolTipText("<html>Appends the number of times a species name has occurred onto the end of each nickname.<br>" +
-                "This ignores the forms of each Pokemon, just its base species. e.x. Meowth (1), Meowth (2)...</html>");
+        numberNames = new JCheckBox("#'d Names");
+        numberNames.setToolTipText("<html>Appends the number of times a Pokemon name has occurred onto the end of each nickname.<br>" +
+                "This will usually only count for each duplicate of species and form together, not different forms.<br>" +
+                "e.x. Meowth (1), Meowth (2), Meowth (Galar) (1), Meowth (Alola) (1), Meowth (3)...<br><br>" +
+                "Names will only be counted for occurrences while the checkbox is ticked (i.e. the first converted<br>" +
+                "Pokemon with this setting will always be (1), even if others were converted without this setting).</html>");
         checkboxPanel.add(numberNames);
 
-        JCheckBox abilitiesAsMoves = new JCheckBox("Abilities as Moves");
+        abilitiesAsMoves = new JCheckBox("Abilities as Moves");
         abilitiesAsMoves.setToolTipText("<html>Adds an Untyped Status Move for each Scene/Daily Ability into the Pokemon's Move List<br>" +
                 "to help remind the user of applicable Abilities during combat and help track their usages.</html>");
         checkboxPanel.add(abilitiesAsMoves);
 
-        JCheckBox connectionText = new JCheckBox("Connections in Moves");
+        connectionText = new JCheckBox("Connections in Moves");
         connectionText.setToolTipText("<html>Adds information from Connection Abilities onto the end of their modified Move's Effect<br>" +
                 "text to help remind the user of the expanded effect of their Connection Move. If the<br>" +
                 "\"Abilities As Moves\" checkbox is set, this will only add info from Abilities that aren't already <br>" +
@@ -199,7 +205,9 @@ public class ConverterWindow extends JFrame implements WindowListener {
     public void convertJSON(ActionEvent e) {
         try {
             Pokemon p1 = ExodusConverter.convertFromExodus(this.exodusJSON.getText());
-            this.roll20JSON.setText(gson.toJson(new Roll20Builder(p1).setAbilitiesAsMoves(true).setConnectionInfoInMoves(true).build()));
+            this.roll20JSON.setText(gson.toJson(new Roll20Builder(p1).setAutoNumberNames(numberNames.isSelected())
+                    .setAbilitiesAsMoves(abilitiesAsMoves.isSelected())
+                    .setConnectionInfoInMoves(connectionText.isSelected()).build()));
         } catch (Exception ex) {
             this.roll20JSON.setText("There was an error! Please ensure your Exodus JSON is accurate (or give it to Mage to check)!");
         }

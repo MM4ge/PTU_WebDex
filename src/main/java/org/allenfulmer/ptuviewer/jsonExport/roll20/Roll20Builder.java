@@ -47,7 +47,7 @@ public class Roll20Builder {
     }
 
     public Roll20Builder setAutoNumberNames(boolean flag) {
-        autoNumberNames = false;
+        autoNumberNames = flag;
         return this;
     }
 
