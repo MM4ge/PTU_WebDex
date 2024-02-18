@@ -21,6 +21,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ExodusConverter {
 
+    // TODO: Pokemon that are standard but have additional other forms run into an "Exodus matched more than one" error
+    //  see if that's true for the additional form - if not, treat all mutli-matches as the base most form
+    //  "form":"", -> "form":"Standard"
+    // Also, maybe convert poke edges? That would require KNOWING all the edges and their ability to change / alter moves though
     private static final Gson gson = new GsonBuilder().serializeNulls().disableHtmlEscaping().setLenient().create();
 
     private ExodusConverter() {

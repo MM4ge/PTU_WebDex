@@ -75,7 +75,7 @@ public class Ability implements Comparable<Ability>, Displayable {
             ret.append(" x");
             ret.append(getUses());
         }
-        if (!Frequency.STATIC.equals(getFrequency())) {
+        if (getActionType() != null) {
             ret.append(" - ");
             ret.append(getActionType().getDisplayName());
         }

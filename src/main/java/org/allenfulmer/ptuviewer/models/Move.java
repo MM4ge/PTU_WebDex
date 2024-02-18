@@ -40,12 +40,16 @@ public class Move implements Displayable, Comparable<Move> {
     MoveClass moveClass;
     @Column(name = "moveRange", length = 63)
     String range;
+    // TODO: split effect for set-up moves into setup and resolution?
     @Column(length = 1023)
     String effect;
     ContestType contestType;
     ContestEffect contestEffect;
+    // TODO: split Special bonuses off of Effect and into its own section? Makes printing to txt easier
+//    String special;
     @Transient
     String critsOn;
+    boolean setupMove;
     @JsonIgnore
     @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "move")
@@ -83,6 +87,7 @@ public class Move implements Displayable, Comparable<Move> {
         this.contestType = contestType;
         this.contestEffect = contestEffect;
         this.critsOn = critsOn;
+        this.setupMove = (effect != null) && (effect.startsWith(PokeConstants.SETUP_MOVE_HEADER));
     }
 
     public Move(@NonNull String name, @NonNull Type type, @NonNull Frequency frequency, int uses, String ac, String db, @NonNull MoveClass moveClass, String range, String effect) {
@@ -95,6 +100,7 @@ public class Move implements Displayable, Comparable<Move> {
         this.moveClass = moveClass;
         this.range = range;
         this.effect = effect;
+        this.setupMove = (effect != null) && (effect.startsWith(PokeConstants.SETUP_MOVE_HEADER));
     }
 
     public Move(@NonNull String name, Type type, Frequency frequency, MoveClass moveClass) {
@@ -113,6 +119,7 @@ public class Move implements Displayable, Comparable<Move> {
         this.moveClass = moveDTO.getMoveClass();
         this.range = moveDTO.getRange();
         this.effect = moveDTO.getEffect();
+        this.setupMove = (effect != null) && (effect.startsWith(PokeConstants.SETUP_MOVE_HEADER));
     }
 
     public boolean hasEffect() {
