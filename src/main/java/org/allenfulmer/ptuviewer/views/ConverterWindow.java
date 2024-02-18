@@ -73,7 +73,7 @@ public class ConverterWindow extends JFrame implements WindowListener {
 
         JLabel roll20Label = new JLabel("Roll20 JSON (Destination)");
 
-        JScrollPane scrollPane1 = new JScrollPane();
+        JScrollPane scrollPanel = new JScrollPane();
 
         JLabel exodusLabel = new JLabel("PokeExodus JSON (Source)");
 
@@ -93,6 +93,8 @@ public class ConverterWindow extends JFrame implements WindowListener {
             this.roll20JSON.setText("");
         });
 
+        JPanel checkboxPanel = new JPanel();
+
         GroupLayout glContentPane = new GroupLayout(contentPane);
         glContentPane.setHorizontalGroup(
                 glContentPane.createParallelGroup(Alignment.LEADING)
@@ -106,36 +108,52 @@ public class ConverterWindow extends JFrame implements WindowListener {
                                                 .addComponent(btnConvert, GroupLayout.PREFERRED_SIZE, 282, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                                                 .addComponent(btnClear, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(scrollPane1, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
-                                        .addComponent(exodusLabel)
+                                        .addComponent(scrollPanel, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+                                        .addGroup(Alignment.TRAILING, glContentPane.createSequentialGroup()
+                                                .addComponent(exodusLabel)
+                                                .addPreferredGap(ComponentPlacement.RELATED, 213, Short.MAX_VALUE)
+                                                .addComponent(checkboxPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                         .addComponent(description, GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE))
                                 .addContainerGap())
         );
         glContentPane.setVerticalGroup(
                 glContentPane.createParallelGroup(Alignment.TRAILING)
                         .addGroup(glContentPane.createSequentialGroup()
-                                .addComponent(description, GroupLayout.PREFERRED_SIZE, 111, Short.MAX_VALUE)
-                                .addGap(18)
-                                .addComponent(exodusLabel)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
-                                .addGroup(glContentPane.createParallelGroup(Alignment.LEADING, false)
+                                .addComponent(description, GroupLayout.PREFERRED_SIZE, 112, Short.MAX_VALUE)
+                                .addGroup(glContentPane.createParallelGroup(Alignment.LEADING)
                                         .addGroup(glContentPane.createSequentialGroup()
                                                 .addPreferredGap(ComponentPlacement.RELATED)
+                                                .addComponent(checkboxPanel))
+                                        .addGroup(glContentPane.createSequentialGroup()
+                                                .addGap(26)
+                                                .addComponent(exodusLabel)))
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addComponent(scrollPanel, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(glContentPane.createParallelGroup(Alignment.TRAILING, false)
+                                        .addGroup(glContentPane.createSequentialGroup()
                                                 .addGroup(glContentPane.createParallelGroup(Alignment.TRAILING)
                                                         .addComponent(roll20Label)
+                                                        .addComponent(btnConvert, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(btnClear, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
                                                 .addPreferredGap(ComponentPlacement.RELATED))
-                                        .addGroup(Alignment.TRAILING, glContentPane.createSequentialGroup()
-                                                .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(btnConvert, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
-                                                .addGap(5)))
+                                )
+//                                        .addGroup(glContentPane.createSequentialGroup()
+//                                                .addComponent(btnConvert, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+//                                                .addGap(5)))
                                 .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
+        checkboxPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+
+        JCheckBox abilitiesAsMoves = new JCheckBox("Abilities as Moves");
+        checkboxPanel.add(abilitiesAsMoves);
+
+        JCheckBox numberNames = new JCheckBox("#'d Names");
+        checkboxPanel.add(numberNames);
 
         this.exodusJSON = new JTextArea();
-        scrollPane1.setViewportView(this.exodusJSON);
+        scrollPanel.setViewportView(this.exodusJSON);
 
         this.roll20JSON = new JTextArea();
         this.roll20JSON.setEditable(false);
