@@ -16,7 +16,10 @@ import java.util.Map;
 @NoArgsConstructor
 public class PokemonRoll20 {
 
-    // FC: Struggle -1 AC and +1 DB if Combat skill is at least 5
+    // FC: Search moves for *Grants: (x), add that (x) by looking it up in Capabilities list and add to Poke if not
+    //  already there. This can be tangentially extended for abilities that increase cpabilities like Levitate? But
+    //  that would be far harder as those are written in plain english and aren't guaranteed to be standardized like
+    //  (at least I'm assuming) moves are
 
     @SerializedName("CharType")
     @Expose

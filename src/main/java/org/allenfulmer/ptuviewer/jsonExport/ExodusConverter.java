@@ -9,6 +9,7 @@ import org.allenfulmer.ptuviewer.generator.models.Nature;
 import org.allenfulmer.ptuviewer.jsonExport.exodus.PokemonExodus;
 import org.allenfulmer.ptuviewer.jsonExport.exodus.StatExodus;
 import org.allenfulmer.ptuviewer.jsonExport.roll20.Roll20Builder;
+import org.allenfulmer.ptuviewer.models.PokeConstants;
 import org.allenfulmer.ptuviewer.models.PokemonSpecies;
 import org.allenfulmer.ptuviewer.models.Stat;
 
@@ -41,13 +42,16 @@ public class ExodusConverter {
     public static Pokemon convertFromExodus(String exodusJSON) {
         PokemonExodus e1 = gson.fromJson(exodusJSON, PokemonExodus.class);
         Pokemon p1 = new Pokemon();
+        // Fix for Exodus putting "" for Standard forms of Pokemon
+        if (e1.getPokedexEntry().getForm().isBlank())
+            e1.getPokedexEntry().setForm(PokeConstants.NON_REGIONAL_FORM);
 
         //TODO: Catch for meowstic (and nidorans?) one has the bonus on name, the other on form
 
         Map<String, PokemonSpecies> allPokes = PojoToDBConverter.getConvertedPokemonSpeciesMap();
         List<PokemonSpecies> speciesMatches = allPokes.values().stream()
                 .filter(p -> p.getSpeciesName().equalsIgnoreCase(e1.getPokedexEntry().getSpecies()))
-                .filter(p -> e1.getPokedexEntry().getForm().isBlank() || e1.getPokedexEntry().getForm().toUpperCase().startsWith(p.getForm().toUpperCase())).toList();
+                .filter(p -> e1.getPokedexEntry().getForm().toUpperCase().startsWith(p.getForm().toUpperCase())).toList();
 
         if (speciesMatches.isEmpty())
             throw new IllegalArgumentException("Exodus Pokemon matched no species!");
