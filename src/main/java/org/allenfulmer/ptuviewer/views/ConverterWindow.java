@@ -122,7 +122,7 @@ public class ConverterWindow extends JFrame implements WindowListener {
                                 .addComponent(description, GroupLayout.PREFERRED_SIZE, 112, Short.MAX_VALUE)
                                 .addGroup(glContentPane.createParallelGroup(Alignment.LEADING)
                                         .addGroup(glContentPane.createSequentialGroup()
-                                                .addPreferredGap(ComponentPlacement.RELATED)
+//                                                .addPreferredGap(ComponentPlacement.RELATED)
                                                 .addComponent(checkboxPanel))
                                         .addGroup(glContentPane.createSequentialGroup()
                                                 .addGap(26)
@@ -145,12 +145,24 @@ public class ConverterWindow extends JFrame implements WindowListener {
                                 .addContainerGap())
         );
         checkboxPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-
-        JCheckBox abilitiesAsMoves = new JCheckBox("Abilities as Moves");
-        checkboxPanel.add(abilitiesAsMoves);
+        ToolTipManager.sharedInstance().setDismissDelay(30000);
 
         JCheckBox numberNames = new JCheckBox("#'d Names");
+        numberNames.setToolTipText("<html>Appends the number of times a species name has occurred onto the end of each nickname.<br>" +
+                "This ignores the forms of each Pokemon, just its base species. e.x. Meowth (1), Meowth (2)...</html>");
         checkboxPanel.add(numberNames);
+
+        JCheckBox abilitiesAsMoves = new JCheckBox("Abilities as Moves");
+        abilitiesAsMoves.setToolTipText("<html>Adds an Untyped Status Move for each Scene/Daily Ability into the Pokemon's Move List<br>" +
+                "to help remind the user of applicable Abilities during combat and help track their usages.</html>");
+        checkboxPanel.add(abilitiesAsMoves);
+
+        JCheckBox connectionText = new JCheckBox("Connections in Moves");
+        connectionText.setToolTipText("<html>Adds information from Connection Abilities onto the end of their modified Move's Effect<br>" +
+                "text to help remind the user of the expanded options of their Connection Move. If the<br>" +
+                "\"Abilities As Moves\" option is set, this will only add info from Abilities that aren't already <br>" +
+                "added as Moves.</html>");
+        checkboxPanel.add(connectionText);
 
         this.exodusJSON = new JTextArea();
         scrollPanel.setViewportView(this.exodusJSON);
