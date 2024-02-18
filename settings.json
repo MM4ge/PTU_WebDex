@@ -1,0 +1,8 @@
+{
+  "_comment": "Use 'true' (without quotes) for using/activating a setting, 'false' (without quotes) if you don't want that setting.",
+  "_comment2": "Don't forget the comma after every setting besides the last one (connectionText).",
+
+  "numberNames": false,
+  "abilityMoves": false,
+  "connectionText": true
+}

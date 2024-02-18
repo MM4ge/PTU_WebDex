@@ -15,12 +15,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.Serial;
+import java.io.*;
 
 public class ConverterWindow extends JFrame implements WindowListener {
 
+    public record ConverterSettings(boolean numberNames, boolean abilityMoves, boolean connectionText) { }
+
     @Serial
     private static final long serialVersionUID = 1L;
+
+    private static final String SETTINGS_FILEPATH = "settings.json";
 
     /**
      * Launch the application.
@@ -159,10 +163,22 @@ public class ConverterWindow extends JFrame implements WindowListener {
 
         JCheckBox connectionText = new JCheckBox("Connections in Moves");
         connectionText.setToolTipText("<html>Adds information from Connection Abilities onto the end of their modified Move's Effect<br>" +
-                "text to help remind the user of the expanded options of their Connection Move. If the<br>" +
-                "\"Abilities As Moves\" option is set, this will only add info from Abilities that aren't already <br>" +
+                "text to help remind the user of the expanded effect of their Connection Move. If the<br>" +
+                "\"Abilities As Moves\" checkbox is set, this will only add info from Abilities that aren't already <br>" +
                 "added as Moves.</html>");
         checkboxPanel.add(connectionText);
+
+        // Set checkboxes based on default starting settings
+        try {
+            ConverterSettings opts = gson.fromJson(new BufferedReader(new FileReader(SETTINGS_FILEPATH)), ConverterSettings.class);
+            numberNames.setSelected(opts.numberNames());
+            abilitiesAsMoves.setSelected(opts.abilityMoves());
+            connectionText.setSelected(opts.connectionText());
+        }
+        // Defaults if the settings file doesn't exist - Only Connections should be set
+        catch (FileNotFoundException ex) {
+            connectionText.setSelected(true);
+        }
 
         this.exodusJSON = new JTextArea();
         scrollPanel.setViewportView(this.exodusJSON);
