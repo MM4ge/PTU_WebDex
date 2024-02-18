@@ -18,7 +18,14 @@ public class Roll20Builder {
     private final StringBuilder changeNotesBuilder = new StringBuilder("Manual Changes Notes:\n");
     private boolean abilitiesAsMoves = false;
     private boolean connectionInfoInMoves = false;
+    private boolean autoNumberNames = false;
 
+    // FC: Add additional flag for adding formes abbreviations on the ends of names so this doesn't increment for
+    //  different form versions (i.e. Meowth (Standard) and Meowth (Galarian) would end up as Meowth 1 and Meowth 2
+    //  even if they aren't exactly the same species
+    // FC: This won't work for a web-hosted version, but is fine for local-only. Change how builder works later if
+    //  counting is offered to the web version as this will cause different web users' counts to interfere.
+    private static Map<String, Integer> autoNumberNamesMap;
     private static final Predicate<Ability> abilityMovesPred = a -> !a.getFrequency().equals(Frequency.SCENE) && !a.getFrequency().equals(Frequency.DAILY);
 
     private final Pokemon poke;
@@ -39,16 +46,32 @@ public class Roll20Builder {
         return this;
     }
 
+    public Roll20Builder setAutoNumberNames(boolean flag) {
+        autoNumberNames = false;
+        return this;
+    }
+
     public PokemonRoll20 build() {
         rollPoke = new PokemonRoll20();
 
         PokemonSpecies species = poke.getSpecies();
         List<Type> types = species.getTypes();
         String speciesName = species.getSpeciesName();
-        rollPoke.setNickname(speciesName);
         if (species.getForm() != null && !species.getForm().isEmpty() && !species.getForm().equalsIgnoreCase("Standard"))
             speciesName += " (" + species.getForm() + ")";
         rollPoke.setSpecies(speciesName);
+        // Add counter to end of nickname if autoNumber flag is set - Meowth (1), Meowth (2), etc.
+        if(autoNumberNames) {
+            if(autoNumberNamesMap == null)
+                autoNumberNamesMap = new HashMap<>();
+            Map<String, Integer> namesMap = autoNumberNamesMap;
+
+            int count = namesMap.getOrDefault(speciesName, 0);
+            namesMap.put(speciesName, ++count);
+            rollPoke.setNickname(speciesName + " (" + count + ")");
+        }
+        else
+            rollPoke.setNickname(speciesName);
 
         rollPoke.setType1(types.get(0).getDisplayName());
         if (types.size() > 1)
