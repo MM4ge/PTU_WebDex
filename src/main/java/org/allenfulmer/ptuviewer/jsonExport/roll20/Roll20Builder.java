@@ -20,9 +20,6 @@ public class Roll20Builder {
     private boolean connectionInfoInMoves = false;
     private boolean autoNumberNames = false;
 
-    // FC: Add additional flag for adding formes abbreviations on the ends of names so this doesn't increment for
-    //  different form versions (i.e. Meowth (Standard) and Meowth (Galarian) would end up as Meowth 1 and Meowth 2
-    //  even if they aren't exactly the same species
     // FC: This won't work for a web-hosted version, but is fine for local-only. Change how builder works later if
     //  counting is offered to the web version as this will cause different web users' counts to interfere.
     private static Map<String, Integer> autoNumberNamesMap;

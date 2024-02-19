@@ -17,7 +17,7 @@ Quick Attack as a Flying-Type Move.
 Ability: Unaware
 Static
 Effect: Whenever the user attacks, they ignore all
-positive Combat Stages to the target’s Defense,
+positive Combat Stages to the target's Defense,
 Special Defense, and Speed.
 Ability: Anchored
 Static
@@ -45,13 +45,13 @@ damage. If that attack is Electric-Typed, it deals
 +3d6+6 more damage instead.
 Ability: Beast Boost
 At-Will – Free Action
-Trigger: The user’s Damaging Attack causes an
+Trigger: The user's Damaging Attack causes an
 opponent to Faint
 Effect: The user receives +1 Combat Stage in their
 highest non-HP stat.
 Ability: Berserk
 At-Will – Free Action
-Trigger: The user’s drops to half HP or below for the
+Trigger: The user's drops to half HP or below for the
 first time in an encounter, or becomes Enraged
 Effect: The user receives +1 Special Attack Combat
 Stage.
@@ -101,10 +101,10 @@ Effect: The Field becomes Electrified, as if affected
 by the Move Electric Terrain, for one full round.
 Ability: Emergency Exit
 Scene – Free Action
-Effect: When the user’s Hit Points drop below half
+Effect: When the user's Hit Points drop below half
 their maximum, their trainer may immediately recall
 the user and send out another Pokémon as a Free
-Action. If the user hasn’t taken their turn yet, their
+Action. If the user hasn't taken their turn yet, their
 replacement may act this round. Defensive.
 Bonus: The user is immune to being Trapped.
 Ability: Fluffy
@@ -114,8 +114,8 @@ step further, but resists Fire-Type attacks one step
 less. Defensive.
 Ability: Full Metal Body
 Static
-Effect: The user’s Combat Stages may not be
-lowered by the effect of foes’ Features, Abilities, or
+Effect: The user's Combat Stages may not be
+lowered by the effect of foes' Features, Abilities, or
 Moves. Status Afflictions may still alter their Combat
 Stages. Defensive.
 Ability: Galvanize
@@ -137,7 +137,7 @@ the Move Grassy Terrain, for one full round.
 Ability: Handyman
 Static
 Effect: The user may hold two Held Items at once.
-Whenever an Ability or Move affects the user’s Held
+Whenever an Ability or Move affects the user's Held
 Items, you may choose which one is affected.
 Ability: Horde Break
 At-Will – Free Action
@@ -253,7 +253,7 @@ Effect: If the user is hit by a damaging attack, they
 may calculate damage as if they were Normal-Type
 instead. If they were already Normal-Type, they
 instead resist the damage one step further.
-Bonus: The user’s Type changes to match the Type
+Bonus: The user's Type changes to match the Type
 of their held Memory Disc.
 Ability: Schooling
 Daily – Free Action
@@ -281,7 +281,7 @@ outside of combat if above half Maximum HP.
 Ability: Slush Rush
 Static
 Effect: While in Hailing Weather or under half
-maximum Hit Points, the user’s Initiative is doubled.
+maximum Hit Points, the user's Initiative is doubled.
 Ability: Soul Heart
 Scene x2 – Free Action
 Trigger: A combatant in the encounter Faints
@@ -308,7 +308,7 @@ that originate from its Anchor.
 Ability: Surge Surfer
 Static
 Effect: On Electric Terrain or while under half
-maximum Hit Points, the user’s Initiative is doubled.
+maximum Hit Points, the user's Initiative is doubled.
 Ability: Tangling Hair
 At-Will – Free Action
 Trigger: The user is hit by a Melee Attack
@@ -316,7 +316,7 @@ Effect: The attacker receives -1 Speed Combat Stage
 and is Slowed until the end of its next turn.
 Ability: Triage
 Static
-Effect: The user’s moves with the Healing keyword
+Effect: The user's moves with the Healing keyword
 may be used as Priority moves.
 Ability: Water Bubble
 Static

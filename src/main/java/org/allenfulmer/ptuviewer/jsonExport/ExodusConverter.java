@@ -59,10 +59,6 @@ public class ExodusConverter {
             throw new IllegalArgumentException("Exodus Pokemon matched more than one DB Species!");
         p1.setSpecies(speciesMatches.get(0));
 
-        // TODO: Exodus converter into R20 builder doubles-up on the Nature changes (so 13 default Atk Machamp w/
-        //  Atk+ Nature gets 17 Atk after conversion from Exodus into R20
-        // TODO: Discipline from the Machamp got Free Actionnull from ability -> move conversion
-
         Map<Stat.StatName, StatExodus> exodusStats = new EnumMap<>(Stat.StatName.class);
         exodusStats.put(Stat.StatName.HP, e1.getHp());
         exodusStats.put(Stat.StatName.ATTACK, e1.getAtk());
@@ -77,8 +73,8 @@ public class ExodusConverter {
         p1.setNature(Nature.getNature(e1.getNature()));
         p1.setGender(e1.getGender());
         p1.setLevel(e1.getLevel());
-        p1.setMoves(e1.getMoves().stream().map(m -> PojoToDBConverter.getMove(m.getName())).toList());
-        p1.setAbilities(e1.getAbilities().stream().map(a -> PojoToDBConverter.getAbility(a.getName())).collect(Collectors.toSet()));
+        p1.setMoves(e1.getMoves().stream().map(m -> PojoToDBConverter.getMove(m.getName().replace("’", "'"))).toList());
+        p1.setAbilities(e1.getAbilities().stream().map(a -> PojoToDBConverter.getAbility(a.getName().replace("’", "'"))).collect(Collectors.toSet()));
 
         return p1;
     }

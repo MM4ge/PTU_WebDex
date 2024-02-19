@@ -7458,7 +7458,7 @@ Speed:
 8
 Basic Information
 Type: Dragon
-Basic Ability 1: Dragon’s Maw
+Basic Ability 1: Dragon's Maw
 Adv Ability 1: Strong Jaw
 Adv Ability 2: Battle Armor
 Adv Ability 3: Pure Blooded

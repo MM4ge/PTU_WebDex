@@ -1,7 +1,7 @@
 Ability: Klutz
 Scene – Free Action
 Trigger: The user hits with a Melee Attack
-Effect: Choose one of the target’s Held Items or
+Effect: Choose one of the target's Held Items or
 Accessory Slot Items. It is knocked to the ground.
 Bonus: The Pokémon ignores the effects of all held
 Items in its possession. The user may drop Held
@@ -28,7 +28,7 @@ Ability: Chilling Neigh
 At-Will – Free Action
 Trigger: The user causes a foe to Faint with a
 damaging attack
-Effect: The user’s Attack is raised by 1 Combat Stage.
+Effect: The user's Attack is raised by 1 Combat Stage.
 In addition, all foes within 3m of the user take a -2
 penalty to evasion for one full round.
 Ability: Cotton Down
@@ -45,9 +45,9 @@ Special: The user may instead trigger this as a Free
 Action Reaction when entering the field.
 Ability: Dauntless Shield
 Static
-Effect: The user’s default Defense Combat Stages are
+Effect: The user's default Defense Combat Stages are
 increased by +1.
-Ability: Dragon’s Maw
+Ability: Dragon's Maw
 Scene x2 – Free Action
 Trigger: The user hits with a damaging Dragon-Type
 Move
@@ -76,7 +76,7 @@ Ability: Grim Neigh
 At-Will – Free Action
 Trigger: The user causes a foe to Faint with a
 damaging attack
-Effect: The user’s Special Attack is raised by 1
+Effect: The user's Special Attack is raised by 1
 Combat Stage. In addition, all foes within 3m of the
 user take a -2 penalty to Accuracy for one full round.
 Ability: Gulp Missile
@@ -91,8 +91,8 @@ Paralyzed; on an odd roll, the target instead loses 1
 Defense CS.
 Ability: Hunger Switch
 Static
-Effect: At the beginning of each of the user’s turns,
-the user must choose whether it’s in Full Belly Mode
+Effect: At the beginning of each of the user's turns,
+the user must choose whether it's in Full Belly Mode
 or Hangry Mode until the beginning of its next turn.
 In Full Belly Mode, it gains a +2 bonus to Accuracy. In
 Hangry Mode, it gains a +5 Bonus to Damage Rolls.
@@ -110,23 +110,23 @@ Effect: The user resists Special Moves one step
 further. Defensive.
 Ability: Intrepid Sword
 Static
-Effect: The user’s default Attack Combat Stages are
+Effect: The user's default Attack Combat Stages are
 increased by +1.
 Ability: Mirror Armor
 At-Will – Free Action, Reaction
-Trigger: A foe’s Move or Ability directly lowers the
-user’s CS (including Effect Ranges, but not including
+Trigger: A foe's Move or Ability directly lowers the
+user's CS (including Effect Ranges, but not including
 things like Status)
-Effect: The user’s CS are instead not lowered, and
-the triggering foe’s CS in the affected stats are
-instead lowered the same amount the user’s would
+Effect: The user's CS are instead not lowered, and
+the triggering foe's CS in the affected stats are
+instead lowered the same amount the user's would
 have been.
 Ability: Missile Launch
 Scene x2 – Standard Action
 Effect: Connection – Dragon Darts. The user places
 two Dreepy Tokens within 6m. The user may move
 all Dreepy Tokens it controls 4m as a Swift Action. A
-Dreepy Token can freely enter other creatures’
+Dreepy Token can freely enter other creatures'
 squares as part of this movement, which destroys
 the token, and causes the creature to suffer an AC2
 DB 5 Physical Dragon-Type attack as if from the user
@@ -152,8 +152,8 @@ Daily – Standard Action, Reaction
 Trigger: The user is hit with a Melee attack
 Effect: The triggering creature and the user each
 receive a Perish Count of 3. At the beginning of each
-of the target’s turns, their Perish count is lowered by
-1. Once a Perish Count reaches 0, set the Pokémon’s
+of the target's turns, their Perish count is lowered by
+1. Once a Perish Count reaches 0, set the Pokémon's
 Hit Points to 0. A Perish Count disappears if a target
 returns to their Poké Ball, Takes a Breather, or is
 knocked out. Perish Body never causes Massive
@@ -168,7 +168,7 @@ Effect: The user may make a Sprint Maneuver as a
 Free Action.
 Bonus: The user may not be Intercepted, nor may
 any Abilities, Moves, or Features be activated to
-change the user’s target. Any of those existing
+change the user's target. Any of those existing
 effects (such as Follow Me) fail.
 Ability: Punk Rock
 Static
@@ -215,9 +215,9 @@ still not target through them), and are destroyed if
 moved through.
 Ability: Splendorous Rider
 Scene x2 – Swift Action
-Effect: The user may pick a Move from their Mount’s
+Effect: The user may pick a Move from their Mount's
 known Moves that they do not already know. For the
-rest of the user’s Turn, they may use that Move as
+rest of the user's Turn, they may use that Move as
 though it was one of their own Moves. Note that this
 does not remove any frequency limitations – a Daily
 Move that the Mount knows may not be used more
@@ -226,11 +226,11 @@ This Ability may not be copied or transferred.
 Ability: Stalwart
 Scene – Free Action, Reaction
 Trigger: The user receives Massive Damage
-Effect: The user’s Attack, Special Attack, Defense,
+Effect: The user's Attack, Special Attack, Defense,
 and Special Defense all increase by 1 CS.
 Bonus: The user may not be Intercepted, nor may
 any Abilities, Moves, or Features be activated to
-change the user’s target. Any of those existing
+change the user's target. Any of those existing
 effects (such as Follow Me) fail.
 Ability: Steam Engine
 Scene x2 – Swift Action, Reaction
@@ -252,7 +252,7 @@ Ability, and may be damaged normally.
 Ability: Unseen Fist
 Static
 Effect: Reactions, Interrupts, and Blessings may not
-be activated in response to the user’s Melee Attacks.
+be activated in response to the user's Melee Attacks.
 Ability: Wandering Spirit
 Scene – Free Action, Reaction
 Trigger: The user is hit by a Melee attack

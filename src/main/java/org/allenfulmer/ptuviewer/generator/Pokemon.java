@@ -24,7 +24,9 @@ public class Pokemon {
     Map<Stat.StatName, Stat> stats;
     Set<Ability> abilities;
     List<Move> moves;
-
+    // FC: setting Pokemon starting experience and options to randomize it
+    //  Should have options to set exp starting from previous level's max or 0
+    //  Additionally should be able to randomize current exp between the min set above and the amt for the next level
 
     public Pokemon(PokemonSpecies species) {
         this(species, 1);
