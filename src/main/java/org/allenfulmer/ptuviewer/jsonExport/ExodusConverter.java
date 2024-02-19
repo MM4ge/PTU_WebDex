@@ -73,8 +73,8 @@ public class ExodusConverter {
         p1.setNature(Nature.getNature(e1.getNature()));
         p1.setGender(e1.getGender());
         p1.setLevel(e1.getLevel());
-        p1.setMoves(e1.getMoves().stream().map(m -> PojoToDBConverter.getMove(m.getName())).toList());
-        p1.setAbilities(e1.getAbilities().stream().map(a -> PojoToDBConverter.getAbility(a.getName())).collect(Collectors.toSet()));
+        p1.setMoves(e1.getMoves().stream().map(m -> PojoToDBConverter.getMove(m.getName().replace("’", "'"))).toList());
+        p1.setAbilities(e1.getAbilities().stream().map(a -> PojoToDBConverter.getAbility(a.getName().replace("’", "'"))).collect(Collectors.toSet()));
 
         return p1;
     }

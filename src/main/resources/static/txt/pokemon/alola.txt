@@ -6017,7 +6017,7 @@ Level Up Move List
 26 Charge - Electric
 32 Wild Charge - Electric
 38 Mirror Move - Flying
-43 Nature’s Madness - Fairy
+43 Nature's Madness - Fairy
 48 Discharge - Electric
 53 Agility - Psychic
 58 Electro Ball - Electric
@@ -6089,7 +6089,7 @@ Level Up Move List
 26 Skill Swap - Psychic
 32 Psyshock - Psychic
 38 Tickle - Normal
-43 Nature’s Madness - Fairy
+43 Nature's Madness - Fairy
 48 Extrasensory - Psychic
 53 Flatter - Dark
 58 Moonblast - Fairy
@@ -6160,7 +6160,7 @@ Level Up Move List
 26 Leech Seed - Grass
 32 Horn Leech - Grass
 38 Rototiller - Ground
-43 Nature’s Madness - Fairy
+43 Nature's Madness - Fairy
 48 Zen Headbutt - Psychic
 53 Megahorn - Bug
 58 Skull Bash - Normal
@@ -6232,7 +6232,7 @@ Level Up Move List
 26 Refresh - Normal
 32 Brine - Water
 38 Defog - Flying
-43 Nature’s Madness - Fairy
+43 Nature's Madness - Fairy
 48 Muddy Water - Water
 53 Aqua Ring - Water
 58 Hydro Pump - Water

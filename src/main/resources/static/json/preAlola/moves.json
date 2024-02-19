@@ -443,7 +443,7 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Special Attack by +3 CS. *Grants Glow",
+    "effect": "Raise the user's Special Attack by +3 CS. *Grants Glow",
     "contestType": "Beauty",
     "contestEffect": "Get Ready!",
     "Grants": [
@@ -523,14 +523,14 @@
     "db": "6",
     "damageClass": "Physical",
     "range": "Melee, 1 Target",
-    "effect": "If Assurance’s target has already been damaged by a Move on the same round Assurance is being used, Assurance has a Damage Base of 12 (3d12+10 / 30) instead. This effect may trigger only once per Scene per Target.",
+    "effect": "If Assurance's target has already been damaged by a Move on the same round Assurance is being used, Assurance has a Damage Base of 12 (3d12+10 / 30) instead. This effect may trigger only once per Scene per Target.",
     "contestType": "Beauty",
     "contestEffect": "Double Time",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "If Assurance’s target has already been damaged by a Move on the same round Assurance is being used, Assurance has a Damage Base of 12 (3d12+10 / 30) instead. This effect may trigger only once per Scene per Target."
+        "text": "If Assurance's target has already been damaged by a Move on the same round Assurance is being used, Assurance has a Damage Base of 12 (3d12+10 / 30) instead. This effect may trigger only once per Scene per Target."
       }
     ]
   },
@@ -589,7 +589,7 @@
     "db": "8",
     "damageClass": "Physical",
     "range": "Melee, 1 Target",
-    "effect": "Crunch lowers the target’s Defense by -1 CS on 17+.",
+    "effect": "Crunch lowers the target's Defense by -1 CS on 17+.",
     "contestType": "Tough",
     "contestEffect": "Exhausting Act",
     "critsOn": 20,
@@ -1109,13 +1109,13 @@
     "ac": "4",
     "damageClass": "Status",
     "range": "6, 1 Target",
-    "effect": "The target’s Combat Stages are inverted; +1 Stage becomes -1 Stage, -3 Stages becomes +3 Stages, etc.",
+    "effect": "The target's Combat Stages are inverted; +1 Stage becomes -1 Stage, -3 Stages becomes +3 Stages, etc.",
     "contestType": "Smart",
     "contestEffect": "Unsettling",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "The target’s Combat Stages are inverted; +1 Stage becomes -1 Stage, -3 Stages becomes +3 Stages, etc."
+        "text": "The target's Combat Stages are inverted; +1 Stage becomes -1 Stage, -3 Stages becomes +3 Stages, etc."
       }
     ]
   },
@@ -1176,7 +1176,7 @@
     "freq": "EOT",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Attack and Speed by +1 CS.",
+    "effect": "Raise the user's Attack and Speed by +1 CS.",
     "contestType": "Cool",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -2083,7 +2083,7 @@
     "ac": "2",
     "damageClass": "Status",
     "range": "6, 1 Target, Social",
-    "effect": "Lower the target’s Attack by -2 CS.",
+    "effect": "Lower the target's Attack by -2 CS.",
     "contestType": "Cute",
     "contestEffect": "Excitement",
     "triggers": [
@@ -2273,7 +2273,7 @@
     "db": "10",
     "damageClass": "Special",
     "range": "6, 1 Target",
-    "effect": "Moonblast lowers the target’s Special Attack by -1 CS on 15+.",
+    "effect": "Moonblast lowers the target's Special Attack by -1 CS on 15+.",
     "contestType": "Beauty",
     "contestEffect": "Reflective Appeal",
     "critsOn": 20,
@@ -2320,7 +2320,7 @@
     "db": "9",
     "damageClass": "Physical",
     "range": "Melee, 1 Target",
-    "effect": "Play Rough lowers the target’s Attack by -1 CS on 17+.",
+    "effect": "Play Rough lowers the target's Attack by -1 CS on 17+.",
     "contestType": "Cute",
     "contestEffect": "Excitement",
     "critsOn": 20,
@@ -2389,7 +2389,7 @@
     "freq": "EOT",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Attack and Defense by +1 CS each.",
+    "effect": "Raise the user's Attack and Defense by +1 CS each.",
     "contestType": "Beauty",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -2446,7 +2446,7 @@
     "db": "12",
     "damageClass": "Physical",
     "range": "Melee, 1 Target, Dash",
-    "effect": "Lower the user’s Defense and Special Defense by -1 CS each after damage.",
+    "effect": "Lower the user's Defense and Special Defense by -1 CS each after damage.",
     "contestType": "Smart",
     "contestEffect": "Seen Nothing Yet",
     "critsOn": 20,
@@ -2789,7 +2789,7 @@
     "db": "7",
     "damageClass": "Physical",
     "range": "Melee, 1 Target",
-    "effect": "Lower the target’s Speed by -1 CS.",
+    "effect": "Lower the target's Speed by -1 CS.",
     "contestType": "Tough",
     "contestEffect": "Steady Performance",
     "critsOn": 20,
@@ -2915,7 +2915,7 @@
     "db": "4",
     "damageClass": "Physical",
     "range": "Melee, 1 Target",
-    "effect": "Rock Smash lowers the target’s Defense 1 Combat Stage on 17+.",
+    "effect": "Rock Smash lowers the target's Defense 1 Combat Stage on 17+.",
     "contestType": "Tough",
     "contestEffect": "Desperation",
     "critsOn": 20,
@@ -3451,7 +3451,7 @@
     "db": "5",
     "damageClass": "Physical",
     "range": "Melee, 1 Target, Dash",
-    "effect": "Raise the user’s Speed 1 Combat Stage.",
+    "effect": "Raise the user's Speed 1 Combat Stage.",
     "contestType": "Tough",
     "contestEffect": "Excitement",
     "critsOn": 20,
@@ -3709,7 +3709,7 @@
     "db": "7",
     "damageClass": "Special",
     "range": "6, 1 Target",
-    "effect": "Mystical Fire lowers the target’s Special Attack by 1 Combat Stage.",
+    "effect": "Mystical Fire lowers the target's Special Attack by 1 Combat Stage.",
     "contestType": "Beauty",
     "contestEffect": "Special Attention",
     "critsOn": 20,
@@ -4036,7 +4036,7 @@
     "db": "12",
     "damageClass": "Physical",
     "range": "Melee, 1 Target, Dash",
-    "effect": "The user’s Defense and Special Defense are each lowered by -1 Combat Stage.",
+    "effect": "The user's Defense and Special Defense are each lowered by -1 Combat Stage.",
     "contestType": "Beauty",
     "contestEffect": "Seen Nothing Yet",
     "critsOn": 20,
@@ -4183,7 +4183,7 @@
     "db": "8",
     "damageClass": "Special",
     "range": "Melee, 1 Target",
-    "effect": "The user gains HP equal to Oblivion Wing’s Damage Roll.",
+    "effect": "The user gains HP equal to Oblivion Wing's Damage Roll.",
     "contestType": "Cool",
     "contestEffect": "Catching Up",
     "critsOn": 20,
@@ -4559,14 +4559,14 @@
     "db": "9",
     "damageClass": "Physical",
     "range": "Melee, 1 Target, Set-Up",
-    "effect": "Set-Up Effect: The user is removed from the field, and their turn ends. Resolution Effect: Phantom Force’s user appears adjacent to any legal target on the field, ignoring Movement Capabilities, and then uses Phantom Force’s attack. Phantom Force cannot be avoided by Moves with the Shield Keyword, the Dodge Ability, or similar effects, and Intercepts may not be attempted in response.",
+    "effect": "Set-Up Effect: The user is removed from the field, and their turn ends. Resolution Effect: Phantom Force's user appears adjacent to any legal target on the field, ignoring Movement Capabilities, and then uses Phantom Force's attack. Phantom Force cannot be avoided by Moves with the Shield Keyword, the Dodge Ability, or similar effects, and Intercepts may not be attempted in response.",
     "contestType": "Smart",
     "contestEffect": "Seen Nothing Yet",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Set-Up Effect: The user is removed from the field, and their turn ends. Resolution Effect: Phantom Force’s user appears adjacent to any legal target on the field, ignoring Movement Capabilities, and then uses Phantom Force’s attack. Phantom Force cannot be avoided by Moves with the Shield Keyword, the Dodge Ability, or similar effects, and Intercepts may not be attempted in response."
+        "text": "Set-Up Effect: The user is removed from the field, and their turn ends. Resolution Effect: Phantom Force's user appears adjacent to any legal target on the field, ignoring Movement Capabilities, and then uses Phantom Force's attack. Phantom Force cannot be avoided by Moves with the Shield Keyword, the Dodge Ability, or similar effects, and Intercepts may not be attempted in response."
       }
     ]
   },
@@ -4619,14 +4619,14 @@
     "db": "12",
     "damageClass": "Physical",
     "range": "Melee, 1 Target, Set-Up",
-    "effect": "Set-Up Effect: The user is removed from the field, and their turn ends. Resolution Effect: Shadow Force’s user appears adjacent to any legal target on the field, ignoring Movement Capabilities, and then uses Shadow Force’s attack. Shadow Force cannot be avoided by Moves with the Shield Keyword, the Dodge Ability, or similar effects, and Intercepts may not be attempted in response.",
+    "effect": "Set-Up Effect: The user is removed from the field, and their turn ends. Resolution Effect: Shadow Force's user appears adjacent to any legal target on the field, ignoring Movement Capabilities, and then uses Shadow Force's attack. Shadow Force cannot be avoided by Moves with the Shield Keyword, the Dodge Ability, or similar effects, and Intercepts may not be attempted in response.",
     "contestType": "Smart",
     "contestEffect": "Seen Nothing Yet",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Set-Up Effect: The user is removed from the field, and their turn ends. Resolution Effect: Shadow Force’s user appears adjacent to any legal target on the field, ignoring Movement Capabilities, and then uses Shadow Force’s attack. Shadow Force cannot be avoided by Moves with the Shield Keyword, the Dodge Ability, or similar effects, and Intercepts may not be attempted in response."
+        "text": "Set-Up Effect: The user is removed from the field, and their turn ends. Resolution Effect: Shadow Force's user appears adjacent to any legal target on the field, ignoring Movement Capabilities, and then uses Shadow Force's attack. Shadow Force cannot be avoided by Moves with the Shield Keyword, the Dodge Ability, or similar effects, and Intercepts may not be attempted in response."
       }
     ]
   },
@@ -4741,7 +4741,7 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Defense 3 Combat Stages.",
+    "effect": "Raise the user's Defense 3 Combat Stages.",
     "contestType": "Cute",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -4782,7 +4782,7 @@
     "db": "9",
     "damageClass": "Special",
     "range": "8, 1 Target",
-    "effect": "Energy Ball lowers the foe’s Special Defense 1 Combat Stage on 17+.",
+    "effect": "Energy Ball lowers the foe's Special Defense 1 Combat Stage on 17+.",
     "contestType": "Beauty",
     "contestEffect": "Exhausting Act",
     "critsOn": 20,
@@ -4974,7 +4974,7 @@
     "db": "13",
     "damageClass": "Special",
     "range": "8, Ranged Blast 3, Smite",
-    "effect": "Lower the user’s Special Attack 2 Combat Stages after damage.",
+    "effect": "Lower the user's Special Attack 2 Combat Stages after damage.",
     "contestType": "Cute",
     "contestEffect": "Seen Nothing Yet",
     "critsOn": 20,
@@ -5222,14 +5222,14 @@
     "db": "12",
     "damageClass": "Special",
     "range": "Line 6, 1 Target, Set-Up",
-    "effect": "Set-Up Effect: If the weather is not Sunny, the user’s turn ends. If the weather is Sunny, immediately proceed to the Resolution Effect instead and this Move loses the Set-Up keyword. Resolution Effect: The user attacks with Solar Beam. If the weather is Rainy, Sandstorming, or Hailing, Solar Beam’s Damage Base is lowered to 6 (2d6+8 / 15).",
+    "effect": "Set-Up Effect: If the weather is not Sunny, the user's turn ends. If the weather is Sunny, immediately proceed to the Resolution Effect instead and this Move loses the Set-Up keyword. Resolution Effect: The user attacks with Solar Beam. If the weather is Rainy, Sandstorming, or Hailing, Solar Beam's Damage Base is lowered to 6 (2d6+8 / 15).",
     "contestType": "Cool",
     "contestEffect": "Special Attention",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Set-Up Effect: If the weather is not Sunny, the user’s turn ends. If the weather is Sunny, immediately proceed to the Resolution Effect instead and this Move loses the Set-Up keyword. Resolution Effect: The user attacks with Solar Beam. If the weather is Rainy, Sandstorming, or Hailing, Solar Beam’s Damage Base is lowered to 6 (2d6+8 / 15)."
+        "text": "Set-Up Effect: If the weather is not Sunny, the user's turn ends. If the weather is Sunny, immediately proceed to the Resolution Effect instead and this Move loses the Set-Up keyword. Resolution Effect: The user attacks with Solar Beam. If the weather is Rainy, Sandstorming, or Hailing, Solar Beam's Damage Base is lowered to 6 (2d6+8 / 15)."
       }
     ]
   },
@@ -5238,13 +5238,13 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": "Self, Interrupt, Shield, Trigger",
-    "effect": "If the user is hit by an attack, the user may use Spiky Shield. The user is instead not hit by the Move. You do not take any damage nor are you affected by any of the Move’s effects. In addition, if the triggering attack was Melee-ranged, the attacker loses Hit Points equal to 1/10th of their Max Hit Points.",
+    "effect": "If the user is hit by an attack, the user may use Spiky Shield. The user is instead not hit by the Move. You do not take any damage nor are you affected by any of the Move's effects. In addition, if the triggering attack was Melee-ranged, the attacker loses Hit Points equal to 1/10th of their Max Hit Points.",
     "contestType": "Tough",
     "contestEffect": "Inversed Appeal",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "If the user is hit by an attack, the user may use Spiky Shield. The user is instead not hit by the Move. You do not take any damage nor are you affected by any of the Move’s effects. In addition, if the triggering attack was Melee-ranged, the attacker loses Hit Points equal to 1/10th of their Max Hit Points."
+        "text": "If the user is hit by an attack, the user may use Spiky Shield. The user is instead not hit by the Move. You do not take any damage nor are you affected by any of the Move's effects. In addition, if the triggering attack was Melee-ranged, the attacker loses Hit Points equal to 1/10th of their Max Hit Points."
       }
     ]
   },
@@ -5538,7 +5538,7 @@
     "db": "X, See Effect",
     "damageClass": "Physical",
     "range": "Burst 2, Groundsource",
-    "effect": "When you use Magnitude, roll 1d6. Magnitude’s Damage Base is equal to 5+X, where X is the value of the d6. Magnitude can hit targets that are underground, including those using the Move Dig. *Grants: Groundshaper",
+    "effect": "When you use Magnitude, roll 1d6. Magnitude's Damage Base is equal to 5+X, where X is the value of the d6. Magnitude can hit targets that are underground, including those using the Move Dig. *Grants: Groundshaper",
     "contestType": "Tough",
     "contestEffect": "Desperation",
     "critsOn": 20,
@@ -5548,7 +5548,7 @@
     "triggers": [
       {
         "type": "action-needed",
-        "text": "When you use Magnitude, roll 1d6. Magnitude’s Damage Base is equal to 5+X, where X is the value of the d6. Magnitude can hit targets that are underground, including those using the Move Dig."
+        "text": "When you use Magnitude, roll 1d6. Magnitude's Damage Base is equal to 5+X, where X is the value of the d6. Magnitude can hit targets that are underground, including those using the Move Dig."
       }
     ]
   },
@@ -6225,7 +6225,7 @@
     "ac": "2",
     "damageClass": "Status",
     "range": "Melee, 1 Target or Self",
-    "effect": "Roll 1d6. On a result of 1, raise the target’s Attack by +2 CS. On a result of 2, raise the target’s Defense by +2 CS. On a result of 3, raise the target’s Special Attack by +2 CS. On a result of 4, raise the target’s Special Defense by +2 CS. On a result of 5, raise the target’s Speed by +2 CS. On a result of 6, raise the target’s Accuracy by +2.",
+    "effect": "Roll 1d6. On a result of 1, raise the target's Attack by +2 CS. On a result of 2, raise the target's Defense by +2 CS. On a result of 3, raise the target's Special Attack by +2 CS. On a result of 4, raise the target's Special Defense by +2 CS. On a result of 5, raise the target's Speed by +2 CS. On a result of 6, raise the target's Accuracy by +2.",
     "contestType": "Cool",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -6305,13 +6305,13 @@
     "freq": "Scene x2",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Randomly select another Pokémon on the user’s roster and then randomly select a Move that Pokémon knows. Assist’s user uses that Move immediately.",
+    "effect": "Randomly select another Pokémon on the user's roster and then randomly select a Move that Pokémon knows. Assist's user uses that Move immediately.",
     "contestType": "Cute",
     "contestEffect": "Tease",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Randomly select another Pokémon on the user’s roster and then randomly select a Move that Pokémon knows. Assist’s user uses that Move immediately."
+        "text": "Randomly select another Pokémon on the user's roster and then randomly select a Move that Pokémon knows. Assist's user uses that Move immediately."
       }
     ]
   },
@@ -6321,7 +6321,7 @@
     "ac": "2",
     "damageClass": "Status",
     "range": "3, 1 Target, Social",
-    "effect": "Attract Infatuates the target if its gender is the opposite of the user’s. Attract fails when used by or against Genderless targets.",
+    "effect": "Attract Infatuates the target if its gender is the opposite of the user's. Attract fails when used by or against Genderless targets.",
     "contestType": "Cute",
     "contestEffect": "Excitement",
     "triggers": [
@@ -6355,13 +6355,13 @@
     "freq": "At-Will",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "The user is replaced with another Pokémon from their trainer’s roster. All Combat Stage, Coats, and [Stratagems] on Baton Pass’ user are transferred to the replacement. Baton Pass may be used to switch even if the user is Trapped.",
+    "effect": "The user is replaced with another Pokémon from their trainer's roster. All Combat Stage, Coats, and [Stratagems] on Baton Pass' user are transferred to the replacement. Baton Pass may be used to switch even if the user is Trapped.",
     "contestType": "Cute",
     "contestEffect": "Inversed Appeal",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "The user is replaced with another Pokémon from their trainer’s roster. All Combat Stage, Coats, and [Stratagems] on Baton Pass’ user are transferred to the replacement. Baton Pass may be used to switch even if the user is Trapped."
+        "text": "The user is replaced with another Pokémon from their trainer's roster. All Combat Stage, Coats, and [Stratagems] on Baton Pass' user are transferred to the replacement. Baton Pass may be used to switch even if the user is Trapped."
       }
     ]
   },
@@ -6410,14 +6410,14 @@
     "db": "See Effect",
     "damageClass": "Physical",
     "range": "Burst 1, Friendly",
-    "effect": "The user may use Bide as a Reaction Move upon being Hit by a Damaging Move. During their next available turn, the user may Shift and then use Bide, causing all Adjacent foes to lose X HP, where X is the amount of Damage taken since declaring use of Bide (Loss of life through effects such as Poison is not ‘Damage’).",
+    "effect": "The user may use Bide as a Reaction Move upon being Hit by a Damaging Move. During their next available turn, the user may Shift and then use Bide, causing all Adjacent foes to lose X HP, where X is the amount of Damage taken since declaring use of Bide (Loss of life through effects such as Poison is not ‘Damage').",
     "contestType": "Tough",
     "contestEffect": "Double Time",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "The user may use Bide as a Reaction Move upon being Hit by a Damaging Move. During their next available turn, the user may Shift and then use Bide, causing all Adjacent foes to lose X HP, where X is the amount of Damage taken since declaring use of Bide (Loss of life through effects such as Poison is not ‘Damage’)."
+        "text": "The user may use Bide as a Reaction Move upon being Hit by a Damaging Move. During their next available turn, the user may Shift and then use Bide, causing all Adjacent foes to lose X HP, where X is the amount of Damage taken since declaring use of Bide (Loss of life through effects such as Poison is not ‘Damage')."
       }
     ]
   },
@@ -6602,7 +6602,7 @@
     "db": "1",
     "damageClass": "Physical",
     "range": "Melee, 1 Target",
-    "effect": "Lower the target’s Speed by -1 CS. Constrict may be used as a Swift Action against targets the user is Grappling and automatically hits when performed this way.",
+    "effect": "Lower the target's Speed by -1 CS. Constrict may be used as a Swift Action against targets the user is Grappling and automatically hits when performed this way.",
     "contestType": "Tough",
     "contestEffect": "Safe Option",
     "critsOn": 20,
@@ -6673,14 +6673,14 @@
     "db": "6",
     "damageClass": "Physical",
     "range": "Melee, 1 Target",
-    "effect": "Covet takes the target’s Held Item or Accessory Slot Item and attaches it to Covet’s user, if the user is not holding anything.",
+    "effect": "Covet takes the target's Held Item or Accessory Slot Item and attaches it to Covet's user, if the user is not holding anything.",
     "contestType": "Cute",
     "contestEffect": "Attention Grabber",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Covet takes the target’s Held Item or Accessory Slot Item and attaches it to Covet’s user, if the user is not holding anything."
+        "text": "Covet takes the target's Held Item or Accessory Slot Item and attaches it to Covet's user, if the user is not holding anything."
       }
     ]
   },
@@ -6691,7 +6691,7 @@
     "db": "7",
     "damageClass": "Physical",
     "range": "Melee, 1 Target, Dash",
-    "effect": "Crush Claw lowers the target’s Defense by -1 CS on Even-Numbered Rolls.",
+    "effect": "Crush Claw lowers the target's Defense by -1 CS on Even-Numbered Rolls.",
     "contestType": "Cool",
     "contestEffect": "Steady Performance",
     "critsOn": 20,
@@ -6752,7 +6752,7 @@
     "freq": "At-Will",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "The user’s Defense is raised 1 Combat Stage and they become Curled Up until the end of the Scene or they are Recalled or Take a Breather. When using the Moves Rollout or Ice Ball while Curled Up, the user gains a +10 bonus to the damage rolls of those Moves.",
+    "effect": "The user's Defense is raised 1 Combat Stage and they become Curled Up until the end of the Scene or they are Recalled or Take a Breather. When using the Moves Rollout or Ice Ball while Curled Up, the user gains a +10 bonus to the damage rolls of those Moves.",
     "contestType": "Cute",
     "contestEffect": "Sabotage",
     "triggers": [
@@ -7035,14 +7035,14 @@
     "db": "7",
     "damageClass": "Physical",
     "range": "Melee, 1 Target",
-    "effect": "If the user is afflicted with a Persistent Status Affliction, Façade’s Damage Base is doubled to DB 14 (4d10+15 / 40).",
+    "effect": "If the user is afflicted with a Persistent Status Affliction, Façade's Damage Base is doubled to DB 14 (4d10+15 / 40).",
     "contestType": "Cute",
     "contestEffect": "Double Time",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "If the user is afflicted with a Persistent Status Affliction, Façade’s Damage Base is doubled to DB 14 (4d10+15 / 40)."
+        "text": "If the user is afflicted with a Persistent Status Affliction, Façade's Damage Base is doubled to DB 14 (4d10+15 / 40)."
       }
     ]
   },
@@ -7180,13 +7180,13 @@
     "freq": "Scene x2",
     "damageClass": "Status",
     "range": "Self, Swift Action",
-    "effect": "Foresight may be activated as a Swift Action on the user’s turn. For the rest of the turn, the user’s Normal-Type and Fighting-Type Moves can hit and affect Ghost-Type targets, and the user can see through the Illusion Ability, Moves with the Illusion keyword, and effects created by the Illusionist Capability, ignoring all effects from those.",
+    "effect": "Foresight may be activated as a Swift Action on the user's turn. For the rest of the turn, the user's Normal-Type and Fighting-Type Moves can hit and affect Ghost-Type targets, and the user can see through the Illusion Ability, Moves with the Illusion keyword, and effects created by the Illusionist Capability, ignoring all effects from those.",
     "contestType": "Smart",
     "contestEffect": "Good Show!",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Foresight may be activated as a Swift Action on the user’s turn. For the rest of the turn, the user’s Normal-Type and Fighting-Type Moves can hit and affect Ghost-Type targets, and the user can see through the Illusion Ability, Moves with the Illusion keyword, and effects created by the Illusionist Capability, ignoring all effects from those."
+        "text": "Foresight may be activated as a Swift Action on the user's turn. For the rest of the turn, the user's Normal-Type and Fighting-Type Moves can hit and affect Ghost-Type targets, and the user can see through the Illusion Ability, Moves with the Illusion keyword, and effects created by the Illusionist Capability, ignoring all effects from those."
       }
     ]
   },
@@ -7326,7 +7326,7 @@
     "freq": "At-Will",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Defense by +1 CS.",
+    "effect": "Raise the user's Defense by +1 CS.",
     "contestType": "Tough",
     "contestEffect": "Sabotage",
     "triggers": [
@@ -7428,14 +7428,14 @@
     "db": "6",
     "damageClass": "Special",
     "range": "Burst 1",
-    "effect": "When a Pokémon first obtains the Move Hidden Power, roll 1d20. Hidden Power’s Elemental Type will be changed from Normal to Bug on a result of 1; Dark on 2; Dragon on 3; Electric on 4; Fairy on 5; Fighting on 6; Fire on 7; Flying on 8; Ghost on 9; Grass on 10; Ground on 11; Ice on 12; Normal on 13; Poison on 14; Psychic on 15; Rock on 16; Steel on 17; Water on 18; and on 19 or 20, reroll until you roll another number. This effect is permanent – if Hidden Power is forgotten and relearned, the chosen Type remains the same.",
+    "effect": "When a Pokémon first obtains the Move Hidden Power, roll 1d20. Hidden Power's Elemental Type will be changed from Normal to Bug on a result of 1; Dark on 2; Dragon on 3; Electric on 4; Fairy on 5; Fighting on 6; Fire on 7; Flying on 8; Ghost on 9; Grass on 10; Ground on 11; Ice on 12; Normal on 13; Poison on 14; Psychic on 15; Rock on 16; Steel on 17; Water on 18; and on 19 or 20, reroll until you roll another number. This effect is permanent – if Hidden Power is forgotten and relearned, the chosen Type remains the same.",
     "contestType": "Smart",
     "contestEffect": "Catching Up",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "When a Pokémon first obtains the Move Hidden Power, roll 1d20. Hidden Power’s Elemental Type will be changed from Normal to Bug on a result of 1; Dark on 2; Dragon on 3; Electric on 4; Fairy on 5; Fighting on 6; Fire on 7; Flying on 8; Ghost on 9; Grass on 10; Ground on 11; Ice on 12; Normal on 13; Poison on 14; Psychic on 15; Rock on 16; Steel on 17; Water on 18; and on 19 or 20, reroll until you roll another number. This effect is permanent – if Hidden Power is forgotten and relearned, the chosen Type remains the same."
+        "text": "When a Pokémon first obtains the Move Hidden Power, roll 1d20. Hidden Power's Elemental Type will be changed from Normal to Bug on a result of 1; Dark on 2; Dragon on 3; Electric on 4; Fairy on 5; Fighting on 6; Fire on 7; Flying on 8; Ghost on 9; Grass on 10; Ground on 11; Ice on 12; Normal on 13; Poison on 14; Psychic on 15; Rock on 16; Steel on 17; Water on 18; and on 19 or 20, reroll until you roll another number. This effect is permanent – if Hidden Power is forgotten and relearned, the chosen Type remains the same."
       }
     ]
   },
@@ -7484,7 +7484,7 @@
     "freq": "At-Will",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Attack by +1 CS.",
+    "effect": "Raise the user's Attack by +1 CS.",
     "contestType": "Cool",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -7664,13 +7664,13 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": "Self, Trigger, Interrupt",
-    "effect": "If an opponent declares a Damaging Attack against the user, and Me First’s user has a higher Speed stat then the target, the user may use Me First as an Interrupt. The User will then use the same Move the triggering foe was about to use on that foe.",
+    "effect": "If an opponent declares a Damaging Attack against the user, and Me First's user has a higher Speed stat then the target, the user may use Me First as an Interrupt. The User will then use the same Move the triggering foe was about to use on that foe.",
     "contestType": "Cute",
     "contestEffect": "Saving Grace",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "If an opponent declares a Damaging Attack against the user, and Me First’s user has a higher Speed stat then the target, the user may use Me First as an Interrupt. The User will then use the same Move the triggering foe was about to use on that foe."
+        "text": "If an opponent declares a Damaging Attack against the user, and Me First's user has a higher Speed stat then the target, the user may use Me First as an Interrupt. The User will then use the same Move the triggering foe was about to use on that foe."
       }
     ]
   },
@@ -7729,13 +7729,13 @@
     "freq": "Scene x2",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Metronome randomly uses any other Move except for After You, Assist, Bestow, Copycat, Counter, Covet, Crafty Shield, Destiny Bond, Detect, Endure, Feint, Focus Punch, Follow Me, Helping Hand, King’s Shield, Metronome, Me First, Mimic, Mirror Coat, Mirror Move, Protect, Quash, Quick Guard, Rage Powder, Sketch, Sleep Talk, Snatch, Snore, Spiky Shield, Switcheroo, Thief, Transform, Trick, and Wide Guard. The GM helps to pick the random Move.",
+    "effect": "Metronome randomly uses any other Move except for After You, Assist, Bestow, Copycat, Counter, Covet, Crafty Shield, Destiny Bond, Detect, Endure, Feint, Focus Punch, Follow Me, Helping Hand, King's Shield, Metronome, Me First, Mimic, Mirror Coat, Mirror Move, Protect, Quash, Quick Guard, Rage Powder, Sketch, Sleep Talk, Snatch, Snore, Spiky Shield, Switcheroo, Thief, Transform, Trick, and Wide Guard. The GM helps to pick the random Move.",
     "contestType": "Cute",
     "contestEffect": "Tease",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Metronome randomly uses any other Move except for After You, Assist, Bestow, Copycat, Counter, Covet, Crafty Shield, Destiny Bond, Detect, Endure, Feint, Focus Punch, Follow Me, Helping Hand, King’s Shield, Metronome, Me First, Mimic, Mirror Coat, Mirror Move, Protect, Quash, Quick Guard, Rage Powder, Sketch, Sleep Talk, Snatch, Snore, Spiky Shield, Switcheroo, Thief, Transform, Trick, and Wide Guard. The GM helps to pick the random Move."
+        "text": "Metronome randomly uses any other Move except for After You, Assist, Bestow, Copycat, Counter, Covet, Crafty Shield, Destiny Bond, Detect, Endure, Feint, Focus Punch, Follow Me, Helping Hand, King's Shield, Metronome, Me First, Mimic, Mirror Coat, Mirror Move, Protect, Quash, Quick Guard, Rage Powder, Sketch, Sleep Talk, Snatch, Snore, Spiky Shield, Switcheroo, Thief, Transform, Trick, and Wide Guard. The GM helps to pick the random Move."
       }
     ]
   },
@@ -7760,13 +7760,13 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": "6, 1 Target",
-    "effect": "Choose a Move that the target has used during the encounter. For the remainder of the encounter, that Move replaces Mimic on the user’s Move List. Mimic cannot miss.",
+    "effect": "Choose a Move that the target has used during the encounter. For the remainder of the encounter, that Move replaces Mimic on the user's Move List. Mimic cannot miss.",
     "contestType": "Cute",
     "contestEffect": "Attention Grabber",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Choose a Move that the target has used during the encounter. For the remainder of the encounter, that Move replaces Mimic on the user’s Move List. Mimic cannot miss."
+        "text": "Choose a Move that the target has used during the encounter. For the remainder of the encounter, that Move replaces Mimic on the user's Move List. Mimic cannot miss."
       }
     ]
   },
@@ -7775,13 +7775,13 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": "6, 1 Target",
-    "effect": "The target becomes Read to the user until the end of the user’s next turn. The user may end this effect when making an Attack on the user, causing that attack to automatically hit; OR when the Read target uses an Attack against the user, causing that attack to automatically miss. If the user has the Telepathy Capability, the user automatically succeeds on a mindreading attempt against the target, and may listen to the target’s surface thoughts as long as they remain Read. Mind Reader automatically misses against targets with the Mindlock Capability.",
+    "effect": "The target becomes Read to the user until the end of the user's next turn. The user may end this effect when making an Attack on the user, causing that attack to automatically hit; OR when the Read target uses an Attack against the user, causing that attack to automatically miss. If the user has the Telepathy Capability, the user automatically succeeds on a mindreading attempt against the target, and may listen to the target's surface thoughts as long as they remain Read. Mind Reader automatically misses against targets with the Mindlock Capability.",
     "contestType": "Smart",
     "contestEffect": "Good Show!",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "The target becomes Read to the user until the end of the user’s next turn. The user may end this effect when making an Attack on the user, causing that attack to automatically hit; OR when the Read target uses an Attack against the user, causing that attack to automatically miss. If the user has the Telepathy Capability, the user automatically succeeds on a mindreading attempt against the target, and may listen to the target’s surface thoughts as long as they remain Read. Mind Reader automatically misses against targets with the Mindlock Capability."
+        "text": "The target becomes Read to the user until the end of the user's next turn. The user may end this effect when making an Attack on the user, causing that attack to automatically hit; OR when the Read target uses an Attack against the user, causing that attack to automatically miss. If the user has the Telepathy Capability, the user automatically succeeds on a mindreading attempt against the target, and may listen to the target's surface thoughts as long as they remain Read. Mind Reader automatically misses against targets with the Mindlock Capability."
       }
     ]
   },
@@ -7833,14 +7833,14 @@
     "db": "See Effect",
     "damageClass": "Special",
     "range": "6, 1 Target, Berry",
-    "effect": "Refer to the Move Keywords Berry list. Natural Gift deals damage according to the Berry list and Natural Gift’s Type is also defined there. The Berry’s Digestion/Food Buff is nullified and is not used.",
+    "effect": "Refer to the Move Keywords Berry list. Natural Gift deals damage according to the Berry list and Natural Gift's Type is also defined there. The Berry's Digestion/Food Buff is nullified and is not used.",
     "contestType": "Cool",
     "contestEffect": "Desperation",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Refer to the Move Keywords Berry list. Natural Gift deals damage according to the Berry list and Natural Gift’s Type is also defined there. The Berry’s Digestion/Food Buff is nullified and is not used."
+        "text": "Refer to the Move Keywords Berry list. Natural Gift deals damage according to the Berry list and Natural Gift's Type is also defined there. The Berry's Digestion/Food Buff is nullified and is not used."
       }
     ]
   },
@@ -7867,7 +7867,7 @@
     "ac": "2",
     "damageClass": "Status",
     "range": "Burst 1, Sonic, Friendly, Social",
-    "effect": "Noble Roar lowers all legal targets’ Attack and Special Attack by +1 CS.",
+    "effect": "Noble Roar lowers all legal targets' Attack and Special Attack by +1 CS.",
     "contestType": "Cool",
     "contestEffect": "Excitement",
     "triggers": [
@@ -7887,13 +7887,13 @@
     "freq": "Scene x2",
     "damageClass": "Status",
     "range": "Self, Swift Action",
-    "effect": "Odor Sleuth may be activated as a Swift Action on the user’s turn. For the rest of the turn, the user’s Normal-Type and Fighting-Type Moves can hit and affect Ghost-Type targets, and the user can see through the Illusion Ability, Moves with the Illusion keyword, and effects created by the Illusionist Capability, ignoring all effects from those.",
+    "effect": "Odor Sleuth may be activated as a Swift Action on the user's turn. For the rest of the turn, the user's Normal-Type and Fighting-Type Moves can hit and affect Ghost-Type targets, and the user can see through the Illusion Ability, Moves with the Illusion keyword, and effects created by the Illusionist Capability, ignoring all effects from those.",
     "contestType": "Smart",
     "contestEffect": "Good Show!",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Odor Sleuth may be activated as a Swift Action on the user’s turn. For the rest of the turn, the user’s Normal-Type and Fighting-Type Moves can hit and affect Ghost-Type targets, and the user can see through the Illusion Ability, Moves with the Illusion keyword, and effects created by the Illusionist Capability, ignoring all effects from those."
+        "text": "Odor Sleuth may be activated as a Swift Action on the user's turn. For the rest of the turn, the user's Normal-Type and Fighting-Type Moves can hit and affect Ghost-Type targets, and the user can see through the Illusion Ability, Moves with the Illusion keyword, and effects created by the Illusionist Capability, ignoring all effects from those."
       }
     ]
   },
@@ -7935,13 +7935,13 @@
     "freq": "Daily",
     "damageClass": "Status",
     "range": "Burst 15, Sonic",
-    "effect": "Perish Song cannot miss. All targets, including the user, receive a Perish Count of 3. At the beginning of each of the target’s turns, their Perish count is lowered by 1. Once a Perish Count reaches 0, set the Pokémon’s Hit Points to 0. A Perish Count disappears if a target returns to their Poké Ball, Takes a Breather, or is knocked out. Perish Song never causes Massive Damage.",
+    "effect": "Perish Song cannot miss. All targets, including the user, receive a Perish Count of 3. At the beginning of each of the target's turns, their Perish count is lowered by 1. Once a Perish Count reaches 0, set the Pokémon's Hit Points to 0. A Perish Count disappears if a target returns to their Poké Ball, Takes a Breather, or is knocked out. Perish Song never causes Massive Damage.",
     "contestType": "Beauty",
     "contestEffect": "Unsettling",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Perish Song cannot miss. All targets, including the user, receive a Perish Count of 3. At the beginning of each of the target’s turns, their Perish count is lowered by 1. Once a Perish Count reaches 0, set the Pokémon’s Hit Points to 0. A Perish Count disappears if a target returns to their Poké Ball, Takes a Breather, or is knocked out. Perish Song never causes Massive Damage."
+        "text": "Perish Song cannot miss. All targets, including the user, receive a Perish Count of 3. At the beginning of each of the target's turns, their Perish count is lowered by 1. Once a Perish Count reaches 0, set the Pokémon's Hit Points to 0. A Perish Count disappears if a target returns to their Poké Ball, Takes a Breather, or is knocked out. Perish Song never causes Massive Damage."
       }
     ]
   },
@@ -7951,7 +7951,7 @@
     "ac": "2",
     "damageClass": "Status",
     "range": "6, 1 Target, Social",
-    "effect": "Play Nice lowers the target’s Attack by -1 CS.",
+    "effect": "Play Nice lowers the target's Attack by -1 CS.",
     "contestType": "Cute",
     "contestEffect": "Excitement",
     "triggers": [
@@ -8041,7 +8041,7 @@
     "db": "2",
     "damageClass": "Physical",
     "range": "Melee, 1 Target, Spirit Surge",
-    "effect": "The user becomes Enraged. Until the end of the user’s next turn, if the user is Enraged, the user gains +1 Attack Combat Stage whenever they are damaged by an Damaging Move or Attack.",
+    "effect": "The user becomes Enraged. Until the end of the user's next turn, if the user is Enraged, the user gains +1 Attack Combat Stage whenever they are damaged by an Damaging Move or Attack.",
     "contestType": "Cool",
     "contestEffect": "Get Ready!",
     "critsOn": 20,
@@ -8055,7 +8055,7 @@
       },
       {
         "type": "action-needed",
-        "text": "Until the end of the user’s next turn, if the user is Enraged, the user gains +1 Attack Combat Stage whenever they are damaged by an Damaging Move or Attack."
+        "text": "Until the end of the user's next turn, if the user is Enraged, the user gains +1 Attack Combat Stage whenever they are damaged by an Damaging Move or Attack."
       }
     ]
   },
@@ -8132,13 +8132,13 @@
     "ac": "2",
     "damageClass": "Status",
     "range": "Melee, 1 Target",
-    "effect": "Reflect Type changes one of the user’s Types into one Type of your choice that the target has for the rest of the scene.",
+    "effect": "Reflect Type changes one of the user's Types into one Type of your choice that the target has for the rest of the scene.",
     "contestType": "Beauty",
     "contestEffect": "Attention Grabber",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Reflect Type changes one of the user’s Types into one Type of your choice that the target has for the rest of the scene."
+        "text": "Reflect Type changes one of the user's Types into one Type of your choice that the target has for the rest of the scene."
       }
     ]
   },
@@ -8311,7 +8311,7 @@
     "ac": "2",
     "damageClass": "Status",
     "range": "4, 1 Target, Social",
-    "effect": "Lower the target’s Speed by -2 CS.",
+    "effect": "Lower the target's Speed by -2 CS.",
     "contestType": "Tough",
     "contestEffect": "Desperation",
     "triggers": [
@@ -8397,7 +8397,7 @@
     "freq": "At-Will",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Attack by +1 CS.",
+    "effect": "Raise the user's Attack by +1 CS.",
     "contestType": "Cute",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -8582,13 +8582,13 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Select another of the user’s Moves at random; this turn, the user may Shift and use that Move despite being Asleep. Sleep Talk can be only be used by Sleeping targets.",
+    "effect": "Select another of the user's Moves at random; this turn, the user may Shift and use that Move despite being Asleep. Sleep Talk can be only be used by Sleeping targets.",
     "contestType": "Cute",
     "contestEffect": "Steady Performance",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Select another of the user’s Moves at random; this turn, the user may Shift and use that Move despite being Asleep. Sleep Talk can be only be used by Sleeping targets."
+        "text": "Select another of the user's Moves at random; this turn, the user may Shift and use that Move despite being Asleep. Sleep Talk can be only be used by Sleeping targets."
       }
     ]
   },
@@ -8599,14 +8599,14 @@
     "db": "7",
     "damageClass": "Physical",
     "range": "Melee, 1 Target",
-    "effect": "If the target is Paralyzed, Smelling Salt’s Damage Base is doubled to 14 (4d10+15 / 40), and cures the target of Paralysis.",
+    "effect": "If the target is Paralyzed, Smelling Salt's Damage Base is doubled to 14 (4d10+15 / 40), and cures the target of Paralysis.",
     "contestType": "Smart",
     "contestEffect": "Unsettling",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "If the target is Paralyzed, Smelling Salt’s Damage Base is doubled to 14 (4d10+15 / 40), and cures the target of Paralysis."
+        "text": "If the target is Paralyzed, Smelling Salt's Damage Base is doubled to 14 (4d10+15 / 40), and cures the target of Paralysis."
       }
     ]
   },
@@ -8717,14 +8717,14 @@
     "db": "X, See Effect",
     "damageClass": "Special",
     "range": "4, 1 Target",
-    "effect": "For each Stockpiled Count the user has, Spit Up’s Damage Base is increased by +8. If the user has no Stockpiled count, Spit Up cannot be used.",
+    "effect": "For each Stockpiled Count the user has, Spit Up's Damage Base is increased by +8. If the user has no Stockpiled count, Spit Up cannot be used.",
     "contestType": "Tough",
     "contestEffect": "Desperation",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "For each Stockpiled Count the user has, Spit Up’s Damage Base is increased by +8. If the user has no Stockpiled count, Spit Up cannot be used."
+        "text": "For each Stockpiled Count the user has, Spit Up's Damage Base is increased by +8. If the user has no Stockpiled count, Spit Up cannot be used."
       }
     ]
   },
@@ -8751,13 +8751,13 @@
     "freq": "EOT",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "The user adds 1 to their Stockpiled count to a maximum of 3. For each number a Stockpiled count is above 0, raise the user’s Defense and Special Defense by +1 CS each. If a Stockpiled count is set to 0, any Combat Stages gained from the Stockpiled count are removed.",
+    "effect": "The user adds 1 to their Stockpiled count to a maximum of 3. For each number a Stockpiled count is above 0, raise the user's Defense and Special Defense by +1 CS each. If a Stockpiled count is set to 0, any Combat Stages gained from the Stockpiled count are removed.",
     "contestType": "Tough",
     "contestEffect": "Get Ready!",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "The user adds 1 to their Stockpiled count to a maximum of 3. For each number a Stockpiled count is above 0, raise the user’s Defense and Special Defense by +1 CS each. If a Stockpiled count is set to 0, any Combat Stages gained from the Stockpiled count are removed."
+        "text": "The user adds 1 to their Stockpiled count to a maximum of 3. For each number a Stockpiled count is above 0, raise the user's Defense and Special Defense by +1 CS each. If a Stockpiled count is set to 0, any Combat Stages gained from the Stockpiled count are removed."
       }
     ]
   },
@@ -8822,7 +8822,7 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": "Self, Illusion, Coat",
-    "effect": "The user loses 1/4 of their maximum Hit Points. This Hit Point loss cannot be prevented in any way. The user creates an Illusory Substitute Coat, which has Hit Points equal to 1/4th of the user’s full Hit Points +1. If the user would be hit by a Move or attack, instead the Substitute gets hit. Apply weakness, resistance and stats to the Substitute. The Substitute is immune to Status Afflictions and Status Moves. Moves with the Social or Sonic keywords completely ignore and bypass the Substitute. Once the Substitute has been destroyed, the user may be hit as normal. Substitute cannot be used if the user has less than 1/4 of their full Hit Points.",
+    "effect": "The user loses 1/4 of their maximum Hit Points. This Hit Point loss cannot be prevented in any way. The user creates an Illusory Substitute Coat, which has Hit Points equal to 1/4th of the user's full Hit Points +1. If the user would be hit by a Move or attack, instead the Substitute gets hit. Apply weakness, resistance and stats to the Substitute. The Substitute is immune to Status Afflictions and Status Moves. Moves with the Social or Sonic keywords completely ignore and bypass the Substitute. Once the Substitute has been destroyed, the user may be hit as normal. Substitute cannot be used if the user has less than 1/4 of their full Hit Points.",
     "contestType": "Smart",
     "contestEffect": "Catching Up",
     "triggers": [
@@ -8833,7 +8833,7 @@
       },
       {
         "type": "action-needed",
-        "text": "The user creates an Illusory Substitute Coat, which has Hit Points equal to 1/4th of the user’s full Hit Points +1. If the user would be hit by a Move or attack, instead the Substitute gets hit. Apply weakness, resistance and stats to the Substitute. The Substitute is immune to Status Afflictions and Status Moves. Moves with the Social or Sonic keywords completely ignore and bypass the Substitute. Once the Substitute has been destroyed, the user may be hit as normal. Substitute cannot be used if the user has less than 1/4 of their full Hit Points."
+        "text": "The user creates an Illusory Substitute Coat, which has Hit Points equal to 1/4th of the user's full Hit Points +1. If the user would be hit by a Move or attack, instead the Substitute gets hit. Apply weakness, resistance and stats to the Substitute. The Substitute is immune to Status Afflictions and Status Moves. Moves with the Social or Sonic keywords completely ignore and bypass the Substitute. Once the Substitute has been destroyed, the user may be hit as normal. Substitute cannot be used if the user has less than 1/4 of their full Hit Points."
       }
     ]
   },
@@ -8922,13 +8922,13 @@
     "freq": "Daily x2",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "If the user’s Stockpiled count is 1, they are healed 25% of their full Hit Point value; if their Stockpiled count is 2, they are healed half of their full Hit Point value; if their Stockpiled count is 3, they are healed back to full Hit Points. After using Swallow, the user’s Stockpiled count is set to 0. If the user has no Stockpiled count, Swallow does nothing.",
+    "effect": "If the user's Stockpiled count is 1, they are healed 25% of their full Hit Point value; if their Stockpiled count is 2, they are healed half of their full Hit Point value; if their Stockpiled count is 3, they are healed back to full Hit Points. After using Swallow, the user's Stockpiled count is set to 0. If the user has no Stockpiled count, Swallow does nothing.",
     "contestType": "Tough",
     "contestEffect": "Reflective Appeal",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "If the user’s Stockpiled count is 1, they are healed 25% of their full Hit Point value; if their Stockpiled count is 2, they are healed half of their full Hit Point value; if their Stockpiled count is 3, they are healed back to full Hit Points. After using Swallow, the user’s Stockpiled count is set to 0. If the user has no Stockpiled count, Swallow does nothing."
+        "text": "If the user's Stockpiled count is 1, they are healed 25% of their full Hit Point value; if their Stockpiled count is 2, they are healed half of their full Hit Point value; if their Stockpiled count is 3, they are healed back to full Hit Points. After using Swallow, the user's Stockpiled count is set to 0. If the user has no Stockpiled count, Swallow does nothing."
       }
     ]
   },
@@ -9066,14 +9066,14 @@
     "db": "12",
     "damageClass": "Special",
     "range": "6, Ranged Blast 2",
-    "effect": "Techno Blast’s Type can be any Type while holding the appropriate Drive item or Plate item.",
+    "effect": "Techno Blast's Type can be any Type while holding the appropriate Drive item or Plate item.",
     "contestType": "Smart",
     "contestEffect": "Seen Nothing Yet",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Techno Blast’s Type can be any Type while holding the appropriate Drive item or Plate item."
+        "text": "Techno Blast's Type can be any Type while holding the appropriate Drive item or Plate item."
       }
     ]
   },
@@ -9124,7 +9124,7 @@
     "ac": "2",
     "damageClass": "Status",
     "range": "Melee, 1 Target",
-    "effect": "Lower the target’s Attack and Defense by -1 CS each.",
+    "effect": "Lower the target's Attack and Defense by -1 CS each.",
     "contestType": "Cute",
     "contestEffect": "Excitement",
     "triggers": [
@@ -9284,7 +9284,7 @@
     "freq": "EOT",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Attack and Special Attack by +1 CS each.",
+    "effect": "Raise the user's Attack and Special Attack by +1 CS each.",
     "contestType": "Tough",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -9355,7 +9355,7 @@
     "db": "4",
     "damageClass": "Special",
     "range": "Cone 2",
-    "effect": "Acid lowers the target’s Defense by -1 Combat Stage on 18+.",
+    "effect": "Acid lowers the target's Defense by -1 Combat Stage on 18+.",
     "contestType": "Smart",
     "contestEffect": "Steady Performance",
     "critsOn": 20,
@@ -9399,7 +9399,7 @@
     "db": "4",
     "damageClass": "Special",
     "range": "4, 1 Target",
-    "effect": "Acid Spray lowers the target’s Special Defense by -2 CS.",
+    "effect": "Acid Spray lowers the target's Special Defense by -2 CS.",
     "contestType": "Smart",
     "contestEffect": "Unsettling",
     "critsOn": 20,
@@ -9455,7 +9455,7 @@
     "freq": "Scene x2",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Attack and Defense by +1 CS, and the user gains +1 Accuracy.",
+    "effect": "Raise the user's Attack and Defense by +1 CS, and the user gains +1 Accuracy.",
     "contestType": "Cute",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -9891,7 +9891,7 @@
     "freq": "EOT",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Speed 2 Combat Stages.",
+    "effect": "Raise the user's Speed 2 Combat Stages.",
     "contestType": "Cool",
     "contestEffect": "Saving Grace",
     "triggers": [
@@ -9910,13 +9910,13 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": "6, 1 Target, Interrupt",
-    "effect": "Ally Switch may be declared during a foe’s turn as an Interrupt. The user chooses one willing ally within 6 meters; the target and the user switch places. If the ally was a target of a Move, the user is now the target; If the user was a target of a Move, the ally is now the target.",
+    "effect": "Ally Switch may be declared during a foe's turn as an Interrupt. The user chooses one willing ally within 6 meters; the target and the user switch places. If the ally was a target of a Move, the user is now the target; If the user was a target of a Move, the ally is now the target.",
     "contestType": "Cool",
     "contestEffect": "Tease",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Ally Switch may be declared during a foe’s turn as an Interrupt. The user chooses one willing ally within 6 meters; the target and the user switch places. If the ally was a target of a Move, the user is now the target; If the user was a target of a Move, the ally is now the target."
+        "text": "Ally Switch may be declared during a foe's turn as an Interrupt. The user chooses one willing ally within 6 meters; the target and the user switch places. If the ally was a target of a Move, the user is now the target; If the user was a target of a Move, the ally is now the target."
       }
     ]
   },
@@ -9925,7 +9925,7 @@
     "freq": "EOT",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Special Defense 2 Combat Stages.",
+    "effect": "Raise the user's Special Defense 2 Combat Stages.",
     "contestType": "Cute",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -9959,7 +9959,7 @@
     "freq": "EOT",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Special Attack 1 Combat Stage and raise the user’s Special Defense 1 Combat Stage.",
+    "effect": "Raise the user's Special Attack 1 Combat Stage and raise the user's Special Defense 1 Combat Stage.",
     "contestType": "Smart",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -10006,7 +10006,7 @@
     "freq": "EOT",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Defense 1 Combat Stage and raise the user’s Special Defense 1 Combat Stage.",
+    "effect": "Raise the user's Defense 1 Combat Stage and raise the user's Special Defense 1 Combat Stage.",
     "contestType": "Cool",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -10164,7 +10164,7 @@
     "freq": "Daily x2",
     "damageClass": "Status",
     "range": "6, 1 Target, Aura, Healing",
-    "effect": "Restores 50% of the target’s max Hit Points. Heal Pulse’s user may not target itself with Heal Pulse.",
+    "effect": "Restores 50% of the target's max Hit Points. Heal Pulse's user may not target itself with Heal Pulse.",
     "contestType": "Beauty",
     "contestEffect": "Reflective Appeal",
     "triggers": [
@@ -10332,13 +10332,13 @@
     "freq": "Daily",
     "damageClass": "Status",
     "range": "4, Interrupt, Trigger",
-    "effect": "If the user is about to get a hit by a Move that does not have a Damage Dice Roll, they may use Magic Coat as an Interrupt. The Interrupted Move’s user is treated as if they were the target of their own Move, with the user of Magic Coat as the user.",
+    "effect": "If the user is about to get a hit by a Move that does not have a Damage Dice Roll, they may use Magic Coat as an Interrupt. The Interrupted Move's user is treated as if they were the target of their own Move, with the user of Magic Coat as the user.",
     "contestType": "Beauty",
     "contestEffect": "Double Time",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "If the user is about to get a hit by a Move that does not have a Damage Dice Roll, they may use Magic Coat as an Interrupt. The Interrupted Move’s user is treated as if they were the target of their own Move, with the user of Magic Coat as the user."
+        "text": "If the user is about to get a hit by a Move that does not have a Damage Dice Roll, they may use Magic Coat as an Interrupt. The Interrupted Move's user is treated as if they were the target of their own Move, with the user of Magic Coat as the user."
       }
     ]
   },
@@ -10362,7 +10362,7 @@
     "freq": "At-Will",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Attack 1 Combat Stage.",
+    "effect": "Raise the user's Attack 1 Combat Stage.",
     "contestType": "Beauty",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -10381,13 +10381,13 @@
     "freq": "Scene x2",
     "damageClass": "Status",
     "range": "Self, Swift Action",
-    "effect": "Miracle Eye may be activated as a Swift Action on the user’s turn. For the rest of the turn, the user’s Psychic-Type Moves can hit and affect Dark-Type targets, and the user can see through the Illusion Ability, Moves with the Illusion keyword, and effects created by the Illusionist Capability, ignoring all effects from those.",
+    "effect": "Miracle Eye may be activated as a Swift Action on the user's turn. For the rest of the turn, the user's Psychic-Type Moves can hit and affect Dark-Type targets, and the user can see through the Illusion Ability, Moves with the Illusion keyword, and effects created by the Illusionist Capability, ignoring all effects from those.",
     "contestType": "Cute",
     "contestEffect": "Good Show!",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Miracle Eye may be activated as a Swift Action on the user’s turn. For the rest of the turn, the user’s Psychic-Type Moves can hit and affect Dark-Type targets, and the user can see through the Illusion Ability, Moves with the Illusion keyword, and effects created by the Illusionist Capability, ignoring all effects from those."
+        "text": "Miracle Eye may be activated as a Swift Action on the user's turn. For the rest of the turn, the user's Psychic-Type Moves can hit and affect Dark-Type targets, and the user can see through the Illusion Ability, Moves with the Illusion keyword, and effects created by the Illusionist Capability, ignoring all effects from those."
       }
     ]
   },
@@ -10396,13 +10396,13 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": "Any, 1 Target, Reaction",
-    "effect": "Mirror Coat may be used as a Reaction when the user is hit by a damaging Special Attack. Resolve the Triggering Attack, with Mirror Coat’s user resisting the attack one step further. After the attack is resolved, if Mirror Coat’s user was not Fainted, the triggering foe then loses Hit Points equal to twice the amount of Hit Points lost by the user from the triggering attack. Note that Mirror Coat is Special, and while it cannot miss, it cannot hit targets immune to Psychic-Type Moves.",
+    "effect": "Mirror Coat may be used as a Reaction when the user is hit by a damaging Special Attack. Resolve the Triggering Attack, with Mirror Coat's user resisting the attack one step further. After the attack is resolved, if Mirror Coat's user was not Fainted, the triggering foe then loses Hit Points equal to twice the amount of Hit Points lost by the user from the triggering attack. Note that Mirror Coat is Special, and while it cannot miss, it cannot hit targets immune to Psychic-Type Moves.",
     "contestType": "Beauty",
     "contestEffect": "Double Time",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Mirror Coat may be used as a Reaction when the user is hit by a damaging Special Attack. Resolve the Triggering Attack, with Mirror Coat’s user resisting the attack one step further. After the attack is resolved, if Mirror Coat’s user was not Fainted, the triggering foe then loses Hit Points equal to twice the amount of Hit Points lost by the user from the triggering attack. Note that Mirror Coat is Special, and while it cannot miss, it cannot hit targets immune to Psychic-Type Moves."
+        "text": "Mirror Coat may be used as a Reaction when the user is hit by a damaging Special Attack. Resolve the Triggering Attack, with Mirror Coat's user resisting the attack one step further. After the attack is resolved, if Mirror Coat's user was not Fainted, the triggering foe then loses Hit Points equal to twice the amount of Hit Points lost by the user from the triggering attack. Note that Mirror Coat is Special, and while it cannot miss, it cannot hit targets immune to Psychic-Type Moves."
       }
     ]
   },
@@ -10413,7 +10413,7 @@
     "db": "7",
     "damageClass": "Special",
     "range": "12, 1 Target",
-    "effect": "Mist Ball lowers the target’s Special Attack by 1 Combat Stage on an Even-Numbered Roll.",
+    "effect": "Mist Ball lowers the target's Special Attack by 1 Combat Stage on an Even-Numbered Roll.",
     "contestType": "Smart",
     "contestEffect": "Seen Nothing Yet",
     "critsOn": 20,
@@ -10512,7 +10512,7 @@
     "db": "9",
     "damageClass": "Special",
     "range": "5, 1 Target, Push",
-    "effect": "The target is Pushed 1 meter in any direction. Psychic lowers the target’s Special Defense 1 Combat Stage on 17+.  Grants Telekinetic.",
+    "effect": "The target is Pushed 1 meter in any direction. Psychic lowers the target's Special Defense 1 Combat Stage on 17+.  Grants Telekinetic.",
     "contestType": "Smart",
     "contestEffect": "Exhausting Act",
     "critsOn": 20,
@@ -10728,13 +10728,13 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": "Melee, 1 Target",
-    "effect": "The user loses one of their Abilities, selected by the user, and gains one the target’s Abilities, selected at random, for the remainder of encounter. The target loses the copied Ability, and gains the user’s lost Ability. This effect ends if either the target or the user is Switched out or Fainted, but only for that Pokémon or Trainer.",
+    "effect": "The user loses one of their Abilities, selected by the user, and gains one the target's Abilities, selected at random, for the remainder of encounter. The target loses the copied Ability, and gains the user's lost Ability. This effect ends if either the target or the user is Switched out or Fainted, but only for that Pokémon or Trainer.",
     "contestType": "Smart",
     "contestEffect": "Excitement",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "The user loses one of their Abilities, selected by the user, and gains one the target’s Abilities, selected at random, for the remainder of encounter. The target loses the copied Ability, and gains the user’s lost Ability. This effect ends if either the target or the user is Switched out or Fainted, but only for that Pokémon or Trainer."
+        "text": "The user loses one of their Abilities, selected by the user, and gains one the target's Abilities, selected at random, for the remainder of encounter. The target loses the copied Ability, and gains the user's lost Ability. This effect ends if either the target or the user is Switched out or Fainted, but only for that Pokémon or Trainer."
       }
     ]
   },
@@ -10745,14 +10745,14 @@
     "db": "2",
     "damageClass": "Special",
     "range": "10, 1 Target",
-    "effect": "For every Combat Stage the user has above 0, add +2 to Stored Power’s Damage Base, up to a maximum of Damage Base 20.",
+    "effect": "For every Combat Stage the user has above 0, add +2 to Stored Power's Damage Base, up to a maximum of Damage Base 20.",
     "contestType": "Tough",
     "contestEffect": "Incentives",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "For every Combat Stage the user has above 0, add +2 to Stored Power’s Damage Base, up to a maximum of Damage Base 20."
+        "text": "For every Combat Stage the user has above 0, add +2 to Stored Power's Damage Base, up to a maximum of Damage Base 20."
       }
     ]
   },
@@ -10926,7 +10926,7 @@
     "db": "10",
     "damageClass": "Physical",
     "range": "Close Blast 3, Friendly, Smite",
-    "effect": "Diamond Storm raises the User’s Defense by +1 CS on an Even-Numbered Roll.",
+    "effect": "Diamond Storm raises the User's Defense by +1 CS on an Even-Numbered Roll.",
     "contestType": "Beauty",
     "contestEffect": "Seen Nothing Yet",
     "critsOn": 20,
@@ -11097,14 +11097,14 @@
     "db": "3",
     "damageClass": "Physical",
     "range": "Melee, Pass",
-    "effect": "The user continues to use Rollout on each of its turns until they miss any target with Rollout, or are not able to hit any target with Rollout during their turn. Each successive use of Rollout increases Rollout’s Damage Base by +4 to a maximum of DB 15.",
+    "effect": "The user continues to use Rollout on each of its turns until they miss any target with Rollout, or are not able to hit any target with Rollout during their turn. Each successive use of Rollout increases Rollout's Damage Base by +4 to a maximum of DB 15.",
     "contestType": "Tough",
     "contestEffect": "Reliable",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "The user continues to use Rollout on each of its turns until they miss any target with Rollout, or are not able to hit any target with Rollout during their turn. Each successive use of Rollout increases Rollout’s Damage Base by +4 to a maximum of DB 15."
+        "text": "The user continues to use Rollout on each of its turns until they miss any target with Rollout, or are not able to hit any target with Rollout during their turn. Each successive use of Rollout increases Rollout's Damage Base by +4 to a maximum of DB 15."
       }
     ]
   },
@@ -11176,13 +11176,13 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": "Burst 1, Interrupt, Shield, Trigger",
-    "effect": "If an Ally adjacent to Wide Guard’s user is hit by a Move, you may use Wide Guard as an Interrupt. All targets adjacent to Wide Guard’s user, including the user, are instead not hit by the triggering Move and do not suffer any of its effects.",
+    "effect": "If an Ally adjacent to Wide Guard's user is hit by a Move, you may use Wide Guard as an Interrupt. All targets adjacent to Wide Guard's user, including the user, are instead not hit by the triggering Move and do not suffer any of its effects.",
     "contestType": "Tough",
     "contestEffect": "Inversed Appeal",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "If an Ally adjacent to Wide Guard’s user is hit by a Move, you may use Wide Guard as an Interrupt. All targets adjacent to Wide Guard’s user, including the user, are instead not hit by the triggering Move and do not suffer any of its effects."
+        "text": "If an Ally adjacent to Wide Guard's user is hit by a Move, you may use Wide Guard as an Interrupt. All targets adjacent to Wide Guard's user, including the user, are instead not hit by the triggering Move and do not suffer any of its effects."
       }
     ]
   },
@@ -11191,13 +11191,13 @@
     "freq": "EOT",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "For the remainder of the Encounter, the user’s Weight Class is one value lower, to a minimum of 1. If the user can, the user’s Speed is raised by +2 Combat Stages.",
+    "effect": "For the remainder of the Encounter, the user's Weight Class is one value lower, to a minimum of 1. If the user can, the user's Speed is raised by +2 Combat Stages.",
     "contestType": "Smart",
     "contestEffect": "Get Ready!",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "For the remainder of the Encounter, the user’s Weight Class is one value lower, to a minimum of 1. If the user can, the user’s Speed is raised by +2 Combat Stages."
+        "text": "For the remainder of the Encounter, the user's Weight Class is one value lower, to a minimum of 1. If the user can, the user's Speed is raised by +2 Combat Stages."
       }
     ]
   },
@@ -11278,14 +11278,14 @@
     "db": "6",
     "damageClass": "Physical",
     "range": "6, 1 Target",
-    "effect": "The target reveals their Speed Stat (including Combat Stages). If it is higher than the user’s (including Combat Stages), subtract the user’s Speed Stat from the target’s and apply the difference as Bonus Damage.",
+    "effect": "The target reveals their Speed Stat (including Combat Stages). If it is higher than the user's (including Combat Stages), subtract the user's Speed Stat from the target's and apply the difference as Bonus Damage.",
     "contestType": "Beauty",
     "contestEffect": "Double Time",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "The target reveals their Speed Stat (including Combat Stages). If it is higher than the user’s (including Combat Stages), subtract the user’s Speed Stat from the target’s and apply the difference as Bonus Damage."
+        "text": "The target reveals their Speed Stat (including Combat Stages). If it is higher than the user's (including Combat Stages), subtract the user's Speed Stat from the target's and apply the difference as Bonus Damage."
       }
     ]
   },
@@ -11364,7 +11364,7 @@
     "db": "10",
     "damageClass": "Physical",
     "range": "Melee, 1 Target, Smite",
-    "effect": "Iron Tail lowers the target’s Defense by -1 CS on 19+.",
+    "effect": "Iron Tail lowers the target's Defense by -1 CS on 19+.",
     "contestType": "Cool",
     "contestEffect": "Desperation",
     "critsOn": 20,
@@ -11390,13 +11390,13 @@
     "freq": "Scene",
     "damageClass": "Status",
     "range": " Self, Interrupt, Shield, Trigger",
-    "effect": "If the user is hit by an attack, the user may use King’s Shield. The user is instead not hit by the Move. You do not take any damage nor are you affected by any of the Move’s effects. In addition, if the triggering attack was Melee ranged, the attacker’s Attack is lowered by -2 CS.",
+    "effect": "If the user is hit by an attack, the user may use King's Shield. The user is instead not hit by the Move. You do not take any damage nor are you affected by any of the Move's effects. In addition, if the triggering attack was Melee ranged, the attacker's Attack is lowered by -2 CS.",
     "contestType": "Cool",
     "contestEffect": "Inversed Appeal",
     "triggers": [
       {
         "type": "action-needed",
-        "text": "If the user is hit by an attack, the user may use King’s Shield. The user is instead not hit by the Move. You do not take any damage nor are you affected by any of the Move’s effects. In addition, if the triggering attack was Melee ranged, the attacker’s Attack is lowered by -2 CS."
+        "text": "If the user is hit by an attack, the user may use King's Shield. The user is instead not hit by the Move. You do not take any damage nor are you affected by any of the Move's effects. In addition, if the triggering attack was Melee ranged, the attacker's Attack is lowered by -2 CS."
       }
     ]
   },
@@ -11550,7 +11550,7 @@
     "freq": "Scene x2",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Attack by +1 CS and Speed by +2 CS.",
+    "effect": "Raise the user's Attack by +1 CS and Speed by +2 CS.",
     "contestType": "Smart",
     "contestEffect": "Get Ready!",
     "triggers": [
@@ -11648,14 +11648,14 @@
     "db": "7",
     "damageClass": "Special",
     "range": "6,  1 Target",
-    "effect": "If the target’s Hit Points are under 50%, Brine’s Damage Base is increased to Damage Base 13 (4d10+10 / 35).",
+    "effect": "If the target's Hit Points are under 50%, Brine's Damage Base is increased to Damage Base 13 (4d10+10 / 35).",
     "contestType": "Smart",
     "contestEffect": "Incentives",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "If the target’s Hit Points are under 50%, Brine’s Damage Base is increased to Damage Base 13 (4d10+10 / 35)."
+        "text": "If the target's Hit Points are under 50%, Brine's Damage Base is increased to Damage Base 13 (4d10+10 / 35)."
       }
     ]
   },
@@ -11803,14 +11803,14 @@
     "db": "9",
     "damageClass": "Special",
     "range": "Close Blast 2",
-    "effect": "As a Shift Action, the user may Move to any open square in Muddy Water’s area of effect without provoking any Attacks of Opportunity. On 16+, the Accuracy of all targets is lowered by 1.",
+    "effect": "As a Shift Action, the user may Move to any open square in Muddy Water's area of effect without provoking any Attacks of Opportunity. On 16+, the Accuracy of all targets is lowered by 1.",
     "contestType": "Tough",
     "contestEffect": "Desperation",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "As a Shift Action, the user may Move to any open square in Muddy Water’s area of effect without provoking any Attacks of Opportunity."
+        "text": "As a Shift Action, the user may Move to any open square in Muddy Water's area of effect without provoking any Attacks of Opportunity."
       },
       {
         "prereq": "accuracy",
@@ -11965,14 +11965,14 @@
     "db": "9",
     "damageClass": "Special",
     "range": "Line 6",
-    "effect": "As a Shift Action, the user may Move to any open square in Surf’s area of effect without provoking any Attacks of Opportunity.",
+    "effect": "As a Shift Action, the user may Move to any open square in Surf's area of effect without provoking any Attacks of Opportunity.",
     "contestType": "Beauty",
     "contestEffect": "Exhausting Act",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "As a Shift Action, the user may Move to any open square in Surf’s area of effect without provoking any Attacks of Opportunity."
+        "text": "As a Shift Action, the user may Move to any open square in Surf's area of effect without provoking any Attacks of Opportunity."
       }
     ]
   },
@@ -12358,7 +12358,7 @@
     "db": "3",
     "damageClass": "Special",
     "range": "Cone 2",
-    "effect": "Arcane Fury’s Targets become Vulnerable on 19+.",
+    "effect": "Arcane Fury's Targets become Vulnerable on 19+.",
     "critsOn": 20,
     "triggers": [
       {
@@ -12477,12 +12477,12 @@
     "db": "4",
     "damageClass": "Special",
     "range": "Melee, 1 Target, Smite",
-    "effect": "When calculating damage, the target subtracts their Defense from Secret Force’s damage instead of their Special Defense. Secret Force is still otherwise Special.\nLimitation: Melee Weapons Only",
+    "effect": "When calculating damage, the target subtracts their Defense from Secret Force's damage instead of their Special Defense. Secret Force is still otherwise Special.\nLimitation: Melee Weapons Only",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "When calculating damage, the target subtracts their Defense from Secret Force’s damage instead of their Special Defense. Secret Force is still otherwise Special.\nLimitation: Melee Weapons Only"
+        "text": "When calculating damage, the target subtracts their Defense from Secret Force's damage instead of their Special Defense. Secret Force is still otherwise Special.\nLimitation: Melee Weapons Only"
       }
     ]
   },
@@ -12562,12 +12562,12 @@
     "db": "6",
     "damageClass": "Special",
     "range": "Burst 1, Friendly",
-    "effect": "Foes hit by Magic Burst can’t make Attacks of Opportunity for 1 full round.\nLimitation: Melee Weapons Only",
+    "effect": "Foes hit by Magic Burst can't make Attacks of Opportunity for 1 full round.\nLimitation: Melee Weapons Only",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Foes hit by Magic Burst can’t make Attacks of Opportunity for 1 full round.\nLimitation: Melee Weapons Only"
+        "text": "Foes hit by Magic Burst can't make Attacks of Opportunity for 1 full round.\nLimitation: Melee Weapons Only"
       }
     ]
   },
@@ -12604,12 +12604,12 @@
     "db": "7",
     "damageClass": "Physical",
     "range": "WR, 1 Target",
-    "effect": "Bash! lowers the target’s Initiative to 0 for 1 full round on 15+.",
+    "effect": "Bash! lowers the target's Initiative to 0 for 1 full round on 15+.",
     "critsOn": 20,
     "triggers": [
       {
         "type": "action-needed",
-        "text": "Bash! lowers the target’s Initiative to 0 for 1 full round on 15+."
+        "text": "Bash! lowers the target's Initiative to 0 for 1 full round on 15+."
       }
     ]
   },
@@ -12673,7 +12673,7 @@
     "freq": "EOT",
     "damageClass": "Status",
     "range": "Self",
-    "effect": "Raise the user’s Accuracy by +1. If the user performs an Weapon Move on their next turn that deals damage, add its Damage Dice Roll an extra time to the damage.",
+    "effect": "Raise the user's Accuracy by +1. If the user performs an Weapon Move on their next turn that deals damage, add its Damage Dice Roll an extra time to the damage.",
     "triggers": [
       {
         "type": "CS",
@@ -12696,7 +12696,7 @@
     "db": "5",
     "damageClass": "Physical",
     "range": "WR, 1 Target",
-    "effect": "Wear Down lowers the target’s Defense by 1 Combat Stage on Even-Numbered Rolls.",
+    "effect": "Wear Down lowers the target's Defense by 1 Combat Stage on Even-Numbered Rolls.",
     "critsOn": 20,
     "triggers": [
       {

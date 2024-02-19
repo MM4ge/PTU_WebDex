@@ -89,7 +89,7 @@ AC: 2
 Damage Base 9: 2d10+10 / 21
 Class: Physical
 Range: Melee, 1 Target
-Effect: This Move ignores the target’s positive
+Effect: This Move ignores the target's positive
 Defense Combat Stages and all Damage Reduction.
 Contest Type: Tough
 Contest Effect: Inversed Appeal
@@ -101,7 +101,7 @@ Damage Base 10: 3d8+10 / 24
 Class: Physical
 Range: Burst 2
 Effect: Interrupts may not be triggered against
-Hyperspace Fury. The user’s Defense is lowered by -1
+Hyperspace Fury. The user's Defense is lowered by -1
 Combat Stage.
 Contest Type: Tough
 Contest Effect: Double Time
@@ -203,7 +203,7 @@ AC: 2
 Damage Base 10: 3d8+10 / 24
 Class: Physical
 Range: Melee, 1 Target, Smite
-Effect: The target’s next damaging Normal Type Move
+Effect: The target's next damaging Normal Type Move
 instead becomes Electric Type.
 Contest Type: Cool
 Contest Effect: Special Attention
@@ -215,7 +215,7 @@ Class: Status
 Range: 6, 1 Target
 Effect: Thunder Wave Paralyzes the target. Targets
 immune to Electric Attacks are immune to Thunder
-Wave’s effects.
+Wave's effects.
 Contest Type: Cool
 Contest Effect: Excitement
 Move: Zing Zap
@@ -235,7 +235,7 @@ AC: 4
 Damage Base 13: 4d10+10 / 35
 Class: Special
 Range: Line 9, Smite
-Effect: Lower the user’s Special Attack 2 Combat
+Effect: Lower the user's Special Attack 2 Combat
 Stages after damage.
 Contest Type: Beauty
 Contest Effect: Seen Nothing Yet
@@ -250,7 +250,7 @@ full Hit Point value. If the field is Grassy Terrain, the
 target gains 2/3 of its full Hit Point value instead.
 Contest Type: Beauty
 Contest Effect: Reflective Appeal
-Move: Nature’s Madness
+Move: Nature's Madness
 Type: Fairy
 Frequency: Scene
 AC: 4
@@ -270,7 +270,7 @@ Effect: Flying Press may deal Flying Type damage if
 the user wishes.
 Contest Type: Tough
 Contest Effect: Big Show
-Note: If Flying Press is Move Sync’d, it only changes
+Note: If Flying Press is Move Sync'd, it only changes
 the Fighting Type portion of the Move. You can still
 only choose between that Type and Flying Type; you
 cannot shift Flying Press to change the Flying part to
@@ -294,7 +294,7 @@ AC: 2
 Damage Base 8: 2d8+10 / 19
 Class: Physical
 Range: 2, 1 Target
-Effect: The target’s Defense is lowered by 1 Combat
+Effect: The target's Defense is lowered by 1 Combat
 Stage.
 Contest Type: Cool
 Contest Effect: Safe Option
@@ -305,7 +305,7 @@ AC: 2
 Damage Base 15: 4d10+10 / 45
 Class: Special
 Range: 6, Ranged Blast 3, Smite
-Effect: The user’s Hit Points are reduced by 50% of
+Effect: The user's Hit Points are reduced by 50% of
 their full Hit Point value. This Hit Point loss cannot be
 prevented or reduced in any way.
 Contest Type: Beauty
@@ -354,7 +354,7 @@ AC: 2
 Damage Base 9: 2d10+10 / 21
 Class: Physical
 Range: Melee, 1 Target
-Effect: The target’s Defense is lowered by 1 Combat
+Effect: The target's Defense is lowered by 1 Combat
 Stage on a 17+.
 Contest Type: Tough
 Contest Effect: Steady Performance
@@ -397,12 +397,12 @@ Class: Physical
 Range: Melee, 1 Target, Set Up
 Set-Up Effect: If the weather is not Sunny, the user
 gains +1 Combat Stage in Attack and Special Defense,
-and the user’s turn ends. If the weather is Sunny,
+and the user's turn ends. If the weather is Sunny,
 immediately proceed to the Resolution Effect instead
 and this Move loses the Set-Up keyword.
 Effect: The user attacks with Solar Blade. If the
 weather is Rainy, Sandstorming, or Hailing, Solar
-Blade’s Damage Base is lowered to 6 (2d6+8 / 15).
+Blade's Damage Base is lowered to 6 (2d6+8 / 15).
 Contest Type: Cool
 Contest Effect: Special Attention
 Move: Strength Sap
@@ -460,7 +460,7 @@ AC: 2
 Damage Base 8: 2d8+10 / 19
 Class: Physical
 Range: Melee, 1 Target
-Effect: If the user’s last attack failed or missed,
+Effect: If the user's last attack failed or missed,
 Stomping Tantrum is DB 15 (4d10+10 / 45) instead.
 Contest Type: Tough
 Contest Effect: Unsettling
@@ -513,7 +513,7 @@ AC: 4
 Damage Base 10: 3d8+10 / 24
 Class: Physical
 Range: Melee, 1 Target
-Effect: The user’s Speed is lowered by 1 Combat
+Effect: The user's Speed is lowered by 1 Combat
 Stage.
 Contest Type: Cool
 Contest Effect: Good Show
@@ -546,7 +546,7 @@ Damage Base 9: 2d10+10 / 21
 Class: Special
 Range: 6, 1 Target
 Effect: Revelation Dance is the same Type as the
-user’s primary Type (the first one listed in the
+user's primary Type (the first one listed in the
 Pokédex). Revelation Dance deals +5 Bonus Damage
 for every other Dance Move used by the user this
 round, to a maximum of +15.
@@ -558,7 +558,7 @@ Frequency: Daily
 AC: None
 Class: Status
 Range: 6, 1 Target, Priority
-Effect: Until the end of the user’s next turn, the target
+Effect: Until the end of the user's next turn, the target
 is Blinded and Vulnerable.
 Contest Type: Smart
 Contest Effect: Attention Grabber
@@ -568,7 +568,7 @@ Frequency: EOT
 AC: 5
 Class: Status
 Range: 6, 1 Target, Social
-Effect: The target’s Attack is raised 2 Combat Stages.
+Effect: The target's Attack is raised 2 Combat Stages.
 Swagger Confuses the target.
 Contest Type: Cute
 Contest Effect: Excitement
@@ -588,7 +588,7 @@ Frequency: EOT
 AC: 2
 Class: Status
 Range: Burst 1, Social, Friendly
-Effect: Tearful Look lowers all Legal Targets’ Attack
+Effect: Tearful Look lowers all Legal Targets' Attack
 and Special Attack 1 Combat Stage.
 Contest Type: Cute
 Contest Effect: Sabotage
@@ -601,7 +601,7 @@ Range: Self, Interrupt, Shield, Trigger
 Effect: If the user is hit by an attack, the user may use
 Baneful Bunker. The user is instead not hit by the
 Move. You do not take any damage nor are you
-affected by any of the Move’s effects. In addition, if
+affected by any of the Move's effects. In addition, if
 the triggering attack was Melee ranged, the attacker
 is Poisoned.
 Contest Type: Smart
@@ -638,7 +638,7 @@ Range: Melee, 1 Target
 Effect: The target immediately reuses the attack it
 performed last, ignoring frequency, as a Free Action.
 They may choose new targets for the copied attack.
-Instruct may not be used if the Target’s last Move was
+Instruct may not be used if the Target's last Move was
 Instruct.
 Contest Type: Smart
 Contest Effect: Catching Up
@@ -649,7 +649,7 @@ AC: 2
 Damage Base 8: 2d8+10 / 19
 Class: Special
 Range: Melee, 3 Targets
-Effect: Make and resolve of Hyperspace Hole’s attacks
+Effect: Make and resolve of Hyperspace Hole's attacks
 separately. In between each attack, the user may Shift
 using their Teleporter capability, ending the Shift next
 to a legal target. Interrupts may not be triggered
@@ -663,7 +663,7 @@ AC: 2
 Damage Base 10: 3d8+10 / 24
 Class: Special
 Range: Burst 2
-Effect: This attack uses the highest of the user’s
+Effect: This attack uses the highest of the user's
 Attack or Special Attack Stat, though it remains a
 Special Move. This Move ignores any Abilities that
 would cause it to fail or miss, such as Dodge or
@@ -773,7 +773,7 @@ AC: 2
 Damage Base 9: 2d10+10 / 21
 Class: Physical
 Range: Melee, 1 Target
-Effect: The target’s Defense is lowered by 1 Combat
+Effect: The target's Defense is lowered by 1 Combat
 Stage on a 17+.
 Contest Type: Beauty
 Contest Effect: Steady Performance

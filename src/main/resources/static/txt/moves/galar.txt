@@ -7,7 +7,7 @@ Class: Physical
 Range: Melee, 1 Target, Dash, Full Action
 Effect: The user Shifts up to its Overland Capability,
 ignoring Attacks of Opportunity, before attacking
-with Skitter Smack. On a hit, the target’s Special
+with Skitter Smack. On a hit, the target's Special
 Attack is lowered 1 CS.
 Contest Type: Smart
 Contest Effect: Reliable
@@ -66,8 +66,8 @@ Range: Self, Interrupt, Shield, Trigger
 Effect: If the user is hit by a Move, the user may use
 Obstruct. The user is instead not hit by the Move. You
 do not take any damage nor are you affected by any
-of the Move’s effects. In addition, if the triggering
-attack was Melee ranged, the attacker’s Defense is
+of the Move's effects. In addition, if the triggering
+attack was Melee ranged, the attacker's Defense is
 lowered by 2 Combat Stages.
 Contest Type: Smart
 Contest Effect: Inversed Appeal
@@ -90,7 +90,7 @@ AC: 2
 Damage Base 6: 2d6+8 / 15
 Class: Physical
 Range: Close Blast 2
-Effect: The target’s Attack is lowered 1 CS.
+Effect: The target's Attack is lowered 1 CS.
 Contest Type: Tough
 Contest Effect: Desperation
 Move: Clangorous Soul
@@ -122,7 +122,7 @@ Damage Base 15: 4d10+20 / 45
 Class: Special
 Range: Cone 3 or Line 8
 Effect: For each 10% of HP the user is missing, Dragon
-Energy’s Damage Base is reduced by 1.
+Energy's Damage Base is reduced by 1.
 Contest Type: Cool
 Contest Effect: Seen Nothing Yet
 Move: Dynamax Cannon
@@ -153,7 +153,7 @@ AC: 4
 Damage Base 3: 1d6+5 / 9
 Class: Physical
 Range: 6, 1 Target, Five Strike
-Effect: The user’s Speed is raised 1 CS, and the user’s
+Effect: The user's Speed is raised 1 CS, and the user's
 Defense is lowered 1 CS.
 Contest Type: Tough
 Contest Effect: Desperation
@@ -164,7 +164,7 @@ AC: 2
 Damage Base 11: 3d10+10 / 27
 Class: Physical
 Range: Melee, 1 Target
-Effect: The user’s Speed is increased 1 CS.
+Effect: The user's Speed is increased 1 CS.
 Contest Type: Cool
 Contest Effect: Special Attention
 Special: If the user is in Hangry Mode, Aura Wheel is
@@ -245,7 +245,7 @@ AC: 2
 Damage Base 10: 3d8+10 / 24
 Class: Special
 Range: Burst 3, Friendly, Smite
-Effect: The user’s Hit Points are set to -50% of their
+Effect: The user's Hit Points are set to -50% of their
 full Hit Point value. This Hit Point loss cannot be
 prevented or reduced in any way. After Misty
 Explosion is resolved, create Misty Terrain in a Blast
@@ -262,7 +262,7 @@ AC: 2
 Damage Base 8: 2d8+10 / 19
 Class: Physical
 Range: Melee, 1 Target
-Effect: The target’s Special Attack stat is lowered 1 CS.
+Effect: The target's Special Attack stat is lowered 1 CS.
 Contest Type: Tough
 Contest Effect: Sabotage
 Move: Strange Steam
@@ -282,7 +282,7 @@ AC: 2
 Damage Base 8: 2d8+10 / 19
 Class: Physical
 Range: Melee, 1 Target
-Effect: The user’s Defense Stat is added to the
+Effect: The user's Defense Stat is added to the
 damage roll instead of the Attack Stat.
 Contest Type: Tough
 Contest Effect: Gamble
@@ -352,7 +352,7 @@ Class: Special
 Range: Burst 1, Spirit Surge
 Effect: After Burning Jealousy has resolved, the user
 may choose to Burn foes within 5m that have had any
-CS raised since the beginning of that foe’s last turn.
+CS raised since the beginning of that foe's last turn.
 This Effect may trigger only once per Scene.
 Contest Type: Smart
 Contest Effect: Sabotage
@@ -397,7 +397,7 @@ Effect: If a target is holding a Held Item or Main or Off-
 Hand item, they must either drop it immediately or
 lose a Tick of Hit Points. This may only cause a target
 to lose at most one Tick of Hit Points, no matter how
-many items they were holding. On each of the target’s
+many items they were holding. On each of the target's
 subsequent turns, if it is still holding the item(s) in
 question it loses a Tick of Hit Points.
 Contest Type: Smart
@@ -409,7 +409,7 @@ AC: 2
 Damage Base 8: 2d8+10 / 19
 Class: Special
 Range: Cone 2
-Effect: The target’s Special Defense is lowered by 1
+Effect: The target's Special Defense is lowered by 1
 CS.
 Contest Type: Smart
 Contest Effect: Unsettling
@@ -429,7 +429,7 @@ AC: 2
 Damage Base 8: 2d8+10 / 19
 Class: Physical
 Range: 4, 1 Target
-Effect: The target’s Speed is lowered by 1 CS.
+Effect: The target's Speed is lowered by 1 CS.
 Contest Type: Smart
 Contest Effect: Big Show
 Move: Grassy Glide
@@ -456,7 +456,7 @@ AC: 2
 Damage Base 8: 2d8+10 / 19
 Class: Physical
 Range: 6, 1 Target
-Effect: The target’s Defense is lowered by 1 CS.
+Effect: The target's Defense is lowered by 1 CS.
 Contest Type: Smart
 Contest Effect: Excitement
 Move: Jungle Healing
@@ -561,8 +561,8 @@ Damage Base 5: 1d8+8 / 13
 Class: Physical
 Range: Melee, 1 Target, Spirit Surge
 Effect: Rapid Spin destroys all Hazards within 5
-meters, removes Leech Seeds, and removes the user’s
-Trapped or Stuck status. If Rapid Spin hits, the user’s
+meters, removes Leech Seeds, and removes the user's
+Trapped or Stuck status. If Rapid Spin hits, the user's
 speed raises 1 CS.
 Contest Type: Cool
 Contest Effect: Exhausting Act
@@ -575,7 +575,7 @@ Range: Self
 Effect: The user immediately consumes one of its
 Food Buffs, regardless of any conditions that need to
 be met, gaining its benefit if applicable. If a Buff is
-consumed, the user’s Defense CS is raised by 2.
+consumed, the user's Defense CS is raised by 2.
 Contest Type: Cute
 Contest Effect: Get Ready!
 Move: Teatime
@@ -625,10 +625,10 @@ AC: 2
 Damage Base 9: 2d10+10 / 21
 Class: Special
 Range: 6, 1 Target
-Effect: This attack uses the highest of the user’s
+Effect: This attack uses the highest of the user's
 Attack or Special Attack Stat, though this does not
 change the Class of the Move. In addition, if the
-target’s Defense is lower than its Special Defense, this
+target's Defense is lower than its Special Defense, this
 attack targets Defense, becoming a Physical Move.
 The target is poisoned on a 17+.
 Contest Type: Smart
@@ -640,7 +640,7 @@ AC: 2
 Damage Base 8: 2d8+10 / 19
 Class: Special
 Range: 6, 1 Target
-Effect: The user may choose to Disable the target’s
+Effect: The user may choose to Disable the target's
 last Move used. This effect may only be activated
 once per Scene.
 Contest Type: Smart
@@ -689,7 +689,7 @@ AC: 4
 Damage Base 12: 3d12+10 / 30
 Class: Special
 Range: Cone 3, Set-Up
-Set-Up Effect: The user’s Special Attack is raised by +1
+Set-Up Effect: The user's Special Attack is raised by +1
 Combat Stage.
 Resolution Effect: The user attacks with Meteor
 Beam.
@@ -704,7 +704,7 @@ Range: Cone 2
 Effect: The target gains a Coat that is automatically
 expended upon being hit with a Fire Type attack in
 order to make them one step more vulnerable to that
-attack. In addition, the target’s Speed is lowered by 1
+attack. In addition, the target's Speed is lowered by 1
 CS.
 Contest Type: Tough
 Contest Effect: Sabotage
@@ -759,7 +759,7 @@ AC: 3
 Damage Base 14: 4d10+15 / 40
 Class: Special
 Range: Cone 3, Smite
-Effect: The user’s Hit Points are reduced by 50% of
+Effect: The user's Hit Points are reduced by 50% of
 their full Hit Point value. This Hit Point loss cannot be
 prevented or reduced in any way.
 Contest Type: Smart
@@ -824,7 +824,7 @@ Class: Special
 Range: 8, 1 Target
 Effect: Snipe Shot is a Critical Hit on 18+. This Move
 may not be Intercepted, nor may any Abilities, Moves,
-or Features be activated to change this Move’s target.
+or Features be activated to change this Move's target.
 Any of those existing effects (such as Follow Me) fail.
 Contest Type: Beauty
 Contest Effect: Reliable
