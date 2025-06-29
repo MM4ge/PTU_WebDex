@@ -43,15 +43,29 @@ public class ExodusConverter {
         PokemonExodus e1 = gson.fromJson(exodusJSON, PokemonExodus.class);
         Pokemon p1 = new Pokemon();
         // Fix for Exodus putting "" for Standard forms of Pokemon
-        if (e1.getPokedexEntry().getForm().isBlank())
+        if (e1.getPokedexEntry().getForm() == null || e1.getPokedexEntry().getForm().isBlank()) {
             e1.getPokedexEntry().setForm(PokeConstants.NON_REGIONAL_FORM);
+        }
 
         //TODO: Catch for meowstic (and nidorans?) one has the bonus on name, the other on form
 
         Map<String, PokemonSpecies> allPokes = PojoToDBConverter.getConvertedPokemonSpeciesMap();
-        List<PokemonSpecies> speciesMatches = allPokes.values().stream()
-                .filter(p -> p.getSpeciesName().equalsIgnoreCase(e1.getPokedexEntry().getSpecies()))
-                .filter(p -> e1.getPokedexEntry().getForm().toUpperCase().startsWith(p.getForm().toUpperCase())).toList();
+        List<PokemonSpecies> speciesMatches = getSpeciesMatches(allPokes, e1);
+
+        // Do an additional check if no matches in case Exodus and PDF forms don't match
+        if (speciesMatches.isEmpty() && !e1.getPokedexEntry().getForm().contains(" ")) {
+            String form = e1.getPokedexEntry().getForm();
+            e1.getPokedexEntry().setForm(form.substring(0, form.indexOf(" ")));
+            log.info("No matches found for form: " + form + ", trying again with: " + e1.getPokedexEntry().getForm());
+            speciesMatches = getSpeciesMatches(allPokes, e1);
+        }
+
+        // Final extra check if no matches - Try Standard form if it wasn't already
+        if (speciesMatches.isEmpty() && !e1.getPokedexEntry().getForm().equals(PokeConstants.NON_REGIONAL_FORM)) {
+            e1.getPokedexEntry().setForm(PokeConstants.NON_REGIONAL_FORM);
+            log.info("No matches found for form: " + e1.getPokedexEntry().getForm() + ", trying again with Standard form.");
+            speciesMatches = getSpeciesMatches(allPokes, e1);
+        }
 
         if (speciesMatches.isEmpty())
             throw new IllegalArgumentException("Exodus Pokemon matched no species!");
@@ -77,5 +91,14 @@ public class ExodusConverter {
         p1.setAbilities(e1.getAbilities().stream().map(a -> PojoToDBConverter.getAbility(a.getName().replace("’", "'"))).collect(Collectors.toSet()));
 
         return p1;
+    }
+
+    public static List<PokemonSpecies> getSpeciesMatches(Map<String, PokemonSpecies> allPokes, PokemonExodus e1) {
+        return allPokes.values().stream()
+                .filter(p -> p.getSpeciesName().equalsIgnoreCase(e1.getPokedexEntry().getSpecies()))
+                .filter(p ->
+                        p.getForm().toUpperCase().startsWith(e1.getPokedexEntry().getForm().toUpperCase()) ||
+                        e1.getPokedexEntry().getForm().toUpperCase().startsWith(p.getForm().toUpperCase()))
+                .toList();
     }
 }
